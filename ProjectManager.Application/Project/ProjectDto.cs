@@ -4,16 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManager.Domain.Entities
+namespace ProjectManager.Application.Project
 {
-    public class Project
+    public class ProjectDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
-        public DateTime? FinishDate { get; set; }
         public string? EncodedName { get; set; }
+        public DateTime? FinishDate { get; set; }
 
-        public void EncodeName() => EncodedName = Name.ToLower().Replace(" ", "-");
     }
 }
