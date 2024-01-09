@@ -1,3 +1,4 @@
+using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
