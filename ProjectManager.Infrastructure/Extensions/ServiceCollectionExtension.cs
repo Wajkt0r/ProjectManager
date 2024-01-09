@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
+using ProjectManager.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,8 @@ namespace ProjectManager.Infrastructure.Extensions
         {
             var connectionString = configuration.GetConnectionString("ProjectManager");
             services.AddDbContext<ProjectManagerDbContext>(option => option.UseSqlServer(connectionString));
+
+            services.AddScoped<IProjectRepository, ProjectRepository>();
         }
     }
 }
