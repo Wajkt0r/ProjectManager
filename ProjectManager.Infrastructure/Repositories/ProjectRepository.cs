@@ -1,7 +1,9 @@
-﻿using ProjectManager.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,5 +24,9 @@ namespace ProjectManager.Infrastructure.Repositories
             _dbContext.Add(project);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Project>> GetAll() 
+            => await _dbContext.Projects.ToListAsync();
+
     }
 }

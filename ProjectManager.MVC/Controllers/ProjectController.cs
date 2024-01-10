@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Project.Commands.CreateProject;
+using ProjectManager.Application.Project.Queries.GetAllProjects;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -16,6 +17,12 @@ namespace ProjectManager.MVC.Controllers
             _mapper = mapper;
         }
 
+        public async Task<IActionResult> Index()
+        {
+            var projectsDto = await _mediator.Send(new GetAllProjectsQuery());
+            return View(projectsDto);
+        }
+
         public IActionResult Create()
         {
             return View();
@@ -24,8 +31,13 @@ namespace ProjectManager.MVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProjectCommand command)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
+            
             await _mediator.Send(command);
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction(nameof(Index));
         }
     }
 }

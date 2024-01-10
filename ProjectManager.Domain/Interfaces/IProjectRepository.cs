@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProjectManager.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace ProjectManager.Domain.Interfaces
 {
     public interface IProjectRepository
     {
-        Task Create(Domain.Entities.Project project);
+        Task Create(Project project);
+        Task<IEnumerable<Project>> GetAll();
     }
 }
