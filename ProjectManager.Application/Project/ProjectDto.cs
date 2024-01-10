@@ -11,7 +11,8 @@ namespace ProjectManager.Application.Project
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
         public string? EncodedName { get; set; }
-        public DateTime? FinishDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime FinishDate { get; set; } = default!;
 
     }
 }
