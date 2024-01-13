@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjectManager.Application.Project;
+using ProjectManager.Application.Project.Commands.EditProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace ProjectManager.Application.Mapping
         {
             CreateMap<Domain.Entities.Project, ProjectDto>()
                 .ReverseMap();
+
+            CreateMap<ProjectDto, EditProjectCommand>();
         }
     }
 }

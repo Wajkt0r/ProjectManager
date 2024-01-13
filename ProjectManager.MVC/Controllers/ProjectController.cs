@@ -2,7 +2,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Project.Commands.CreateProject;
+using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
+using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
+using System.Reflection.Metadata.Ecma335;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -36,6 +39,27 @@ namespace ProjectManager.MVC.Controllers
                 return View(command);
             }
             
+            await _mediator.Send(command);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Route("Project/{encodedName}/Edit")]
+        public async Task<IActionResult> Edit(string encodedName)
+        {
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+
+            EditProjectCommand project = _mapper.Map<EditProjectCommand>(projectDto);
+            return View(project);
+        }
+        
+        [HttpPost]
+        [Route("Project/{encodedName}/Edit")]
+        public async Task<IActionResult> Edit(string encodedName, EditProjectCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(command);
+            }
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }

@@ -18,7 +18,7 @@ namespace ProjectManager.Application.Project.Commands.EditProject
         }
         public async Task<Unit> Handle(EditProjectCommand request, CancellationToken cancellationToken)
         {
-            var project = _projectRepository.GetByEncodedName(request.EncodedName);
+            var project = await _projectRepository.GetByEncodedName(request.EncodedName!);
 
             project.Description = request.Description;
             project.FinishDate = request.FinishDate;
