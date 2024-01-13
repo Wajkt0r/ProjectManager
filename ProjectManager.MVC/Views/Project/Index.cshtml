@@ -27,23 +27,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinishDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinishDate)
+                </td>
+                <td style="display: flex; justify-content: flex-end; align-items: center;">
+                    <a class="btn btn-outline-primary" asp-controller="Project" asp-action="Details" asp-route-encodedName="@item.EncodedName">Details</a>
+                    <a class="btn btn-outline-secondary" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@item.EncodedName">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Project" asp-action="Remove" asp-route-encodedName="@item.EncodedName">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
