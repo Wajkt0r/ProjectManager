@@ -28,5 +28,8 @@ namespace ProjectManager.Infrastructure.Repositories
         public async Task<IEnumerable<Project>> GetAll() 
             => await _dbContext.Projects.ToListAsync();
 
+        public async Task<Project> GetByEncodedName(string encodedName)
+            => await _dbContext.Projects.FirstAsync(p => p.EncodedName == encodedName);
+
     }
 }
