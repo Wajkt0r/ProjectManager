@@ -14,37 +14,38 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th class="text-center">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th class="text-center">
                 <span>Finish Date</span>
             </th>
-            <th></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="align-middle text-center">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="align-middle text-center">
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td>
+                <td class="align-middle text-center">
                     @Html.DisplayFor(modelItem => item.FinishDate)
                 </td>
                 <td style="display: flex; justify-content: flex-end; align-items: center;">
-                    <a class="btn btn-outline-primary" asp-controller="Project" asp-action="Details" asp-route-encodedName="@item.EncodedName">Details</a>
-                    <a class="btn btn-outline-secondary" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@item.EncodedName">Edit</a>
-                    <a class="btn btn-danger" asp-controller="Project" asp-action="Remove" asp-route-encodedName="@item.EncodedName">Delete</a>
+                    <a class="btn btn-outline-primary m-1" asp-controller="Project" asp-action="Details" asp-route-encodedName="@item.EncodedName">Details</a>
+                    <a class="btn btn-outline-secondary m-1" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@item.EncodedName">Edit</a>
+                    <a class="btn btn-danger m-1" asp-controller="Project" asp-action="Remove" asp-route-encodedName="@item.EncodedName">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
