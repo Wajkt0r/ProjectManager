@@ -63,5 +63,12 @@ namespace ProjectManager.MVC.Controllers
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
+
+        [Route("Project/{encodedName}/Details")]
+        public async Task<IActionResult> Details(string encodedName)
+        {
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+            return View(projectDto);
+        }
     }
 }
