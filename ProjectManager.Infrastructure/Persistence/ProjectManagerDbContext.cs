@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProjectManager.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManager.Infrastructure.Persistence
 {
-    public class ProjectManagerDbContext : DbContext
+    public class ProjectManagerDbContext : IdentityDbContext
     {
         public DbSet<Project> Projects { get; set; }
 

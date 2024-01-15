@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjectManager.Domain.Interfaces;
@@ -19,6 +20,9 @@ namespace ProjectManager.Infrastructure.Extensions
         {
             var connectionString = configuration.GetConnectionString("ProjectManager");
             services.AddDbContext<ProjectManagerDbContext>(option => option.UseSqlServer(connectionString));
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ProjectManagerDbContext>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
         }
