@@ -35,6 +35,8 @@
                             <a class="nav-link text-dark @(controller == "Project" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                         </li>
                     </ul>
+
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
