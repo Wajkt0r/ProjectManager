@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Project.Commands.CreateProject;
 using ProjectManager.Application.Project.Commands.EditProject;
@@ -26,11 +27,13 @@ namespace ProjectManager.MVC.Controllers
             return View(projectsDto);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProjectCommand command)
         {
