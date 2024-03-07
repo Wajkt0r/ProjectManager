@@ -13,5 +13,6 @@ namespace ProjectManager.Domain.Interfaces
         Task Create(Project project);
         Task<IEnumerable<Project>> GetAll();
         Task<Project> GetByEncodedName(string encodedName);
+        Task<Project> GetByName(string name);
     }
 }
