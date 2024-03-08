@@ -2,10 +2,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using ProjectManager.Application.Project.Commands.CreateProject;
+using ProjectManager.Application.Project.Commands.DeleteProject;
 using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
+using ProjectManager.Infrastructure.Repositories;
 using System.Reflection.Metadata.Ecma335;
 
 namespace ProjectManager.MVC.Controllers
@@ -26,6 +29,7 @@ namespace ProjectManager.MVC.Controllers
             var projectsDto = await _mediator.Send(new GetAllProjectsQuery());
             return View(projectsDto);
         }
+       
 
         [Authorize]
         public IActionResult Create()
@@ -41,7 +45,7 @@ namespace ProjectManager.MVC.Controllers
             {
                 return View(command);
             }
-            
+
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
@@ -54,7 +58,7 @@ namespace ProjectManager.MVC.Controllers
             EditProjectCommand project = _mapper.Map<EditProjectCommand>(projectDto);
             return View(project);
         }
-        
+
         [HttpPost]
         [Route("Project/{encodedName}/Edit")]
         public async Task<IActionResult> Edit(string encodedName, EditProjectCommand command)
@@ -66,12 +70,20 @@ namespace ProjectManager.MVC.Controllers
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
-
+        [HttpGet]
         [Route("Project/{encodedName}/Details")]
         public async Task<IActionResult> Details(string encodedName)
         {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
             return View(projectDto);
         }
+
+        public async Task<IActionResult> Delete(string encodedName)
+        {
+            await _mediator.Send(new DeleteProjectCommand(encodedName));
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }

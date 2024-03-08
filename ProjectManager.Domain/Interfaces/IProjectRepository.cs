@@ -14,5 +14,6 @@ namespace ProjectManager.Domain.Interfaces
         Task<IEnumerable<Project>> GetAll();
         Task<Project> GetByEncodedName(string encodedName);
         Task<Project> GetByName(string name);
+        Task DeleteProject(Project project);
     }
 }

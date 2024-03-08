@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
