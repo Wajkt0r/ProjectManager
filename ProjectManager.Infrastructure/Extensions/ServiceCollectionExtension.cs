@@ -25,6 +25,7 @@ namespace ProjectManager.Infrastructure.Extensions
             {
                 options.Stores.MaxLengthForKeys = 450;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ProjectManagerDbContext>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();

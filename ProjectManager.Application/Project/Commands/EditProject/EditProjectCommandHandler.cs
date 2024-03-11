@@ -24,7 +24,7 @@ namespace ProjectManager.Application.Project.Commands.EditProject
             var project = await _projectRepository.GetByEncodedName(request.EncodedName!);
 
             var user = _userContext.GetCurrentUser();
-            var isEditable = user != null && (project.CreatedById == user.Id);
+            var isEditable = user != null && (project.CreatedById == user.Id || user.IsInRole("Admin"));
 
             if (!isEditable)
             {
