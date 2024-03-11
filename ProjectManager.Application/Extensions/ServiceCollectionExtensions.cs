@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Mapping;
 using ProjectManager.Application.Project.Commands.CreateProject;
 using System;
@@ -17,6 +18,8 @@ namespace ProjectManager.Application.Extensions
     {
         public static void AddApplication(this IServiceCollection services)
         {
+            services.AddScoped<IUserContext, UserContext>();
+
             services.AddMediatR(typeof(CreateProjectCommand));
 
             services.AddAutoMapper(typeof(ProjectMappingProfile));
