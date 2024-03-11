@@ -20,6 +20,13 @@ namespace ProjectManager.Application.Extensions
         {
             services.AddScoped<IUserContext, UserContext>();
 
+            services.AddScoped(provider => new MapperConfiguration(cfg =>
+            {
+                var scope = provider.CreateScope();
+                var userContext = scope.ServiceProvider.GetRequiredService<IUserContext>();
+                cfg.AddProfile(new ProjectMappingProfile(userContext));
+            }).CreateMapper());
+
             services.AddMediatR(typeof(CreateProjectCommand));
 
             services.AddAutoMapper(typeof(ProjectMappingProfile));

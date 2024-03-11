@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Project;
 using ProjectManager.Application.Project.Commands.EditProject;
 using System;
@@ -11,9 +12,12 @@ namespace ProjectManager.Application.Mapping
 {
     public class ProjectMappingProfile : Profile
     {
-        public ProjectMappingProfile()
+        public ProjectMappingProfile(IUserContext userContext)
         {
+            var user = userContext.GetCurrentUser();
+
             CreateMap<Domain.Entities.Project, ProjectDto>()
+                .ForMember(dto => dto.IsEditable, opt => opt.MapFrom(src => user != null && (src.CreatedById == user.Id)))
                 .ReverseMap();
 
             CreateMap<ProjectDto, EditProjectCommand>();

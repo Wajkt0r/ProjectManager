@@ -12,6 +12,6 @@ namespace ProjectManager.Application.Project
         public string? Description { get; set; }
         public string? EncodedName { get; set; }
         public DateTime FinishDate { get; set; } = default!;
-
+        public bool IsEditable { get; set; }
     }
 }

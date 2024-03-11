@@ -55,6 +55,11 @@ namespace ProjectManager.MVC.Controllers
         {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
 
+            if (!projectDto.IsEditable)
+            {
+                return RedirectToAction("NoAccess", "Home");
+            }
+
             EditProjectCommand project = _mapper.Map<EditProjectCommand>(projectDto);
             return View(project);
         }
