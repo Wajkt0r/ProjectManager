@@ -21,7 +21,10 @@ namespace ProjectManager.Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("ProjectManager");
             services.AddDbContext<ProjectManagerDbContext>(option => option.UseSqlServer(connectionString));
 
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
+                options.Stores.MaxLengthForKeys = 450;
+            })
                 .AddEntityFrameworkStores<ProjectManagerDbContext>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
