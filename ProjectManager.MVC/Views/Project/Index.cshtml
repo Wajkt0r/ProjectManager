@@ -44,8 +44,8 @@
                     @if (item.IsEditable)
                     {
                         <a class="btn btn-outline-dark m-1" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@item.EncodedName">Edit</a>
+                        <a class="btn btn-danger m-1" asp-controller="Project" asp-action="Delete" asp-route-encodedName="@item.EncodedName">Delete</a>
                     }
-                    <a class="btn btn-danger m-1" asp-controller="Project" asp-action="Delete" asp-route-encodedName="@item.EncodedName">Delete</a>
                 </td>
             </tr>
         }
