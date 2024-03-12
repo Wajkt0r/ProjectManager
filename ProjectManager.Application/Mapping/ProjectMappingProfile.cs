@@ -17,7 +17,7 @@ namespace ProjectManager.Application.Mapping
             var user = userContext.GetCurrentUser();
 
             CreateMap<Domain.Entities.Project, ProjectDto>()
-                .ForMember(dto => dto.IsEditable, opt => opt.MapFrom(src => user != null && (src.CreatedById == user.Id)))
+                .ForMember(dto => dto.IsEditable, opt => opt.MapFrom(src => user != null && (src.CreatedById == user.Id) || (user.IsInRole("Admin"))))
                 .ReverseMap();
 
             CreateMap<ProjectDto, EditProjectCommand>();

@@ -22,7 +22,7 @@ namespace ProjectManager.Application.ApplicationUser
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public CurrentUser GetCurrentUser()
+        public CurrentUser? GetCurrentUser()
         {
             var user = _httpContextAccessor?.HttpContext?.User;
             if (user == null)
@@ -30,10 +30,16 @@ namespace ProjectManager.Application.ApplicationUser
                 throw new InvalidOperationException("No user context!");
             }
 
+            if (user.Identity == null || !user.Identity.IsAuthenticated)
+            {
+                return null;
+            }
+
             var id = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
             var email = user.FindFirst(c => c.Type == ClaimTypes.Email)!.Value;
+            var roles = user.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value);
 
-            return new CurrentUser(id, email);
+            return new CurrentUser(id, email, roles);
         }
     }
 }
