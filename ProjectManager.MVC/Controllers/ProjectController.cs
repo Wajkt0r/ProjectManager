@@ -9,7 +9,9 @@ using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Infrastructure.Repositories;
+using ProjectManager.MVC.Extensions;
 using System.Reflection.Metadata.Ecma335;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -47,6 +49,9 @@ namespace ProjectManager.MVC.Controllers
             }
 
             await _mediator.Send(command);
+
+            this.SetNotification("success", $"Project {command.Name} successfully created");
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -86,6 +91,8 @@ namespace ProjectManager.MVC.Controllers
         public async Task<IActionResult> Delete(string encodedName)
         {
             await _mediator.Send(new DeleteProjectCommand(encodedName));
+
+            this.SetNotification("error", $"Project {encodedName} has been deleted");
 
             return RedirectToAction(nameof(Index));
         }

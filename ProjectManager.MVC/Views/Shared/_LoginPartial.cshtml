@@ -6,7 +6,6 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-        @using Microsoft.AspNetCore.Identity
             @{
                 var user = await UserManager.GetUserAsync(User);
                 var roles = await UserManager.GetRolesAsync(user);
