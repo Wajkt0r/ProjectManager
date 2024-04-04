@@ -17,6 +17,8 @@ namespace ProjectManager.Domain.Entities
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime FinishDate { get; set; } = default!;
         public string? EncodedName { get; set; }
+        public List<ProjectTask> ProjectTasks { get; set; } = new();
+
 
         public void EncodeName() => EncodedName = Name.ToLower().Replace(" ", "-");
     }
