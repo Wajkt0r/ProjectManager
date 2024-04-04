@@ -29,6 +29,7 @@ namespace ProjectManager.Infrastructure.Extensions
                 .AddEntityFrameworkStores<ProjectManagerDbContext>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
         }
     }
 }
