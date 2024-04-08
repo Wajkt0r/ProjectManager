@@ -1,4 +1,5 @@
-﻿@model ProjectManager.Application.Project.Commands.EditProject.EditProjectCommand
+﻿@using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
+@model ProjectManager.Application.Project.Commands.EditProject.EditProjectCommand
 
 @{
     ViewData["Title"] = "Edit";
@@ -37,9 +38,14 @@
         </form>
     </div>
 </div>
+
+<div class="m-3">
+    <partial name="_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
 </div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/js/Project/Edit.js"></script>
 }

@@ -8,6 +8,7 @@ using ProjectManager.Application.Project.Commands.DeleteProject;
 using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
+using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
 using ProjectManager.Infrastructure.Repositories;
 using ProjectManager.MVC.Extensions;
 using System.Reflection.Metadata.Ecma335;
@@ -95,6 +96,21 @@ namespace ProjectManager.MVC.Controllers
             this.SetNotification("error", $"Project {encodedName} has been deleted");
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("Project/ProjectTask")]
+        public async Task<IActionResult> CreateProjectTask(CreateProjectTaskCommand command)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await Console.Out.WriteLineAsync("Tu bylismy");
+            await _mediator.Send(command);
+
+            return Ok();
         }
 
     }

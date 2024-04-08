@@ -1,0 +1,53 @@
+﻿@model ProjectManager.Application.ProjectTask.Commands.CreateProjectTask.CreateProjectTaskCommand
+
+<!-- Button trigger modal -->
+<div class="text-center">
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createProjectTaskServiceModal">
+        Add Task
+    </button>
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="createProjectTaskServiceModal" tabindex="-1" aria-labelledby="createProjectTaskServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-action="CreateProjectTask">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createProjectTaskServiceModalLabel">New Project Task</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input asp-for="ProjectEncodedName" class="form-control" type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Deadline" class="control-label"></label>
+                        <input asp-for="Deadline" class="form-control" />
+                        <span asp-validation-for="Deadline" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Create" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
