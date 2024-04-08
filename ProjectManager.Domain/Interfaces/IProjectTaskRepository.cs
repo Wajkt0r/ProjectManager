@@ -10,5 +10,6 @@ namespace ProjectManager.Domain.Interfaces
     public interface IProjectTaskRepository
     {
         Task Create(ProjectTask projectTask);
+        Task<IEnumerable<ProjectTask>> GetAllByEncodedName(string projectEncodedName);
     }
 }

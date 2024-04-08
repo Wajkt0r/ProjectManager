@@ -9,6 +9,7 @@ using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
+using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
 using ProjectManager.Infrastructure.Repositories;
 using ProjectManager.MVC.Extensions;
 using System.Reflection.Metadata.Ecma335;
@@ -111,6 +112,14 @@ namespace ProjectManager.MVC.Controllers
             await _mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("Project/{encodedName}/Tasks")]
+        public async Task<IActionResult> GetProjectTasks(string encodedName)
+        {
+            var data = await _mediator.Send(new GetProjectTasksQuery() { ProjectEncodedName = encodedName });
+            return Ok(data);
         }
 
     }

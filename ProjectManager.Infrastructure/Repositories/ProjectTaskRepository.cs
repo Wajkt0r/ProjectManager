@@ -1,4 +1,5 @@
-﻿using ProjectManager.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
@@ -22,6 +23,13 @@ namespace ProjectManager.Infrastructure.Repositories
         {
             _dbContext.Tasks.Add(projectTask);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ProjectTask>> GetAllByEncodedName(string projectEncodedName)
+        {
+            return await _dbContext.Tasks
+                .Where(t => t.Project.EncodedName == projectEncodedName)
+                .ToListAsync();
         }
     }
 }
