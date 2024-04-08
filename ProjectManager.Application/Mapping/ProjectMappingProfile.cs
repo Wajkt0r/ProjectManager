@@ -23,7 +23,7 @@ namespace ProjectManager.Application.Mapping
 
             CreateMap<ProjectDto, EditProjectCommand>();
 
-            CreateMap<ProjectTaskDto, Domain.Entities.Project>()
+            CreateMap<ProjectTaskDto, Domain.Entities.ProjectTask>()
                 .ReverseMap();
 
         }
