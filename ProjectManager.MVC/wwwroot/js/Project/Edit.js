@@ -1,7 +1,6 @@
 ﻿$(document).ready(function () {
 
-
-
+    LoadProjectTasks()
 
     $("#createProjectTaskServiceModal form").submit(function (event) {
         event.preventDefault();
@@ -12,6 +11,7 @@
             data: $(this).serialize(),
             success: function (data) {
                 toastr["success"]("Created Task")
+                LoadProjectTasks()
             },
             error: function () {
                 toastr["error"]("Something went wrong")
