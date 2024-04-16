@@ -108,19 +108,25 @@ namespace ProjectManager.MVC.Controllers
             {
                 return BadRequest(ModelState);
             }
-            await Console.Out.WriteLineAsync("Tu bylismy");
             await _mediator.Send(command);
 
             return Ok();
         }
 
         [HttpGet]
-        [Route("Project/{encodedName}/Tasks")]
+        [Route("Project/{encodedName}/GetTasks")]
         public async Task<IActionResult> GetProjectTasks(string encodedName)
         {
             var data = await _mediator.Send(new GetProjectTasksQuery() { ProjectEncodedName = encodedName });
             return Ok(data);
         }
 
+        [HttpGet]
+        [Route("Project/{encodedName}/Tasks")]
+        public async Task<IActionResult> Tasks(string encodedName)
+        {
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+            return View("Tasks", projectDto);
+        }
     }
 }
