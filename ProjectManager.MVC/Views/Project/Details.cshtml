@@ -1,10 +1,29 @@
 ﻿@model ProjectManager.Application.Project.ProjectDto
 
 @{
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="text-center">
+    <h1>@Model.Name</h1>
+    <h3>Details</h3>
+</div>
+<div class="">
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Details">Overview</a>
+        </div>
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Tasks" asp-route-encodedName="@Model.EncodedName">Tasks</a>
+        </div>
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Index" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="...">Contributors</a>
+        </div>
+    </div>
+</div>
+
 
 <div>
     <h4>@Model.Name</h4>
@@ -21,12 +40,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EncodedName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EncodedName)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.FinishDate)
