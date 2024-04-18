@@ -12,7 +12,7 @@ namespace ProjectManager.Domain.Entities
         public string Name { get; set; } = default!;
         public string Description { get; set; } = default!;
         public DateTime AssignmentTime { get; set; } = DateTime.Now;
-        public DateTime Deadline { get; set; }
+        public DateTime Deadline { get; set; } = default!;
         public int ProjectId { get; set; } = default!;
         public Project Project { get; set; } = default!;
 

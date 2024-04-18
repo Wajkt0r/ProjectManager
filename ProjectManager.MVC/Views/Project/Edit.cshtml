@@ -39,11 +39,6 @@
     </div>
 </div>
 
-<div class="m-3">
-    <partial name="_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
-</div>
-
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 

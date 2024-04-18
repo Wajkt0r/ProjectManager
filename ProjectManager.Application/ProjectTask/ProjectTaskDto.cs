@@ -10,6 +10,6 @@ namespace ProjectManager.Application.ProjectTask
     {
         public string Name { get; set; } = default!;
         public string Description { get; set; } = default!;
-        public DateTime Deadline { get; set; }
+        public DateTime Deadline { get; set; } = default!;
     }
 }
