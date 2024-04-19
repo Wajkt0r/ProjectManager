@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,10 +21,18 @@ namespace ProjectManager.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task Commit() => await _dbContext.SaveChangesAsync();
+
         public async Task Create(ProjectTask projectTask)
         {
             _dbContext.Tasks.Add(projectTask);
-            await _dbContext.SaveChangesAsync();
+            await Commit();
+        }
+
+        public async Task DeleteTask(ProjectTask projectTask)
+        {
+            _dbContext.Remove(projectTask);
+            await Commit();
         }
 
         public async Task<IEnumerable<ProjectTask>> GetAllByEncodedName(string projectEncodedName)
@@ -31,5 +41,8 @@ namespace ProjectManager.Infrastructure.Repositories
                 .Where(t => t.Project.EncodedName == projectEncodedName)
                 .ToListAsync();
         }
+
+        public async Task<ProjectTask> GetById(int id)
+            => await _dbContext.Tasks.FirstAsync(t => t.Id == id);
     }
 }

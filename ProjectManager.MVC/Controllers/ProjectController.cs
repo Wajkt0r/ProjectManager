@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Humanizer.Localisation.DateToOrdinalWords;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
+using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
 using ProjectManager.Infrastructure.Repositories;
 using ProjectManager.MVC.Extensions;
@@ -101,13 +103,28 @@ namespace ProjectManager.MVC.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("Project/ProjectTask")]
-        public async Task<IActionResult> CreateProjectTask(CreateProjectTaskCommand command)
+        [Route("Project/Tasks")]
+        public async Task<IActionResult> CreateProjectTask(CreateProjectTaskCommand command, string encodedName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            await _mediator.Send(command);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("ProjectTask/Delete")]
+        public async Task<IActionResult> DeleteTask(int id)
+        {
+            DeleteProjectTaskCommand command = new DeleteProjectTaskCommand { Id = id };
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await _mediator.Send(command);
 
             return Ok();
