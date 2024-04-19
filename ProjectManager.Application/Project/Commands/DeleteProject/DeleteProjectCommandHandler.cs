@@ -24,7 +24,12 @@ namespace ProjectManager.Application.Project.Commands.DeleteProject
         {
             var project = await _projectRepository.GetByEncodedName(request.EncodedName!);
 
-            _projectRepository.DeleteProject(project);
+            if (project == null)
+            {
+                return Unit.Value;
+            }
+
+            await _projectRepository.DeleteProject(project);
 
             return Unit.Value;
         }
