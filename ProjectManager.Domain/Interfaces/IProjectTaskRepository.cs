@@ -9,7 +9,10 @@ namespace ProjectManager.Domain.Interfaces
 {
     public interface IProjectTaskRepository
     {
+        Task Commit();
         Task Create(ProjectTask projectTask);
+        Task DeleteTask(ProjectTask projectTask);
         Task<IEnumerable<ProjectTask>> GetAllByEncodedName(string projectEncodedName);
+        Task<ProjectTask> GetById(int id);
     }
 }
