@@ -48,7 +48,7 @@ projectTaskContainer.on('click', '.delete-button', function () {
     const taskId = $(this).attr("data-taskId");
 
     $.ajax({
-        url: `/ProjectTask/Delete?id=${taskId}`,
+        url: `/ProjectTask/${taskId}/Delete`,
         type: 'POST',
         success: function (response) {
             toastr["success"]("Deleted task")

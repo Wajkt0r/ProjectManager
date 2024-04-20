@@ -101,35 +101,6 @@ namespace ProjectManager.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [HttpPost]
-        [Authorize]
-        [Route("Project/Tasks")]
-        public async Task<IActionResult> CreateProjectTask(CreateProjectTaskCommand command, string encodedName)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _mediator.Send(command);
-
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("ProjectTask/Delete")]
-        public async Task<IActionResult> DeleteTask(int id)
-        {
-            DeleteProjectTaskCommand command = new DeleteProjectTaskCommand { Id = id };
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _mediator.Send(command);
-
-            return Ok();
-        }
-
         [HttpGet]
         [Route("Project/{encodedName}/GetTasks")]
         public async Task<IActionResult> GetProjectTasks(string encodedName)
