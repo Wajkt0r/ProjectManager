@@ -17,14 +17,14 @@ namespace ProjectManager.Application.Project.Queries.GetProjectEncodedNameByTask
         }
         public async Task<string?> Handle(GetProjectEncodedNameByTaskIdQuery request, CancellationToken cancellationToken)
         {
-            var projectEncodedTask = await _projectRepository.GetProjectEncodedNameByTaskId(request.Id);
+            var projectEncodedName = await _projectRepository.GetProjectEncodedNameByTaskId(request.Id);
 
-            if (projectEncodedTask == null)
+            if (projectEncodedName == null)
             {
                 return null;
             }
 
-            return projectEncodedTask;
+            return projectEncodedName;
         }
     }
 }
