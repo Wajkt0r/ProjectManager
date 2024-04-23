@@ -12,6 +12,7 @@ namespace ProjectManager.Domain.Interfaces
         Task Commit();
         Task Create(Project project);
         Task<IEnumerable<Project>> GetAll();
+        Task<string?> GetProjectEncodedNameByTaskId(int taskId);
         Task<Project> GetByEncodedName(string encodedName);
         Task<Project> GetByName(string name);
         Task DeleteProject(Project project);

@@ -31,6 +31,21 @@ namespace ProjectManager.Infrastructure.Repositories
         public async Task<IEnumerable<Project>> GetAll() 
             => await _dbContext.Projects.ToListAsync();
 
+        public async Task<string?> GetProjectEncodedNameByTaskId(int taskId)
+        {
+            var projectId = await _dbContext.Tasks
+                .Where(t => t.Id == taskId)
+                .Select(t => t.ProjectId)
+                .FirstOrDefaultAsync();
+
+            var projectEncodedName = await _dbContext.Projects
+                .Where(p => p.Id == projectId)
+                .Select(p => p.EncodedName)
+                .FirstOrDefaultAsync();
+
+            return projectEncodedName;
+        }
+
         public async Task<Project> GetByEncodedName(string encodedName)
             => await _dbContext.Projects.FirstAsync(p => p.EncodedName == encodedName);
 
