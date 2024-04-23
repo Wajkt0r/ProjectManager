@@ -39,6 +39,11 @@ const LoadProjectTasks = () => {
     })
 }
 
+projectTaskContainer.on('click', '.edit-button', function () {
+    const taskId = $(this).attr('data-taskId');
+    window.location.href = `/ProjectTask/${taskId}/Edit`;
+});
+
 let isDeleting = false;
 projectTaskContainer.on('click', '.delete-button', function () {
     if (isDeleting) {
