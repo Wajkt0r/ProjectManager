@@ -12,12 +12,12 @@ namespace ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
         public CreateProjectTaskCommandValidator()
         {
             RuleFor(p => p.Name).NotEmpty().NotNull()
-                .WithMessage("Podaj nazwe taska");
+                .WithMessage("Enter task name");
             RuleFor(p => p.Description).NotEmpty().NotNull()
-                .WithMessage("Podaj opis taska");
+                .WithMessage("Enter task description");
             RuleFor(p => p.Deadline)
-                .NotEmpty().NotNull().WithMessage("Ustaw deadline taska")
-                .Must(DateIsLaterThanNow).WithMessage("Deadlina taska, musi byc pozniej niz teraz");
+                .NotEmpty().NotNull().WithMessage("Enter task deadline date")
+                .Must(DateIsLaterThanNow).WithMessage("Task deadline date cannot be earlier than today's date");
 
         }
 

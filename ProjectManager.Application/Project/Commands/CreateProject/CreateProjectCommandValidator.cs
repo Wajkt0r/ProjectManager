@@ -14,26 +14,26 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
         {
             RuleFor(p => p.Name)
                 .NotEmpty()
-                    .WithMessage("Ustaw nazwę projektu")
-                .MinimumLength(5).WithMessage("Nazwa projektu musi miec minimum 5 znakow")
-                .MaximumLength(50).WithMessage("Nazwa projektu nie moze przekraczac 50 znakow")
+                    .WithMessage("Set project name")
+                .MinimumLength(5).WithMessage("The project name must has at least 5 characters")
+                .MaximumLength(50).WithMessage("The project name cannot exceed 50 characters")
                 .Custom((value, context) =>
                 {
                     var existingProject = projectRepository.GetByName(value).Result;
 
                     if (existingProject != null)
                     {
-                        context.AddFailure($"Nazwa '{value}' nie jest uniknalna nazwa projektu, uzyj innej nazwy");
+                        context.AddFailure($"Name '{value}' is not unique project name, try to use different name");
                     }
                 });
 
             RuleFor(p => p.Description)
                 .NotEmpty()
-                .MinimumLength(10).WithMessage("Prosze uzupelnic opis projektu, musi on zawierac minimum 10 znakow");
+                .MinimumLength(10).WithMessage("Enter project description, must has at least 10 characters");
 
             RuleFor(p => p.FinishDate)
-                .NotEmpty().WithMessage("Ustaw date koncowa projektu, mozesz ja przesunac pozniej")
-                .Must(DateIsLaterThanNow).WithMessage("Data koncowa projektu nie moze być wczesniejsza niz aktualna");
+                .NotEmpty().WithMessage("Enter finish date, you can change it later")
+                .Must(DateIsLaterThanNow).WithMessage("Finish date cannot be earlier than the today's date");
 
         }
 

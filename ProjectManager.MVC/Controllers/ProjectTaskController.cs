@@ -9,6 +9,7 @@ using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.EditProjectTask;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTaskById;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
+using ProjectManager.MVC.Extensions;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -61,6 +62,7 @@ namespace ProjectManager.MVC.Controllers
                 return View(command);
             }
             await _mediator.Send(command);
+            this.SetNotification("success", $"Task edited");
             var projectEncodedName = await _mediator.Send(new GetProjectEncodedNameByTaskIdQuery(taskId));
             return RedirectToAction("Tasks", "Project", new { encodedName = projectEncodedName });
         }

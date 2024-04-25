@@ -13,11 +13,11 @@ namespace ProjectManager.Application.Project.Commands.EditProject
         {
             RuleFor(p => p.Description)
                 .NotEmpty()
-                .MinimumLength(10).WithMessage("Prosze uzupelnic opis projektu, musi on zawierac minimum 10 znakow");
+                .MinimumLength(10).WithMessage("Enter project description, must has at least 10 characters");
 
             RuleFor(p => p.FinishDate)
-                .NotEmpty().WithMessage("Ustaw datę końcową projektu, możesz ją przesunąć później")
-                .Must(DateIsLaterThanNow).WithMessage("Data końcowa projektu nie może być wcześniejsza niż aktualna");
+                .NotEmpty().WithMessage("Enter finish date, you can change it later")
+                .Must(DateIsLaterThanNow).WithMessage("Finish date cannot be earlier than the today's date");
 
         }
 
