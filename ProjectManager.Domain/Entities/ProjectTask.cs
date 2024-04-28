@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ProjectManager.Domain.Enums;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,7 @@ namespace ProjectManager.Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; } = default!;
         public string Description { get; set; } = default!;
+        public TaskProgressStatus TaskProgressStatus { get; set; } = default!;
         public DateTime AssignmentTime { get; set; } = DateTime.Now;
         public DateTime Deadline { get; set; } = default!;
         public int ProjectId { get; set; } = default!;
