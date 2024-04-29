@@ -38,6 +38,7 @@ namespace ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
             {
                 Name = request.Name,
                 Description = request.Description,
+                TaskProgressStatus = request.TaskProgressStatus,
                 Deadline = request.Deadline,
                 ProjectId = project.Id
             };

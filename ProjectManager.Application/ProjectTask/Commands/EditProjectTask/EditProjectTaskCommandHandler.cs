@@ -26,6 +26,7 @@ namespace ProjectManager.Application.ProjectTask.Commands.EditProjectTask
 
             projectTask.Name = request.Name;
             projectTask.Description = request.Description;
+            projectTask.TaskProgressStatus = request.TaskProgressStatus;
             projectTask.Deadline = request.Deadline;
 
             await _projectTaskRepository.Commit();
