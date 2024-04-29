@@ -1,23 +1,44 @@
 ﻿const projectTaskContainer = $("#tasks")
 const projectEncodedName = projectTaskContainer.data('encodedName');
 
+const TaskProgressStatus = {
+    0: "InProgress",
+    1: "Completed",
+    2: "Cancelled"
+};
+
+const colors = {
+    InProgress: 'bg-info',
+    Cancelled: 'bg-danger',
+    Completed: 'bg-success'
+};
+
+
 const RenderProjectTasks = (tasks, container) => {
     container.empty();
 
     for (const task of tasks) {
         const formattedDeadline = new Date(task.deadline).toLocaleString('pl-PL', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        let dateColor;
+        if (new Date(task.deadline) < new Date()) {
+            dateColor = 'bg-danger';
+        } else {
+            dateColor = 'bg-primary';
+        }
+        const statusString = TaskProgressStatus[task.taskProgressStatus];
+        const statusColor = colors[statusString] || 'bg-secondary';
         container.append(
             `<li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <h5>${task.name}</h5>
-                    <p>${task.description}</p>
+                <div class="task-details">
+                    <h5 class="task-name" style="display: inline-block;">${task.name}</h5>
+                    <span class="task-status badge ${statusColor}">${statusString}</span>
+                    <p class="task-description">${task.description}</p>
                 </div>
-                <div>
-                    <span class="badge bg-primary rounded-pill">${formattedDeadline}</span>
+                <div class="task-actions">
+                    <span class="badge ${dateColor} rounded-pill">${formattedDeadline}</span>
                     <a class="badge bg-light text-dark m-1 edit-button" style="text-decoration: none;" data-taskId="${task.id}">Edit</a>
                     <a class="badge bg-danger rounded-pill m-1 delete-button" style="text-decoration: none;" data-taskId="${task.id}">Delete</a>
                 </div>
-
             </li>`)
     }
 }
@@ -34,7 +55,7 @@ const LoadProjectTasks = () => {
             }
         },
         error: function () {
-            toastr["error"]("Something went wrong")
+            toastr["error"]("Something went wrongf")
         }
     })
 }
