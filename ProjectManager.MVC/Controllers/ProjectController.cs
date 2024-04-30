@@ -37,7 +37,7 @@ namespace ProjectManager.MVC.Controllers
         }
        
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User, Admin")]
         public IActionResult Create()
         {
             return View();

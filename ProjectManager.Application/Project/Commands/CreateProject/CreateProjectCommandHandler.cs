@@ -26,7 +26,7 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
         {
             var currentUser = _userContext.GetCurrentUser();
 
-            if (currentUser == null || !currentUser.IsInRole("User"))
+            if (currentUser == null || (!currentUser.IsInRole("User") && !currentUser.IsInRole("Admin")))
             {
                 return Unit.Value;
             }
