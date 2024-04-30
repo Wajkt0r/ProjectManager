@@ -18,9 +18,6 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th class="text-center">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th class="text-center">
                 <span>Finish Date</span>
             </th>
             <th class="text-center"></th>
@@ -33,11 +30,18 @@
                 <td class="align-middle text-center">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
+                @{
+                    var textColorClass = "";
+                    if (DateTime.Compare(item.FinishDate, DateTime.Now) < 0)
+                    {
+                        textColorClass = "text-danger fw-bold";
+                    } else if ((item.FinishDate - DateTime.Now).TotalDays < 7)
+                    {
+                        textColorClass = "text-warning";
+                    }
+                }
                 <td class="align-middle text-center">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td class="align-middle text-center">
-                    @Html.DisplayFor(modelItem => item.FinishDate)
+                    <span class="@textColorClass">@Html.DisplayFor(modelItem => item.FinishDate)</span>
                 </td>
                 <td style="display: flex; justify-content: flex-end; align-items: center;">
                     <a class="btn btn-outline-primary m-1" asp-controller="Project" asp-action="Details" asp-route-encodedName="@item.EncodedName">Details</a>

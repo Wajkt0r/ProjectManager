@@ -29,7 +29,6 @@
 
 
 <div>
-    <h4>@Model.Name</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -52,7 +51,7 @@
         </dd>
     </dl>
 </div>
-<div>
+<div class="text-center">
     @if (Model.IsEditable)
     {
         <a class="btn btn-primary" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@Model.EncodedName">Edit</a>

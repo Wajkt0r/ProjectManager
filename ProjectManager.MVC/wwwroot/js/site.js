@@ -77,7 +77,7 @@ projectTaskContainer.on('click', '.delete-button', function () {
         url: `/ProjectTask/${taskId}/Delete`,
         type: 'POST',
         success: function (response) {
-            toastr["success"]("Deleted task")
+            toastr["error"]("Deleted task")
             LoadProjectTasks();
         },
         error: function () {
