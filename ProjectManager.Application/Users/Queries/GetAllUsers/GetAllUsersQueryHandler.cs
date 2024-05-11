@@ -22,7 +22,7 @@ namespace ProjectManager.Application.Users.Queries.GetAllUsers
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = await _userRepository.GetAllUser();
+            var users = await _userRepository.GetAllUsers();
 
             if (users == null)
             {
