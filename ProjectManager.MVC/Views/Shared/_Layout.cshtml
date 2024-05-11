@@ -1,4 +1,7 @@
 ﻿@using Newtonsoft.Json
+﻿﻿@using Microsoft.AspNetCore.Identity
+@using ProjectManager.Domain.Entities
+@inject UserManager<User> UserManager
 @{
     var action = ViewContext.RouteData.Values["Action"]?.ToString();
     var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
@@ -40,8 +43,8 @@
                             <a class="nav-link text-dark @(controller == "Project" && action == "Index" ? "active" : "")" asp-area="" asp-controller="Project" asp-action="Index">Projects</a>
                         </li>
                     </ul>
-
-                    <partial name="_LoginPartial" />
+                    
+                    <partial name="_LoginPartial" />    
                 </div>
             </div>
         </nav>

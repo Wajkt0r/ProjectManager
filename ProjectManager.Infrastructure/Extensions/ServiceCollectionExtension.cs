@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Repositories;
@@ -21,15 +22,14 @@ namespace ProjectManager.Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("ProjectManager");
             services.AddDbContext<ProjectManagerDbContext>(option => option.UseSqlServer(connectionString));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
-            {
-                options.Stores.MaxLengthForKeys = 450;
-            })
+            services.AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ProjectManagerDbContext>();
+                .AddEntityFrameworkStores<ProjectManagerDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

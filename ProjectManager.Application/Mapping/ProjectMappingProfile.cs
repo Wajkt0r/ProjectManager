@@ -3,6 +3,8 @@ using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Project;
 using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.ProjectTask;
+using ProjectManager.Application.Users;
+using ProjectManager.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,9 @@ namespace ProjectManager.Application.Mapping
             CreateMap<ProjectDto, EditProjectCommand>();
 
             CreateMap<ProjectTaskDto, Domain.Entities.ProjectTask>()
+                .ReverseMap();
+
+            CreateMap<UserDto, Domain.Entities.User>()
                 .ReverseMap();
 
         }
