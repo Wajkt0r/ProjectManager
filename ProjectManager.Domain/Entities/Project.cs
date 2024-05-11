@@ -13,7 +13,7 @@ namespace ProjectManager.Domain.Entities
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
         public string? CreatedById { get; set; }
-        public IdentityUser? CreatedBy{ get; set; }
+        public User? CreatedBy{ get; set; }
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public DateTime FinishDate { get; set; } = default!;
         public string? EncodedName { get; set; }
