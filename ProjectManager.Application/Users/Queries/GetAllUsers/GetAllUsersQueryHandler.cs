@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,12 @@ namespace ProjectManager.Application.Users.Queries.GetAllUsers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        public GetAllUsersQueryHandler(IUserRepository userRepository, IMapper mapper)
+        private readonly UserManager<User> _userManager;
+        public GetAllUsersQueryHandler(IUserRepository userRepository, IMapper mapper, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
@@ -29,7 +32,20 @@ namespace ProjectManager.Application.Users.Queries.GetAllUsers
                 return null;
             }
 
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
+            var usersDto = new List<UserDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var userDto = new UserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Roles = (List<string>)roles
+                };
+                usersDto.Add(userDto);
+
+            }
 
             return usersDto;
         }
