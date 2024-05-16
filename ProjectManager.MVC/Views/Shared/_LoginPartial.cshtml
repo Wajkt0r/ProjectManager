@@ -20,7 +20,7 @@
         <li class="nav-item">
             @if (User.IsInRole("Admin"))
             {
-                <b><a class="nav-link text-dark @(controller == "User" && action == "Users" ? "active" : "")" asp-area="" asp-controller="User" asp-action="Users">Users</a></b>
+                <b><a class="nav-link text-dark @(controller == "User" && action == "Index" ? "active" : "")" asp-area="" asp-controller="User" asp-action="Index">Users</a></b>
             }
         </li>
         <li class="nav-item">
