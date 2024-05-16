@@ -12,5 +12,6 @@ namespace ProjectManager.Domain.Interfaces
     {
         Task Commit();
         Task<IEnumerable<User>>GetAllUsers();
+        Task<User> GetUserByEmail(string email);
     }
 }

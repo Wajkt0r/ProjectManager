@@ -24,5 +24,8 @@ namespace ProjectManager.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetAllUsers()
             => await _dbContext.Users.ToListAsync();
+
+        public async Task<User?> GetUserByEmail(string email)
+            => await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
 }
