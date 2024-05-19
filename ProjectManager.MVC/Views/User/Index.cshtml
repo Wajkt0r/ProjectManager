@@ -4,43 +4,43 @@
 @using System.Security.Claims
 @model IEnumerable<UserDto>
 
-
 @{
     ViewData["Title"] = "Users";
 }
 
-<h1>Users</h1>
+<h1 class="my-4">User Management</h1>
 
-@foreach (var user in Model)
-{
-    <div>
-        <hr />
-        <dl class="row">
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => user.UserName)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => user.UserName)
-            </dd>
-            <dt class = "col-sm-2">
-                @Html.DisplayNameFor(model => user.Email)
-            </dt>
-            <dd class = "col-sm-10">
-                @Html.DisplayFor(model => user.Email)
-            </dd>
-            <dt class = "col-sm-2">
-                Roles
-            </dt>
-            <dt class = "col-sm-10">
-                @foreach (var role in user.Roles)
-                {
-                    <span>@role</span>
-                }
-            </dt>
-        </dl>
-    </div>
-}
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Roles</th>
+            <th scope="col" class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    @foreach (var role in user.Roles)
+                    {
+                        <span class="badge badge-primary text-dark">@role</span>
+                    }
+                </td>
+                <td class="d-flex justify-content-center align-items-center">
+                    <partial name="_EditUserRoles"/>
+                    <partial name="_DeleteUser"/>
+                    <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#editRolesModal" data-username="@user.UserName" data-roles="@string.Join(",", user.Roles)">Edit Roles</button>
+                    <button class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-username="@user.UserName">Delete User</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
