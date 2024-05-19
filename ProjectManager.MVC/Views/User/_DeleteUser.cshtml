@@ -1,14 +1,13 @@
-﻿@* @model ProjectManager.Application.Users.Commands.DeleteUser.DeleteUserCommand *@
+﻿@model ProjectManager.Application.Users.Commands.DeleteUser.DeleteUserCommand
 
-<button class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-username="">Delete User</button>
-
+<button class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-username="@Model.Email">Delete User</button>
 
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteUserModalLabel">Delete User <span id="delete-modal-username"></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -22,32 +21,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#deleteUserModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var username = button.data('username');
-
-                var modal = $(this);
-                modal.find('#delete-modal-username').text(username);
-
-                $('#confirmDelete').off('click').on('click', function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Admin/DeleteUser',
-                        data: { username: username },
-                        success: function (response) {
-                            $('#deleteUserModal').modal('hide');
-                            location.reload();
-                        },
-                        error: function (error) {
-                            alert('Error deleting user');
-                        }
-                    });
-                });
-            });
-        });
-    </script>
-}

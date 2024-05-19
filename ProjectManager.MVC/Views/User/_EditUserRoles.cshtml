@@ -1,13 +1,13 @@
-﻿@model ProjectManager.Application.Users.Commands.EditUserRolles.EditUserRollesCommand
+﻿@model ProjectManager.Application.Users.Commands.EditUserRoles.EditUserRolesCommand
 
-<button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#editRolesModal" data-username="@user.UserName" data-roles="@string.Join(",", user.Roles)">Edit Roles</button>
+<button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#editRolesModal" data-username="@Model.Email" data-roles="@string.Join(",", Model.Roles)">Edit Roles</button>
 
 <div class="modal fade" id="editRolesModal" tabindex="-1" role="dialog" aria-labelledby="editRolesModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editRolesModalLabel">Edit Roles for <span id="modal-username"></span></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="editRolesModalLabel">Edit Roles for <span id="edit-modal-username">@Model.Email</span></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <label for="roles">Roles</label>
                         <select id="roles" multiple class="form-control">
-                            <!-- Dynamically populated by jQuery -->
+                            <!-- Dynamically populated by JavaScript -->
                         </select>
                     </div>
                 </form>
@@ -28,50 +28,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#editRolesModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget);
-                var username = button.data('username');
-                var roles = button.data('roles').split(',');
-
-                var modal = $(this);
-                modal.find('#modal-username').text(username);
-
-                var rolesSelect = modal.find('#roles');
-                rolesSelect.empty();
-
-                // Example roles, replace with your actual roles from the server
-                var allRoles = ['Admin', 'User', 'Manager'];
-
-                allRoles.forEach(function (role) {
-                    var selected = roles.includes(role) ? 'selected' : '';
-                    rolesSelect.append(`<option value="${role}" ${selected}>${role}</option>`);
-                });
-            });
-
-            $('#saveRoles').click(function () {
-                var form = $('#editRolesForm');
-                var username = $('#modal-username').text();
-                var selectedRoles = form.find('#roles').val();
-
-                // Perform your AJAX request to save roles
-                $.ajax({
-                    type: 'POST',
-                    url: '/Admin/SaveUserRoles',
-                    data: { username: username, roles: selectedRoles },
-                    success: function (response) {
-                        // Handle success
-                        $('#editRolesModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function (error) {
-                        // Handle error
-                        alert('Error saving roles');
-                    }
-                });
-            });
-    </script>
-}
