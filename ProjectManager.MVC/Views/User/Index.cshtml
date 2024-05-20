@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using ProjectManager.Application.Users
+@using ProjectManager.Application.Users.Commands.DeleteUser
+@using ProjectManager.Application.Users.Commands.EditUserRoles
 @using ProjectManager.Domain.Entities
 @using System.Security.Claims
 @model IEnumerable<UserDto>
@@ -32,15 +34,17 @@
                     }
                 </td>
                 <td class="d-flex justify-content-center align-items-center">
-                    <partial name="_EditUserRoles"/>
-                    <partial name="_DeleteUser"/>
-                    <button class="btn btn-sm btn-primary m-1" data-bs-toggle="modal" data-bs-target="#editRolesModal" data-username="@user.UserName" data-roles="@string.Join(",", user.Roles)">Edit Roles</button>
-                    <button class="btn btn-sm btn-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-username="@user.UserName">Delete User</button>
+                    <partial name="_EditUserRoles" model="new EditUserRolesCommand() { Email = user.Email, Roles = user.Roles }"/>
+                    <partial name="_DeleteUser" model="new DeleteUserCommand() { Email = user.Email} "/>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="~/js/User/UserManagment.js"></script>
+}
 
 
 
