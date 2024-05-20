@@ -10,6 +10,6 @@ namespace ProjectManager.Application.Users.Commands.EditUserRoles
     public class EditUserRolesCommand : IRequest
     {
         public string Email { get; set; } = default!;
-        public List<string> Roles { get; set; }
+        public List<string> Roles { get; set; } = new List<string>();
     }
 }

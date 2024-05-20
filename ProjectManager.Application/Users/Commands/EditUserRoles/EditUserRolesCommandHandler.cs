@@ -15,33 +15,55 @@ namespace ProjectManager.Application.Users.Commands.EditUserRoles
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
-        public EditUserRolesCommandHandler(IUserRepository userRepository, UserManager<User> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public EditUserRolesCommandHandler(IUserRepository userRepository, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userRepository = userRepository;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
+
         public async Task<Unit> Handle(EditUserRolesCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetUserByEmail(request.Email);
 
             if (user == null)
             {
-                return Unit.Value;  
+                return Unit.Value;
             }
 
+            // Pobierz role użytkownika
             var userRoles = await _userManager.GetRolesAsync(user);
 
             foreach (var role in request.Roles)
             {
-                if (role in userRoles) {
-                    // Jak jest to skip fora
+                // Sprawdź, czy rola istnieje
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    // Jeśli rola nie istnieje, utwórz ją
+                    await _roleManager.CreateAsync(new IdentityRole(role));
                 }
 
-                // powyzszy if sie nie wykona wiec dodajemy role
-                var result = await _userManager.AddToRoleAsync(user, role); // cos z tym mozna pokmninic
+                // Sprawdź, czy użytkownik już ma tę rolę
+                if (!userRoles.Contains(role))
+                {
+                    // Dodaj rolę użytkownikowi
+                    await _userManager.AddToRoleAsync(user, role);
+                }
             }
 
-            
+            // Usuń użytkownikowi role, których nie ma w liście request.Roles
+            foreach (var role in userRoles)
+            {
+                if (!request.Roles.Contains(role))
+                {
+                    await _userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
+
+            return Unit.Value;
         }
     }
+
 }
