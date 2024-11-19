@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
+using ProjectManager.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,11 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
+
+var scope = app.Services.CreateScope();
+
+var seeder = scope.ServiceProvider.GetRequiredService<UserRolesSeeder>();
+await seeder.Seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -6,6 +6,7 @@ using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Repositories;
+using ProjectManager.Infrastructure.Seeders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,8 @@ namespace ProjectManager.Infrastructure.Extensions
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ProjectManagerDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<UserRolesSeeder>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
