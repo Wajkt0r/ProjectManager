@@ -63,5 +63,7 @@ namespace ProjectManager.Infrastructure.Repositories
             var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName);
             return project.Id;
         }
+        public async Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId)
+            => await _dbContext.ProjectUsers.Where(pu => pu.ProjectId == projectId).ToListAsync();
     }
 }
