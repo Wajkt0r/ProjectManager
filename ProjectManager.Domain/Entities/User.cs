@@ -9,5 +9,6 @@ namespace ProjectManager.Domain.Entities
 {
     public class User : IdentityUser
     {
+        public List<ProjectUser> ProjectUsers { get; set; } = new();
     }
 }
