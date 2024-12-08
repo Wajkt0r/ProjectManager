@@ -57,5 +57,11 @@ namespace ProjectManager.Infrastructure.Repositories
             _dbContext.Projects.Remove(project);
             await Commit();
         }
+
+        public async Task<int> GetProjectId(string encodedName)
+        {
+            var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName);
+            return project.Id;
+        }
     }
 }
