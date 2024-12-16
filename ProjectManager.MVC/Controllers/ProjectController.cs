@@ -121,8 +121,7 @@ namespace ProjectManager.MVC.Controllers
         [Route("Project/{encodedName}/Contributors/{userEmail}/Remove")]
         public async Task<IActionResult> RemoveContributor(string encodedName, string userEmail)
         {
-            var userId = await _mediator.Send(new GetUserIdByEmailQuery() { UserEmail = userEmail });
-            var projectId = await _mediator.Send(new GetProjectIdByEncodedNameQuery() { ProjectEncodedName = encodedName });
+            await _mediator.Send(new RemoveContributorCommand() { ProjectEncodedName = encodedName, UserEmail = userEmail });
 
             var projectUser = new ProjectUser()
             {
