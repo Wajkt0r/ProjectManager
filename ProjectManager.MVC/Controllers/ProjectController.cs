@@ -7,6 +7,7 @@ using Microsoft.Identity.Client;
 using ProjectManager.Application.Project.Commands.CreateProject;
 using ProjectManager.Application.Project.Commands.DeleteProject;
 using ProjectManager.Application.Project.Commands.EditProject;
+using ProjectManager.Application.Project.Commands.RemoveContributor;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
@@ -115,6 +116,23 @@ namespace ProjectManager.MVC.Controllers
         {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
             return View("Tasks", projectDto);
+        }
+        [HttpPost]
+        [Route("Project/{encodedName}/Contributors/{userEmail}/Remove")]
+        public async Task<IActionResult> RemoveContributor(string encodedName, string userEmail)
+        {
+            var userId = await _mediator.Send(new GetUserIdByEmailQuery() { UserEmail = userEmail });
+            var projectId = await _mediator.Send(new GetProjectIdByEncodedNameQuery() { ProjectEncodedName = encodedName });
+
+            var projectUser = new ProjectUser()
+            {
+                UserId = userId,
+                ProjectId = projectId
+            };
+
+            await _mediator.Send(new RemoveContributorCommand() { ProjectUser = projectUser });
+
+            return Ok();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Application.Users;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
@@ -65,5 +66,10 @@ namespace ProjectManager.Infrastructure.Repositories
         }
         public async Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId)
             => await _dbContext.ProjectUsers.Where(pu => pu.ProjectId == projectId).ToListAsync();
+        public async Task RemoveContributor(ProjectUser projectUser)
+        {
+            _dbContext.ProjectUsers.Remove(projectUser);
+            await Commit();
+        }
     }
 }
