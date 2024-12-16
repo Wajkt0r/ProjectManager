@@ -18,6 +18,8 @@ namespace ProjectManager.Domain.Interfaces
         Task DeleteProject(Project project);
         Task<int> GetProjectId(string encodedName);
         Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId);
+        Task AddContributorToProject(ProjectUser projectUser);
         Task RemoveContributor(ProjectUser projectUser);
+        Task<bool> IsUserContributor(int projectId, string userId);
     }
 }

@@ -64,12 +64,24 @@ namespace ProjectManager.Infrastructure.Repositories
             var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName);
             return project.Id;
         }
+
         public async Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId)
             => await _dbContext.ProjectUsers.Where(pu => pu.ProjectId == projectId).ToListAsync();
+
+        public async Task AddContributorToProject(ProjectUser projectUser)
+        {
+            _dbContext.ProjectUsers.Add(projectUser);
+            await Commit();
+        }
+
         public async Task RemoveContributor(ProjectUser projectUser)
         {
             _dbContext.ProjectUsers.Remove(projectUser);
             await Commit();
         }
+
+        public async Task<bool> IsUserContributor(int projectId, string userId)
+            => await _dbContext.ProjectUsers.AnyAsync(pu => pu.ProjectId == projectId && pu.UserId == userId);
+
     }
 }
