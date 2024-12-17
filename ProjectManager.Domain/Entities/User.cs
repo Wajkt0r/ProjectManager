@@ -10,5 +10,6 @@ namespace ProjectManager.Domain.Entities
     public class User : IdentityUser
     {
         public List<ProjectUser> ProjectUsers { get; set; } = new();
+        public List<ProjectUserRole> UserProjectsRoles { get; set; } = new();
     }
 }

@@ -15,6 +15,8 @@ namespace ProjectManager.Infrastructure.Persistence
         public DbSet<Project> Projects { get; set; }
         public DbSet<ProjectTask> Tasks { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
+        public DbSet<ProjectRole> ProjectRoles { get; set; }
+        public DbSet<ProjectUserRole> ProjectUserRoles { get; set; }
 
         public ProjectManagerDbContext(DbContextOptions<ProjectManagerDbContext> options) : base(options) { }
 
@@ -37,6 +39,9 @@ namespace ProjectManager.Infrastructure.Persistence
                 .HasOne(pu => pu.Project)
                 .WithMany(p => p.ProjectContributors)
                 .HasForeignKey(pu => pu.ProjectId);
+
+            modelBuilder.Entity<ProjectUserRole>()
+                .HasKey(pur => new { pur.UserId, pur.ProjectId, pur.ProjectRoleId});
            
 
             base.OnModelCreating(modelBuilder);
