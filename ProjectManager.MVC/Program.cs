@@ -17,8 +17,11 @@ var app = builder.Build();
 
 var scope = app.Services.CreateScope();
 
-var seeder = scope.ServiceProvider.GetRequiredService<UserRolesSeeder>();
-await seeder.Seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
+var userRolesSeeder = scope.ServiceProvider.GetRequiredService<UserRolesSeeder>();
+var projectRolesSeeder = scope.ServiceProvider.GetRequiredService<ProjectRolesSeeder>();
+await userRolesSeeder.Seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
+await projectRolesSeeder.Seed();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

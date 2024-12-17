@@ -29,6 +29,7 @@ namespace ProjectManager.Infrastructure.Extensions
                 .AddDefaultTokenProviders();
 
             services.AddScoped<UserRolesSeeder>();
+            services.AddScoped<ProjectRolesSeeder>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
