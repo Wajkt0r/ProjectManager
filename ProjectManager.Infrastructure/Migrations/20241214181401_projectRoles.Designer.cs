@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManager.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProjectManager.Infrastructure.Persistence;
 namespace ProjectManager.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectManagerDbContext))]
-    partial class ProjectManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241214181401_projectRoles")]
+    partial class projectRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,26 +263,6 @@ namespace ProjectManager.Infrastructure.Migrations
                     b.ToTable("ProjectUsers");
                 });
 
-            modelBuilder.Entity("ProjectManager.Domain.Entities.ProjectUserRole", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "ProjectId", "ProjectRoleId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.HasIndex("ProjectRoleId");
-
-                    b.ToTable("ProjectUserRoles");
-                });
-
             modelBuilder.Entity("ProjectManager.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -435,33 +418,6 @@ namespace ProjectManager.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProjectManager.Domain.Entities.ProjectUserRole", b =>
-                {
-                    b.HasOne("ProjectManager.Domain.Entities.Project", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectManager.Domain.Entities.ProjectRole", "ProjectRole")
-                        .WithMany()
-                        .HasForeignKey("ProjectRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProjectManager.Domain.Entities.User", "User")
-                        .WithMany("UserProjectsRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-
-                    b.Navigation("ProjectRole");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ProjectManager.Domain.Entities.Project", b =>
                 {
                     b.Navigation("ProjectContributors");
@@ -472,8 +428,6 @@ namespace ProjectManager.Infrastructure.Migrations
             modelBuilder.Entity("ProjectManager.Domain.Entities.User", b =>
                 {
                     b.Navigation("ProjectUsers");
-
-                    b.Navigation("UserProjectsRoles");
                 });
 #pragma warning restore 612, 618
         }
