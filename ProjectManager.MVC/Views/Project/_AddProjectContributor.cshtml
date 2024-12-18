@@ -1,0 +1,44 @@
+﻿@model ProjectManager.Application.Project.Commands.AddContributor.AddContributorCommand
+
+<!-- Button trigger modal -->
+<div class="text-center">
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addProjectContributorModal">
+        Add Contributor
+    </button>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="addProjectContributorModal" tabindex="-1" aria-labelledby="addProjectContributorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form asp-controller="Project" asp-action="AddContributor">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProjectContributorModalLabel">Add Project Contributor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input asp-for="ProjectEncodedName" class="form-control" type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="UserEmail" class="control-label"></label>
+                        <input asp-for="UserEmail" class="form-control text-center" />
+                        <span asp-validation-for="UserEmail" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" value="Add" class="btn btn-primary">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

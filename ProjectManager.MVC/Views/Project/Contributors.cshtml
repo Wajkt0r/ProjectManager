@@ -1,0 +1,81 @@
+﻿@using ProjectManager.Application.Project.Commands.AddContributor
+@model ProjectManager.Application.Project.ProjectDto
+@{
+    var action = ViewContext.RouteData.Values["Action"]?.ToString();
+    var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    ViewData["Title"] = "Project Contributors";    
+}
+
+<div class="text-center">
+    <h1>@Model.EncodedName</h1>
+</div>
+
+<div class="">
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Details" asp-route-encodedName="@Model.EncodedName">Overview</a>
+        </div>
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Tasks" asp-route-encodedName="@Model.EncodedName">Tasks</a>
+        </div>
+        <div class="p-2">
+            <a class="btn @(controller == "Project" && action == "Index" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Contributors" asp-route-encodedName="@Model.EncodedName">Contributors</a>
+        </div>
+    </div>
+</div>
+
+<h3 class="text-center mb-3">Contributors:</h3>
+<div id="contributors" class="row" data-encoded-name="@Model.EncodedName">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Project Roles</th>
+                <th scope="col" class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="contributorsTableBody" data-encoded-name="@Model.EncodedName">
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="editRolesModal" tabindex="-1" aria-labelledby="editRolesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRolesModalLabel">Edit Contributor Roles</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div id="rolesModalError" class="alert alert-danger d-none"></div>
+
+                <div id="editRolesFormContainer">
+                    <p class="text-center">Loading form...</p>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <button type="button" class="btn btn-primary" id="saveRolesButton">Save Changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center text-center">
+    <partial name="_AddProjectContributor" model="new AddContributorCommand(){ ProjectEncodedName = Model.EncodedName};" />
+    <a asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/js/Project/ProjectContributorManagment.js"></script>
+}
+
+
+
+
+
