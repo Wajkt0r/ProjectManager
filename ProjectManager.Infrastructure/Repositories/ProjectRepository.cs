@@ -83,5 +83,27 @@ namespace ProjectManager.Infrastructure.Repositories
         public async Task<bool> IsUserContributor(int projectId, string userId)
             => await _dbContext.ProjectUsers.AnyAsync(pu => pu.ProjectId == projectId && pu.UserId == userId);
 
+        public async Task<List<string>> GetUserProjectRoles(int projectId, string userId)
+            => await _dbContext.ProjectUserRoles.Where(pur => pur.ProjectId == projectId && pur.UserId == userId)
+                .Select(pur => pur.ProjectRole.Name)
+                .ToListAsync();
+
+        public async Task<List<ProjectRole>> GetAvailableProjectRoles()
+            => await _dbContext.ProjectRoles.ToListAsync();
+
+        public async Task AddUserProjectRoles(List<ProjectUserRole> projectUserRoles)
+        {
+            _dbContext.ProjectUserRoles.AddRange(projectUserRoles);
+            await Commit();
+        }
+            
+
+        public async Task RemoveUserProjectRoles(List<ProjectUserRole> projectUserRoles)
+        {
+            _dbContext.ProjectUserRoles.RemoveRange(projectUserRoles);
+            await Commit();
+        }
+
     }
 }
+

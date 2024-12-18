@@ -164,5 +164,36 @@ namespace ProjectManager.MVC.Controllers
             return View("Contributors", projectDto);
         }
 
+        [HttpGet]
+        [Route("Project/{encodedName}/Contributors/{userEmail}/ProjectRoles")]
+        public async Task<IActionResult> GetUserProjectRoles(string encodedName, string userEmail)
+        {
+            var userRoles = await _mediator.Send(new GetUserProjectRolesQuery() { ProjectEncodedName = encodedName, UserEmail = userEmail });
+
+            return Ok(userRoles);
+        }
+
+        [HttpGet]
+        [Route("Project/{encodedName}/Contributors/{userEmail}/EditRolesForm")]
+        public async Task<IActionResult> EditRolesForm(string encodedName, string userEmail)
+        {
+            var model = await _mediator.Send(new GetContributorRolesQuery() { ProjectEncodedName = encodedName, UserEmail = userEmail });
+            return PartialView("_EditRolesForm", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRoles([FromBody]EditContributorRolesCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+
+
     }
 }

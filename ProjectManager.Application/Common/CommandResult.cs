@@ -12,8 +12,8 @@ namespace ProjectManager.Application.Common
         public string Message { get; set; }
         public int StatusCode { get; set; }
 
-        public static CommandResult Success(string Message = "Success")
-            => new CommandResult { IsSuccess = true, Message = Message, StatusCode = 200 };
+        public static CommandResult Success(string Message = "Success", int statusCode = 200)
+            => new CommandResult { IsSuccess = true, Message = Message, StatusCode = statusCode };
 
         public static CommandResult Failure(string message, int statusCode = 400)
             => new CommandResult { IsSuccess = false, Message = message, StatusCode = statusCode };
