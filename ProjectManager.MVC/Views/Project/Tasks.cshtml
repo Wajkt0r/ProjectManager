@@ -10,7 +10,6 @@
 
 <div class="text-center">
     <h1>@Model.Name</h1>
-    <h3></h3>
 </div>
 
 <div class="">
@@ -22,7 +21,7 @@
             <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Tasks" asp-route-encodedName="@Model.EncodedName">Tasks</a>
         </div>
         <div class="p-2">
-            <a class="btn @(controller == "Project" && action == "Index" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="...">Contributors [soon]</a>
+            <a class="btn @(controller == "Project" && action == "Index" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Contributors" asp-route-encodedName="@Model.EncodedName">Contributors</a>
         </div>
     </div>
 </div>
