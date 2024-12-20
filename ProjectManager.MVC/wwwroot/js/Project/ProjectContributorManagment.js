@@ -81,8 +81,61 @@ const LoadProjectContributors = () => {
 }
 
 const EditRoles = (userEmail) => {
-    console.log(`Edytowanie ról dla ${userEmail}`)
+    $.ajax({
+        url: `/Project/${projectEncodedName}/Contributors/${userEmail}/EditRolesForm`,
+        type: 'GET',
+        success: function (data) {
+            $('#editRolesFormContainer').html(data);
+            $('#editRolesModal').modal('show');
+        },
+        error: function () {
+            toastr["error"]("Coś się wyjebało");
+        }
+    })
 }
+
+$('#saveRolesButton').click(function () {
+
+    var userId = $('#editRolesForm input[name="UserId"]').val();
+    var projectId = $('#editRolesForm input[name="ProjectId"]').val();
+
+    var selectedRoles = [];
+    $('#editRolesForm input[name="SelectedRoles"]:checked').each(function () {
+        selectedRoles.push($(this).val());
+    });
+
+    var requestData = {
+        UserId: userId,
+        ProjectId: parseInt(projectId),
+        SelectedRoles: selectedRoles
+    }
+
+    $.ajax({
+        url: '/Project/UpdateRoles',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(requestData),
+        success: function (response) {
+            if (response.statusCode === 304) {
+                toastr["info"](response.message);
+            } else {
+                toastr["success"](response.message); 
+                $('#editRolesModal').modal('hide'); 
+                LoadProjectContributors();
+            }
+        },
+        error: function (xhr) {
+            console.log(xhr.statusCode);
+            const response = xhr.responseJSON;
+            if (response && response.message) {
+                toastr["error"](response.message);
+            } else {
+                toastr["error"]("Unexpected error occurred");
+            }
+            console.log("Error: ", xhr);
+        }
+    });
+})
 
 const RemoveContributor = (userEmail) => {
     $.ajax({
