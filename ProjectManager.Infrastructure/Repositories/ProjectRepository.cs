@@ -104,14 +104,6 @@ namespace ProjectManager.Infrastructure.Repositories
             await Commit();
         }
 
-        public async Task<List<Project>> GetAllUserProjects(string userId)
-        {
-            var projectsId = await _dbContext.ProjectUsers.Where(pu => pu.UserId == userId).Select(pu => pu.ProjectId).ToListAsync();
-            var projects = await _dbContext.Projects.Where(p => projectsId.Contains(p.Id)).ToListAsync();
-
-            return projects;
-        }
-
     }
 }
 
