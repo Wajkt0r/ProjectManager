@@ -48,8 +48,8 @@ namespace ProjectManager.MVC.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _mediator.Send(command);
-            this.SetNotification("error", $"User {userEmail} has been deleted");
+            var result = await _mediator.Send(command);
+            this.SetNotification("error", result.Message);
             return Ok();
         }
 

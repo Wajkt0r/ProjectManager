@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
+using ProjectManager.Application.Common;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ProjectManager.Application.Users.Commands.DeleteUser
 {
-    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, CommandResult>
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
@@ -23,25 +24,24 @@ namespace ProjectManager.Application.Users.Commands.DeleteUser
             _userManager = userManager;
             _userContext = userContext;
         }
-        public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResult> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetUserByEmail(request.Email);
+            var userToDelete = await _userRepository.GetUserByEmail(request.Email);
 
-            if (user == null)
+            if (userToDelete == null)
             {
-                return Unit.Value;
+                return CommandResult.Failure("User not found", 404);
             }
 
-            var adminUser = _userContext.GetCurrentUser();
+            var currentUser = _userContext.GetCurrentUser();
 
-            if (!adminUser.IsInRole("Admin")) 
+            if (!currentUser.IsInRole("Admin")) 
             {
-                //Wyświetl powiadomienia, że nie ma roli admina i nie może zmienić ról użytkownika
-                return Unit.Value;
+                return CommandResult.Failure("You do not have permission to perform this action", 403);
             }
-            await _userManager.DeleteAsync(user);
+            await _userManager.DeleteAsync(userToDelete);
 
-            return Unit.Value;
+            return CommandResult.Success($"User {request.Email} deleted successfully");
         }
     }
 }
