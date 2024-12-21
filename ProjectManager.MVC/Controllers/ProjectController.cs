@@ -7,12 +7,16 @@ using Microsoft.Identity.Client;
 using ProjectManager.Application.Project.Commands.AddContributor;
 using ProjectManager.Application.Project.Commands.CreateProject;
 using ProjectManager.Application.Project.Commands.DeleteProject;
+using ProjectManager.Application.Project.Commands.EditContributorRoles;
 using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Commands.RemoveContributor;
 using ProjectManager.Application.Project.Queries.GetAllProjectContributors;
 using ProjectManager.Application.Project.Queries.GetAllProjects;
+using ProjectManager.Application.Project.Queries.GetAllUserProjects;
+using ProjectManager.Application.Project.Queries.GetContributorRoles;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.Project.Queries.GetProjectIdByEncodedName;
+using ProjectManager.Application.Project.Queries.GetUserProjectRoles;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
@@ -40,10 +44,10 @@ namespace ProjectManager.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var projectsDto = await _mediator.Send(new GetAllProjectsQuery());
+            var projectsDto = await _mediator.Send(new GetAllUserProjectsQuery());
             return View(projectsDto);
         }
-       
+
 
         [Authorize(Roles = "User, Admin")]
         public IActionResult Create()
@@ -63,7 +67,7 @@ namespace ProjectManager.MVC.Controllers
             await _mediator.Send(command);
 
             this.SetNotification("success", $"Project {command.Name} successfully created");
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -110,7 +114,7 @@ namespace ProjectManager.MVC.Controllers
         }
 
         [HttpGet]
-        [Route("Project/{encodedName}/GetTasks")]
+        [Route("Project/{encodedName}/GetTasks")] // Trzeba poprawic nie moze byc takiej metody tutaj
         public async Task<IActionResult> GetProjectTasks(string encodedName)
         {
             var data = await _mediator.Send(new GetProjectTasksQuery() { ProjectEncodedName = encodedName });
@@ -158,7 +162,7 @@ namespace ProjectManager.MVC.Controllers
         [HttpGet]
         [Route("Project/{encodedName}/Contributors")]
         public async Task<IActionResult> Contributors(string encodedName)
-            {
+        {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
 
             return View("Contributors", projectDto);
