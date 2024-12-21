@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Common;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
@@ -15,19 +16,25 @@ namespace ProjectManager.Application.Project.Commands.EditContributorRoles
     {
         private readonly IProjectRepository _projectRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IUserContext _userContext;
 
-        public EditContributorRolesCommandHandler(IProjectRepository projectRepository, UserManager<User> userManager)
+        public EditContributorRolesCommandHandler(IProjectRepository projectRepository, UserManager<User> userManager, IUserContext userContext)
         {
             _projectRepository = projectRepository;
             _userManager = userManager;
+            _userContext = userContext;
         }
 
         public async Task<CommandResult> Handle(EditContributorRolesCommand request, CancellationToken cancellationToken)
         {
+            if (!(await CanEditRole(request.UserId, request.ProjectId)))
+            {
+                return CommandResult.Failure("You're not a project leader to perform this action");
+            }
+
             var userProjectRoles = await _projectRepository.GetUserProjectRoles(request.ProjectId, request.UserId);
 
             if (request.SelectedRoles.Except(userProjectRoles).ToList().Count() == 0 && userProjectRoles == request.SelectedRoles) return CommandResult.Success("No new roles selected", 304);
-
 
             List<ProjectRole> projectRoles = await _projectRepository.GetAvailableProjectRoles();
             var rolesToDelete = userProjectRoles.Except(request.SelectedRoles).ToList();
@@ -62,6 +69,13 @@ namespace ProjectManager.Application.Project.Commands.EditContributorRoles
                 }
             }
             return preparedRoles;
+        }
+
+        private async Task<bool> CanEditRole(string userId, int projectId)
+        {
+            List<string> userProjectRoles = await _projectRepository.GetUserProjectRoles(projectId, userId);
+
+            return (userProjectRoles.Contains("Project Leader"));
         }
 
     }
