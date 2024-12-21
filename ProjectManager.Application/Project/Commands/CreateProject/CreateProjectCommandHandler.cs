@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ProjectManager.Application.ApplicationUser;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,10 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
             project.EncodeName();
 
             await _projectRepository.Create(project);
+
+            await _projectRepository.AddContributorToProject(new Domain.Entities.ProjectUser() { ProjectId = project.Id, UserId = currentUser.Id });
+            var projectUserRole = new ProjectUserRole() { ProjectId = project.Id, ProjectRoleId = 1, UserId = currentUser.Id };
+            await _projectRepository.AddUserProjectRoles(new List<ProjectUserRole>() { projectUserRole });
             return Unit.Value;
         }
     }

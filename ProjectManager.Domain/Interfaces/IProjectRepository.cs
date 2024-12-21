@@ -26,5 +26,6 @@ namespace ProjectManager.Domain.Interfaces
         Task<List<ProjectRole>> GetAvailableProjectRoles();
         Task AddUserProjectRoles(List<ProjectUserRole> projectUserRoles);
         Task RemoveUserProjectRoles(List<ProjectUserRole> projectUserRoles);
+        Task<List<Project>> GetAllUserProjects(string userId);
     }
 }

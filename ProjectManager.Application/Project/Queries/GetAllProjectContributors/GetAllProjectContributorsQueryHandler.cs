@@ -36,7 +36,7 @@ namespace ProjectManager.Application.Project.Queries.GetAllProjectContributors
                 var user = _userManager.Users.Where(u => u.Id == contributor.UserId).FirstOrDefault();
                 if (user != null)
                 {
-                    var userRoles = await _userManager.GetRolesAsync(user);
+                    var userRoles = await _projectRepository.GetUserProjectRoles(projectId, user.Id);
                     var contributorDto = new UserDto
                     {
                         UserName = user.UserName,

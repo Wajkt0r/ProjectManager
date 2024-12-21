@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
@@ -14,11 +15,13 @@ namespace ProjectManager.Application.Users.Commands.DeleteUser
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IUserContext _userContext;
 
-        public DeleteUserCommandHandler(IUserRepository userRepository, UserManager<User> userManager)
+        public DeleteUserCommandHandler(IUserRepository userRepository, UserManager<User> userManager, IUserContext userContext)
         {
             _userRepository = userRepository;
             _userManager = userManager;
+            _userContext = userContext;
         }
         public async Task<Unit> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
@@ -29,6 +32,13 @@ namespace ProjectManager.Application.Users.Commands.DeleteUser
                 return Unit.Value;
             }
 
+            var adminUser = _userContext.GetCurrentUser();
+
+            if (!adminUser.IsInRole("Admin")) 
+            {
+                //Wyświetl powiadomienia, że nie ma roli admina i nie może zmienić ról użytkownika
+                return Unit.Value;
+            }
             await _userManager.DeleteAsync(user);
 
             return Unit.Value;
