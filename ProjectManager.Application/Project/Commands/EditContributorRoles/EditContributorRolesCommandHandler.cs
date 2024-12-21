@@ -26,7 +26,7 @@ namespace ProjectManager.Application.Project.Commands.EditContributorRoles
         {
             var userProjectRoles = await _projectRepository.GetUserProjectRoles(request.ProjectId, request.UserId);
 
-            if (request.SelectedRoles.Except(userProjectRoles).ToList().Count() == 0) return CommandResult.Success("No new roles selected", 304);
+            if (request.SelectedRoles.Except(userProjectRoles).ToList().Count() == 0 && userProjectRoles == request.SelectedRoles) return CommandResult.Success("No new roles selected", 304);
 
 
             List<ProjectRole> projectRoles = await _projectRepository.GetAvailableProjectRoles();
