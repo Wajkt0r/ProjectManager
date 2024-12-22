@@ -1,11 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Seeders;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5000);
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
@@ -15,13 +21,18 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
+using (var migrateScope = app.Services.CreateScope())
+{
+    var dbContext = migrateScope.ServiceProvider.GetRequiredService<ProjectManagerDbContext>();
+    dbContext.Database.Migrate();
+}
+
 var scope = app.Services.CreateScope();
 
 var userRolesSeeder = scope.ServiceProvider.GetRequiredService<UserRolesSeeder>();
 var projectRolesSeeder = scope.ServiceProvider.GetRequiredService<ProjectRolesSeeder>();
 await userRolesSeeder.Seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
 await projectRolesSeeder.Seed();
-
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -31,7 +42,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
