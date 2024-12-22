@@ -1,0 +1,25 @@
+services:
+  projectmanager.mvc:
+    image: ${DOCKER_REGISTRY-}projectmanagermvc
+    container_name: projectmanager
+    build:
+      context: .
+      dockerfile: ProjectManager.MVC/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    depends_on:
+      - projectmanager.db
+
+  projectmanager.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: projectmanager.db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=YourStrong@Password
+      - MSSQL_DATABASE=projectmanager
+    ports:
+      - "1433:1433"
+
+    
+    
