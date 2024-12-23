@@ -27,7 +27,7 @@ namespace ProjectManager.Application.Project.Queries.GetAllUserProjects
         {
             var currentUser = _userContext.GetCurrentUser();
 
-            if (currentUser == null) return null;
+            if (currentUser == null) return new List<ProjectDto>();
 
             var projects = currentUser.IsInRole("Admin") ? await _projectRepository.GetAll() : await _projectRepository.GetAllUserProjects(currentUser.Id);
 
