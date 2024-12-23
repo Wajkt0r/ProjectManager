@@ -23,4 +23,5 @@ COPY --from=publish /app/publish .
 
 RUN mkdir -p /app/certificates
 COPY ProjectManager.MVC/Certificates/aspnetapp.pfx /app/certificates
+
 ENTRYPOINT ["dotnet", "ProjectManager.MVC.dll"]
