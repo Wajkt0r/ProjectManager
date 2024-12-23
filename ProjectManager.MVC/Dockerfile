@@ -20,4 +20,8 @@ RUN dotnet publish "ProjectManager.MVC.csproj" -c Release -o /app/publish /p:Use
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+RUN mkdir -p /app/certificates
+COPY ProjectManager.MVC/Certificates/aspnetapp.pfx /app/certificates
+
 ENTRYPOINT ["dotnet", "ProjectManager.MVC.dll"]

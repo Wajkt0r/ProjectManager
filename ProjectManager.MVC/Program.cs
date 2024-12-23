@@ -11,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000);
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.UseHttps("/app/certificates/aspnetapp.pfx", "Pass@ord1");
+    });
 });
 
 // Add services to the container.
@@ -43,6 +47,8 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+
+app.UseHttpsRedirection();
 
 app.UseRouting();
 
