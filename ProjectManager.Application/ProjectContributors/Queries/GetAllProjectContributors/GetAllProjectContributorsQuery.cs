@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using ProjectManager.Application.Users;
 
-namespace ProjectManager.Application.Project.Queries.GetAllProjectContributors
+namespace ProjectManager.Application.ProjectContributors.Queries.GetAllProjectContributors
 {
     public class GetAllProjectContributorsQuery : IRequest<IEnumerable<UserDto>>
     {

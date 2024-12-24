@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace ProjectManager.Application.Project.Queries.GetUserProjectRoles
+namespace ProjectManager.Application.ProjectContributors.Queries.GetUserProjectRoles
 {
     public class GetUserProjectRolesQuery : IRequest<List<string>>
     {

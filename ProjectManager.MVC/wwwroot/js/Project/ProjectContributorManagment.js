@@ -11,7 +11,7 @@
             data: $(this).serialize(),
             success: function (response) {
                 toastr["success"](response.message);
-                console.log(response);
+                $("#userEmailInput").val('');
                 LoadProjectContributors();
                 $('#addProjectContributorModal').modal('hide');
             },
@@ -65,7 +65,7 @@ const RenderProjectContributors = (contributors, container) => {
 
 const LoadProjectContributors = () => {
     $.ajax({
-        url: `/Project/${projectEncodedName}/GetContributors`,
+        url: `/ProjectContributors/${projectEncodedName}/Get`,
         type: 'GET',
         success: function (data) {
             if (!data.length) {
@@ -75,21 +75,21 @@ const LoadProjectContributors = () => {
             }
         },
         error: function () {
-            toastr["error"]("Something went wrong");
+            toastr["error"]("Unexpected error occurred");
         }
     });
 }
 
 const EditRoles = (userEmail) => {
     $.ajax({
-        url: `/Project/${projectEncodedName}/Contributors/${userEmail}/EditRolesForm`,
+        url: `/ProjectContributors/${userEmail}/Project/${projectEncodedName}/EditRolesForm`,
         type: 'GET',
         success: function (data) {
             $('#editRolesFormContainer').html(data);
             $('#editRolesModal').modal('show');
         },
         error: function () {
-            toastr["error"]("Coś się wyjebało");
+            toastr["error"]("Unexpected error occurred");
         }
     })
 }
@@ -111,7 +111,7 @@ $('#saveRolesButton').click(function () {
     }
 
     $.ajax({
-        url: '/Project/UpdateRoles',
+        url: '/ProjectContributors/UpdateRoles',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(requestData),
@@ -139,14 +139,14 @@ $('#saveRolesButton').click(function () {
 
 const RemoveContributor = (userEmail) => {
     $.ajax({
-        url: `/Project/${projectEncodedName}/Contributors/${userEmail}/Remove`,
+        url: `/ProjectContributors/${userEmail}/Project/${projectEncodedName}/Remove`,
         type: 'POST',
         success: function (data) {
             toastr["info"](`Removed Contributor ${userEmail}`);
             LoadProjectContributors();
         },
         error: function () {
-            toastr["error"]("Something went wrong");
+            toastr["error"]("Unexpected error occurred");
         }
 
     });

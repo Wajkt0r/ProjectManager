@@ -14,12 +14,14 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
     public class CreateProjectCommandHandler : IRequestHandler<CreateProjectCommand>
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly IMapper _mapper;
         private readonly IUserContext _userContext;
 
-        public CreateProjectCommandHandler(IProjectRepository projectRepository, IMapper mapper, IUserContext userContext)
+        public CreateProjectCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, IMapper mapper, IUserContext userContext)
         {
             _projectRepository = projectRepository;
+            _contributorsRepository = contributorsRepository;
             _mapper = mapper;
             _userContext = userContext;
         }
@@ -38,9 +40,9 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
 
             await _projectRepository.Create(project);
 
-            await _projectRepository.AddContributorToProject(new Domain.Entities.ProjectUser() { ProjectId = project.Id, UserId = currentUser.Id });
+            await _contributorsRepository.AddContributorToProject(new Domain.Entities.ProjectUser() { ProjectId = project.Id, UserId = currentUser.Id });
             var projectUserRole = new ProjectUserRole() { ProjectId = project.Id, ProjectRoleId = 1, UserId = currentUser.Id };
-            await _projectRepository.AddUserProjectRoles(new List<ProjectUserRole>() { projectUserRole });
+            await _contributorsRepository.AddUserProjectRoles(new List<ProjectUserRole>() { projectUserRole });
             return Unit.Value;
         }
     }

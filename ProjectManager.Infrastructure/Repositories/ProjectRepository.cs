@@ -65,45 +65,6 @@ namespace ProjectManager.Infrastructure.Repositories
             return project.Id;
         }
 
-        public async Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId)
-            => await _dbContext.ProjectUsers.Where(pu => pu.ProjectId == projectId).ToListAsync();
-
-        public async Task AddContributorToProject(ProjectUser projectUser)
-        {
-            _dbContext.ProjectUsers.Add(projectUser);
-            await Commit();
-        }
-
-        public async Task RemoveContributor(ProjectUser projectUser)
-        {
-            _dbContext.ProjectUsers.Remove(projectUser);
-            await Commit();
-        }
-
-        public async Task<bool> IsUserContributor(int projectId, string userId)
-            => await _dbContext.ProjectUsers.AnyAsync(pu => pu.ProjectId == projectId && pu.UserId == userId);
-
-        public async Task<List<string>> GetUserProjectRoles(int projectId, string userId)
-            => await _dbContext.ProjectUserRoles.Where(pur => pur.ProjectId == projectId && pur.UserId == userId)
-                .Select(pur => pur.ProjectRole.Name)
-                .ToListAsync();
-
-        public async Task<List<ProjectRole>> GetAvailableProjectRoles()
-            => await _dbContext.ProjectRoles.ToListAsync();
-
-        public async Task AddUserProjectRoles(List<ProjectUserRole> projectUserRoles)
-        {
-            _dbContext.ProjectUserRoles.AddRange(projectUserRoles);
-            await Commit();
-        }
-            
-
-        public async Task RemoveUserProjectRoles(List<ProjectUserRole> projectUserRoles)
-        {
-            _dbContext.ProjectUserRoles.RemoveRange(projectUserRoles);
-            await Commit();
-        }
-
         public async Task<List<Project>> GetAllUserProjects(string userId)
         {
             var projectsId = await _dbContext.ProjectUsers.Where(pu => pu.UserId == userId).Select(pu => pu.ProjectId).ToListAsync();
@@ -111,7 +72,6 @@ namespace ProjectManager.Infrastructure.Repositories
 
             return projects;
         }
-
     }
 }
 

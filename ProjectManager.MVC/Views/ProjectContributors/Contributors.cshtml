@@ -1,4 +1,4 @@
-﻿@using ProjectManager.Application.Project.Commands.AddContributor
+﻿@using ProjectManager.Application.ProjectContributors.Commands.AddContributor
 @model ProjectManager.Application.Project.ProjectDto
 @{
     var action = ViewContext.RouteData.Values["Action"]?.ToString();
@@ -19,7 +19,7 @@
             <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Tasks" asp-route-encodedName="@Model.EncodedName">Tasks</a>
         </div>
         <div class="p-2">
-            <a class="btn @(controller == "Project" && action == "Index" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Contributors" asp-route-encodedName="@Model.EncodedName">Contributors</a>
+            <a class="btn @(controller == "ProjectContributors" && action == "Contributors" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="ProjectContributors" asp-action="Contributors" asp-route-projectEncodedName="@Model.EncodedName">Contributors</a>
         </div>
     </div>
 </div>

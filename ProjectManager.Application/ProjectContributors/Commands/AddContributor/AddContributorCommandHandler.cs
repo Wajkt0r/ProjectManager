@@ -10,17 +10,19 @@ using ProjectManager.Application.Common;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
-namespace ProjectManager.Application.Project.Commands.AddContributor
+namespace ProjectManager.Application.ProjectContributors.Commands.AddContributor
 {
     public class AddContributorCommandHandler : IRequestHandler<AddContributorCommand, CommandResult>
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public AddContributorCommandHandler(IProjectRepository projectRepository, UserManager<User> userManager, IMapper mapper)
+        public AddContributorCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, UserManager<User> userManager, IMapper mapper)
         {
             _projectRepository = projectRepository;
+            _contributorsRepository = contributorsRepository;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -30,7 +32,7 @@ namespace ProjectManager.Application.Project.Commands.AddContributor
             {
                 if (request.UserEmail == null) return CommandResult.Failure("The user's email address must be entered");
 
-                var user = (await _userManager.FindByEmailAsync(request.UserEmail));
+                var user = await _userManager.FindByEmailAsync(request.UserEmail);
                 if (user == null)
                 {
                     return CommandResult.Failure("User not found", 404);
@@ -38,7 +40,7 @@ namespace ProjectManager.Application.Project.Commands.AddContributor
 
                 var projectId = await _projectRepository.GetProjectId(request.ProjectEncodedName);
 
-                if (await _projectRepository.IsUserContributor(projectId, user.Id)) return CommandResult.Failure("User is already a contributor", 409);
+                if (await _contributorsRepository.IsUserContributor(projectId, user.Id)) return CommandResult.Failure("User is already a contributor", 409);
 
                 var projectUser = new ProjectUser
                 {
@@ -46,7 +48,7 @@ namespace ProjectManager.Application.Project.Commands.AddContributor
                     UserId = user.Id
                 };
 
-                await _projectRepository.AddContributorToProject(projectUser);
+                await _contributorsRepository.AddContributorToProject(projectUser);
 
                 return CommandResult.Success("User added successfully");
             }
@@ -54,7 +56,7 @@ namespace ProjectManager.Application.Project.Commands.AddContributor
             {
                 return CommandResult.Failure("Unexpected error occurred", 500);
             }
-            
+
 
         }
     }
