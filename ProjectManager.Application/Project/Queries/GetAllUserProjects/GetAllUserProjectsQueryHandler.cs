@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
 namespace ProjectManager.Application.Project.Queries.GetAllUserProjects
@@ -15,12 +17,14 @@ namespace ProjectManager.Application.Project.Queries.GetAllUserProjects
     {
         private readonly IProjectRepository _projectRepository;
         private readonly IUserContext _userContext;
+        private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
 
-        public GetAllUserProjectsQueryHandler(IProjectRepository projectRepository, IUserContext userContext, IMapper mapper)
+        public GetAllUserProjectsQueryHandler(IProjectRepository projectRepository, IUserContext userContext, UserManager<User> userManager, IMapper mapper)
         {
             _projectRepository = projectRepository;
             _userContext = userContext;
+            _userManager = userManager;
             _mapper = mapper;
         }
         public async Task<IEnumerable<ProjectDto>> Handle(GetAllUserProjectsQuery request, CancellationToken cancellationToken)
@@ -30,6 +34,15 @@ namespace ProjectManager.Application.Project.Queries.GetAllUserProjects
             if (currentUser == null) return new List<ProjectDto>();
 
             var projects = currentUser.IsInRole("Admin") ? await _projectRepository.GetAll() : await _projectRepository.GetAllUserProjects(currentUser.Id);
+
+            if (currentUser.IsInRole("Admin"))
+            {
+                foreach(var project in projects)
+                {
+                    var creator = await _userManager.FindByIdAsync(project.CreatedById);
+                    project.Name = project.Name + $" [{creator.Email}]";
+                }
+            }
 
             return _mapper.Map<IEnumerable<ProjectDto>>(projects);
         }

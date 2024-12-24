@@ -8,15 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
-namespace ProjectManager.Application.Project.Queries.GetContributorRoles
+namespace ProjectManager.Application.ProjectContributors.Queries.GetContributorRoles
 {
     public class GetContributorsRolesQueryHandler : IRequestHandler<GetContributorRolesQuery, ContributorRolesDto>
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly UserManager<User> _userManager;
-        public GetContributorsRolesQueryHandler(IProjectRepository projectRepository, UserManager<User> userManager)
+        public GetContributorsRolesQueryHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, UserManager<User> userManager)
         {
             _projectRepository = projectRepository;
+            _contributorsRepository = contributorsRepository;
             _userManager = userManager;
         }
         public async Task<ContributorRolesDto> Handle(GetContributorRolesQuery request, CancellationToken cancellationToken)
@@ -24,14 +26,10 @@ namespace ProjectManager.Application.Project.Queries.GetContributorRoles
             var projectId = await _projectRepository.GetProjectId(request.ProjectEncodedName);
             var user = await _userManager.FindByEmailAsync(request.UserEmail);
 
-            if (user == null)
-            {
-                // wyrzucamy status, ze nie ma uzytkownika
-                return null;
-            }
+            if (user == null) return null;
 
-            var contributorRoles = await _projectRepository.GetUserProjectRoles(projectId, user.Id);
-            List<ProjectRole> availableProjectRoles = await _projectRepository.GetAvailableProjectRoles();
+            var contributorRoles = await _contributorsRepository.GetUserProjectRoles(projectId, user.Id);
+            List<ProjectRole> availableProjectRoles = await _contributorsRepository.GetAvailableProjectRoles();
 
             return new ContributorRolesDto
             {
@@ -40,7 +38,7 @@ namespace ProjectManager.Application.Project.Queries.GetContributorRoles
                 AvailableRoles = availableProjectRoles.Select(pr => pr.Name).ToList(),
                 SelectedRoles = contributorRoles
             };
-            
+
         }
     }
 }

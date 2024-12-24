@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using ProjectManager.Application.Common;
 
-namespace ProjectManager.Application.Project.Commands.EditContributorRoles
+namespace ProjectManager.Application.ProjectContributors.Commands.EditContributorRoles
 {
     public class EditContributorRolesCommand : IRequest<CommandResult>
     {

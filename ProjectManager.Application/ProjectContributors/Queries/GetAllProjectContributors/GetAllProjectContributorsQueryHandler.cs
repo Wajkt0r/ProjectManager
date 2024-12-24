@@ -10,16 +10,18 @@ using ProjectManager.Application.Users;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
-namespace ProjectManager.Application.Project.Queries.GetAllProjectContributors
+namespace ProjectManager.Application.ProjectContributors.Queries.GetAllProjectContributors
 {
     public class GetAllProjectContributorsQueryHandler : IRequestHandler<GetAllProjectContributorsQuery, IEnumerable<UserDto>>
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        public GetAllProjectContributorsQueryHandler(IProjectRepository projectRepository, IMapper mapper, UserManager<User> userManager)
+        public GetAllProjectContributorsQueryHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, IMapper mapper, UserManager<User> userManager)
         {
             _projectRepository = projectRepository;
+            _contributorsRepository = contributorsRepository;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -27,7 +29,7 @@ namespace ProjectManager.Application.Project.Queries.GetAllProjectContributors
         {
             var projectId = await _projectRepository.GetProjectId(request.ProjectEncodedName);
 
-            var projectContributors = await _projectRepository.GetProjectContributors(projectId);
+            var projectContributors = await _contributorsRepository.GetProjectContributors(projectId);
 
             var projectContributorsDto = new List<UserDto>();
 
@@ -36,14 +38,14 @@ namespace ProjectManager.Application.Project.Queries.GetAllProjectContributors
                 var user = _userManager.Users.Where(u => u.Id == contributor.UserId).FirstOrDefault();
                 if (user != null)
                 {
-                    var userRoles = await _projectRepository.GetUserProjectRoles(projectId, user.Id);
+                    var userRoles = await _contributorsRepository.GetUserProjectRoles(projectId, user.Id);
                     var contributorDto = new UserDto
                     {
                         UserName = user.UserName,
                         Email = user.Email,
-                        Roles = (List<string>)userRoles
+                        Roles = userRoles
                     };
-                    projectContributorsDto.Add(contributorDto);                   
+                    projectContributorsDto.Add(contributorDto);
                 }
             }
 

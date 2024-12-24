@@ -9,16 +9,18 @@ using Microsoft.Extensions.Configuration.EnvironmentVariables;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
-namespace ProjectManager.Application.Project.Commands.RemoveContributor
+namespace ProjectManager.Application.ProjectContributors.Commands.RemoveContributor
 {
     public class RemoveContributorCommandHandler : IRequestHandler<RemoveContributorCommand>
     {
         private readonly IProjectRepository _projectRepository;
+        private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly UserManager<User> _userManager;
 
-        public RemoveContributorCommandHandler(IProjectRepository projectRepository, UserManager<User> userManager)
+        public RemoveContributorCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, UserManager<User> userManager)
         {
-            _projectRepository = projectRepository; 
+            _projectRepository = projectRepository;
+            _contributorsRepository = contributorsRepository;
             _userManager = userManager;
         }
 
@@ -33,7 +35,7 @@ namespace ProjectManager.Application.Project.Commands.RemoveContributor
                 UserId = user.Id
             };
 
-            await _projectRepository.RemoveContributor(projectUser);
+            await _contributorsRepository.RemoveContributor(projectUser);
 
             return Unit.Value;
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManager.Application.Project.Queries.GetContributorRoles
+namespace ProjectManager.Application.ProjectContributors.Queries.GetContributorRoles
 {
     public class ContributorRolesDto
     {
