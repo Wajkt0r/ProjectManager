@@ -18,14 +18,6 @@ namespace ProjectManager.Domain.Interfaces
         Task<Project> GetByName(string name);
         Task DeleteProject(Project project);
         Task<int> GetProjectId(string encodedName);
-        Task<IEnumerable<ProjectUser>> GetProjectContributors(int projectId);
-        Task AddContributorToProject(ProjectUser projectUser);
-        Task RemoveContributor(ProjectUser projectUser);
-        Task<bool> IsUserContributor(int projectId, string userId);
-        Task<List<string>> GetUserProjectRoles(int projectId, string userId);
-        Task<List<ProjectRole>> GetAvailableProjectRoles();
-        Task AddUserProjectRoles(List<ProjectUserRole> projectUserRoles);
-        Task RemoveUserProjectRoles(List<ProjectUserRole> projectUserRoles);
         Task<List<Project>> GetAllUserProjects(string userId);
     }
 }

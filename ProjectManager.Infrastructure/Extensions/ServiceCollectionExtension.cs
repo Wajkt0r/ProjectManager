@@ -34,6 +34,7 @@ namespace ProjectManager.Infrastructure.Extensions
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectContributorsRepository, ProjectContributorsRepository>();
         }
     }
 }
