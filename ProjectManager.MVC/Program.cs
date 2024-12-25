@@ -25,6 +25,9 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionHandler>();
+
+
 using (var migrateScope = app.Services.CreateScope())
 {
     var dbContext = migrateScope.ServiceProvider.GetRequiredService<ProjectManagerDbContext>();
