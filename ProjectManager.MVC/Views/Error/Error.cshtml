@@ -1,0 +1,13 @@
+﻿@model ProjectManager.Application.Common.ErrorViewModel
+
+<div class="container py-5">
+    <div class="card shadow-lg mx-auto text-center" style="max-width: 600px; width: 100%;">
+        <div class="card-body">
+            <h1 class="display-4 text-danger mb-3">@Model.Title</h1>
+            <p class="lead text-muted">@Model.Message</p>
+            <a href="@Url.Action(Model.ControllerName, Model.ActionName)" class="btn btn-primary mt-3">
+                Go to Projects Page
+            </a>
+        </div>
+    </div>
+</div>
