@@ -1,9 +1,17 @@
 <h1 align="center" id="title">Project Manager</h1>
 <p align="center"><img src="https://img.shields.io/badge/.NET-7.0-8A2BE2" alt="shields"></p>
 
-<p id="description">Projekt <b>Project Manager</b> to aplikacja stworzona z myślą o zarządzaniu projektami w sposób efektywny i zorganizowany. Dzięki Project Manager użytkownicy mogą tworzyć planować i śledzić postępy w realizacji różnorodnych projektów. Aplikacja umożliwia szczegółowe zarządzanie zadaniami (taskami) w ramach projektów w tym tworzenie, edycję i usuwanie. Obecnie dostępna jest możliwość zarządzania zadaniami jednoosobowymi natomiast funkcjonalność grupowego (zespołowego) zarządzania jest w trakcie wprowadzania.</p>
 
-<h2>💻 Technologie użyte w projekcie</h2>
+<p id="description">Project <b>Project Manager</b> is an application designed to efficiently and organizedly manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
+
+## Contents
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Future Features](#upcoming-features)
+- [How to setup](#how-to-setup)
+- [Screenshoots](#screenshots)
+
+## Technologies Used
 
 *   C#
 *   .NET Core MVC
@@ -15,66 +23,134 @@
 *   Clean Architecture
 *   SQL
 *   Bootstrap
-  
-  
-<h2>🧐 W przyszłości</h2>
+    
+## Features
 
-Funkcjonalności, które są w trakcie opracowywania:
+### Project Creation & Management:
+Users can create both individual and group projects, with the ability to add contributors, assign tasks, and track progress. Project Leaders can assign specific roles such as "Backend", "Frontend", or "Tester" to users, ensuring each team member has clear responsibilities. This structure aids in better task allocation and will support task management based on these roles in future updates.
 
-*   Zarządzanie użytkownikami przez administratora
-*   Możliwość tworzenia projektów grupowych (dodanie użytkowników do projektu)
-*   Testy aplikacji 
+### Task Management:
+Tasks can be created, edited, and deleted within projects. Users can assign deadlines, and overdue tasks are visually highlighted in red.
 
-<h2>🚀 Funkcjonalności</h2>
+### User Roles:
+Admin users have the ability to manage and remove users from the platform, as well as view all projects and users.
 
-<h3>Wyświetlanie projektów</h3>
-<div align="center">
-  <p align="center">
-    <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/cc6dbb06-7455-4dec-9aae-6f58fd788756" alt="Widok wszystkich projektów bez roli administratora">
-  </p>
-  <p>W momencie kiedy data przypisana do projektu jest bliska końca - 7 dni zostało na ukończenie, to wtedy zmieni ona kolor na pomarańczowy, a w momencie kiedy czas już się skonczył kolor daty jest czerwony a tekst pogrubiony</p>
-</div>
+### Notification System:
+The app uses Toastr for notifications, alerting users when tasks are created, updated, or deleted.
 
-<h3>Dodawanie, edytowanie i usuwanie projektów</h3>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/9f6fc473-732b-4569-803d-a552d2ab862d" alt="Tworzenie projektu">
-</p>
+### User Authentication:
+Integrated with Identity, allowing users to register, log in, and manage their accounts.
 
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/59d6d4d4-9df6-48bd-af83-a38cb4de91ac" alt="Edycja projektu">
-</p>
+### Admin:
+Admins can manage all projects and users, including assigning or removing users from projects.
 
-<h3>Zarzadzanie taskami w projekcie</h3>
-<div align="center">
-  <p>
-    <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/046764e6-8a51-4e1a-a92c-fae3730be4ae" alt="Przeglądanie tasków projektu">
-  </p>
-  <p>W momencie kiedy data przypisana do taska zostanie przekroczona zmienia ona swój kolor na czerwony</p>
-</div>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/abf66f53-f603-453d-baf9-993f3c4b0845" alt="Tworzenie taska">
-</p>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/54ed42e4-40ab-4b98-9f56-3d86259f3b52" alt="Edycja taska">
-</p>
+## Upcoming Features
 
-<h3>Wyświetlania powiadomień za pomocą biblioteki toastr</h3>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/cd4a971a-770c-4fb4-ba49-0c245431aebd" alt="Powiadomienia z utworzonego taska">
-</p>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/d5a682de-ae5f-41ea-85e8-36aa74dc0137" alt="Powiadomienia z usunięcia projektu">
-</p>
+*   Application tests
+*   Tasks assigned to project roles
+*   Flexible Project Roles for Various Industries (Right now there're only IT Project Roles)
 
-<h3>Tworzenie kont użytkowników (za pomocą paczki <b>Identity</b>)</h3>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/11cd6835-20ae-4706-8b43-05213d1e3522" alt="Rejestracja użytkownika">
-</p>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/ad33baa3-ae24-4aec-ac29-3f1264c13fe5" alt="Panel użytkownika">
-</p>
 
-<h3>Możliwość przeglądania i usuwania wszystkich projektów przez użytkowników z rolą ADMIN</h3>
-<p align="center">
-  <img src="https://github.com/Wajkt0r/ProjectManager/assets/103745150/b90b8eb2-2871-493a-b9bf-1760907b47f4" alt="Widok projektów jako użytkownik z rolą ADMIN">
-</p>
+## How to setup
+
+Soon
+**Docker desktop instalation**
+1. Clone the repository
+  ```
+  git clone https://github.com/Wajkt0r/ProjectManager.git
+  ```
+2. Navigate to the project folder
+```
+cd ProjectManager
+```
+3. Generate the SSL certificate: Since the application uses HTTPS, you need to generate a development certificate. Run the following command
+```
+dotnet dev-certs https --clean
+dotnet dev-certs https -ep ./ProjectManager.MVC/Certificates/aspnetapp.pfx -p Pass@ord1
+```
+4. Build the application: Make sure you have Docker installed to run the application smoothly. Build the Docker containers with the following command:
+```
+docker-compose up --build
+```
+5. Access the application: Once the application is up, open your browser and navigate to:
+```
+https://localhost:5001
+```
+6. Default Administrator Account: The application comes with a default administrator account. Use the following credentials to log in and manage the system:
+```
+Email: admin@admin.com
+Password: Admin@1
+```
+
+## Screenshots
+
+### Project Overview
+![ProjectsOverview](https://github.com/user-attachments/assets/6f2dcf1f-7311-434f-9104-3c05237cc825)
+
+This screenshot shows the list of projects available in the application. Each project displays its name, description, and deadline. As the deadline nears, the date turns orange, and once the deadline is passed, it becomes red and bolded.
+
+---
+### Project Creation View
+![ProjectCreationView](https://github.com/user-attachments/assets/f79b47a9-c4a4-4309-adf4-a97c9c55b8b9)
+
+This view demonstrates the process of creating a new project. Users can fill out project details such as name, description, and set the project deadline.
+
+---
+### Project Edit View
+![ProjectEditView](https://github.com/user-attachments/assets/1dc666ab-5cab-4e8c-b8cf-10c4f25f8f41)
+
+In this screenshot, the project is being edited. Users can update the project name, description, and deadline.
+
+---
+### Task Overview
+![TasksOverview](https://github.com/user-attachments/assets/f7290438-3b55-413b-8176-cc33cec3e63c)
+
+This screenshot displays the list of tasks within a project. Each task shows the task name, assigned user, and its respective deadline. If the task is overdue, the deadline turns red. Users can mark tasks as completed or adjust their deadlines.
+
+---
+### Project Contributors Overview
+![ProjectContributorsOverview](https://github.com/user-attachments/assets/b331ace2-e2da-4ea9-b027-2fc37f6dac9b)
+
+Here, you can see the contributors assigned to a project. Users can be added or removed from projects, and their roles can be adjusted accordingly.
+
+---
+### Editing Project Contributor Roles
+![ProjectContributorsEditRoles](https://github.com/user-attachments/assets/21ee99eb-79f8-493e-9fe0-a0c1640b8cfc)
+
+This screenshot shows the interface for managing user roles within a project. Project Leaders can assign specific roles like "Backend", "Frontend", or "Tester" to project contributors.
+
+---
+### Toastr Notifications
+![ToastrContributorRemoval](https://github.com/user-attachments/assets/be14804b-30fb-4f47-bcf8-3ce73c421e26)
+![ToastrMaximumUserRoles](https://github.com/user-attachments/assets/25db806b-1bfe-43d9-aed6-f47d78260c4f)
+
+Toastr notifications appear in the top-right corner after actions such as task creation, update, or deletion.
+
+---
+### User Management Panel
+![UserManagment](https://github.com/user-attachments/assets/d32eae5c-1155-4fcd-a953-e230f9948295)
+
+The admin user can manage users in the system. This panel allows admins to view, add, or delete users. They can also assign users to various projects.
+
+---
+### User Deletion Confirmation
+![UserDeletionConfirmation](https://github.com/user-attachments/assets/5f22e1ed-0a17-4ec9-a7e1-149e7007b1ba)
+
+When an admin attempts to delete a user, a confirmation prompt is displayed to confirm the action. This prevents accidental deletions.
+
+---
+### User Registration Form
+![IdentityRegisterForm](https://github.com/user-attachments/assets/5737f087-7b09-4af0-804b-456862a594c5)
+
+This screenshot illustrates Identity registration form.
+
+---
+### Forbidden Access
+![ForbiddenAccess](https://github.com/user-attachments/assets/8b19fc0d-bf12-40c9-ae09-ad8f357f1b8f)
+
+This screenshot shows the "Forbidden Access" error message displayed when a user tries to access a restricted area of the application without the necessary permissions.
+
+
+
+
+
