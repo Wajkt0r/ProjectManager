@@ -5,6 +5,7 @@ using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Seeders;
+using ProjectManager.MVC.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
