@@ -67,6 +67,7 @@ cd ProjectManager
 ```
 dotnet dev-certs https --clean
 dotnet dev-certs https -ep ./ProjectManager.MVC/Certificates/aspnetapp.pfx -p Pass@ord1
+dotnet dev-certs https --trust
 ```
 4. Build the application: Make sure you have Docker installed to run the application smoothly. Build the Docker containers with the following command:
 ```
