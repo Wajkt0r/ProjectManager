@@ -2,14 +2,14 @@
 <p align="center"><img src="https://img.shields.io/badge/.NET-7.0-8A2BE2" alt="shields"></p>
 
 
-<p id="description">Project <b>Project Manager</b> is an application designed to efficiently and organizedly manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
+<p id="description"><b>Project Manager</b> is an application designed to efficiently manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
 
 ## Contents
 - [Technologies Used](#technologies-used)
 - [Features](#features)
-- [Future Features](#upcoming-features)
+- [Upcoming features](#upcoming-features)
 - [How to setup](#how-to-setup)
-- [Screenshoots](#screenshots)
+- [Screenshots](#screenshots)
 
 ## Technologies Used
 
@@ -21,16 +21,16 @@
 *   Javascript
 *   MediatR
 *   Clean Architecture
-*   SQL
+*   Microsoft SQL Server
 *   Bootstrap
     
 ## Features
 
 ### Project Creation & Management:
-Users can create both individual and group projects, with the ability to add contributors, assign tasks, and track progress. Project Leaders can assign specific roles such as "Backend", "Frontend", or "Tester" to users, ensuring each team member has clear responsibilities. This structure aids in better task allocation and will support task management based on these roles in future updates.
+Users can create both individual and group projects, with the ability to add contributors, assign tasks, and track progress. Project Leaders can assign specific roles such as "Backend", "Frontend", or "Tester" to users, ensuring each team member has designated responsibilities. This structure aids in better task allocation and will support task management based on these roles in future updates.
 
 ### Task Management:
-Tasks can be created, edited, and deleted within projects. Users can assign deadlines, and overdue tasks are visually highlighted in red.
+Tasks can be created, edited, and deleted within projects. Users can assign deadlines, and overdue tasks are highlighted in red.
 
 ### User Roles:
 Admin users have the ability to manage and remove users from the platform, as well as view all projects and users.
@@ -53,8 +53,7 @@ Admins can manage all projects and users, including assigning or removing users 
 
 ## How to setup
 
-Soon
-**Docker desktop instalation**
+
 1. Clone the repository
   ```
   git clone https://github.com/Wajkt0r/ProjectManager.git
@@ -63,7 +62,7 @@ Soon
 ```
 cd ProjectManager
 ```
-3. Generate the SSL certificate: Since the application uses HTTPS, you need to generate a development certificate. Run the following command
+3. Generate the SSL certificate: Since the application uses HTTPS, you need to generate a development certificate. Run the following command:
 ```
 dotnet dev-certs https --clean
 dotnet dev-certs https -ep ./ProjectManager.MVC/Certificates/aspnetapp.pfx -p Pass@ord1
@@ -100,13 +99,13 @@ This view demonstrates the process of creating a new project. Users can fill out
 ### Project Edit View
 ![ProjectEditView](https://github.com/user-attachments/assets/1dc666ab-5cab-4e8c-b8cf-10c4f25f8f41)
 
-In this screenshot, the project is being edited. Users can update the project name, description, and deadline.
+In this screenshot, the project is being edited. Users can update the description, and deadline.
 
 ---
 ### Task Overview
 ![TasksOverview](https://github.com/user-attachments/assets/f7290438-3b55-413b-8176-cc33cec3e63c)
 
-This screenshot displays the list of tasks within a project. Each task shows the task name, assigned user, and its respective deadline. If the task is overdue, the deadline turns red. Users can mark tasks as completed or adjust their deadlines.
+This screenshot displays the list of tasks within a project. Each task shows the task name and its respective deadline. If the task is overdue, the deadline turns red. Users can mark tasks as completed or adjust their deadlines.
 
 ---
 ### Project Contributors Overview
@@ -125,13 +124,13 @@ This screenshot shows the interface for managing user roles within a project. Pr
 ![ToastrContributorRemoval](https://github.com/user-attachments/assets/be14804b-30fb-4f47-bcf8-3ce73c421e26)
 ![ToastrMaximumUserRoles](https://github.com/user-attachments/assets/25db806b-1bfe-43d9-aed6-f47d78260c4f)
 
-Toastr notifications appear in the top-right corner after actions such as task creation, update, or deletion.
+Toastr notifications appear in the top-right corner after actions like creation, update, or deletion.
 
 ---
 ### User Management Panel
 ![UserManagment](https://github.com/user-attachments/assets/d32eae5c-1155-4fcd-a953-e230f9948295)
 
-The admin user can manage users in the system. This panel allows admins to view, add, or delete users. They can also assign users to various projects.
+The admin user can manage users in the system. This panel allows admins to view, edit app roles or delete users.
 
 ---
 ### User Deletion Confirmation
