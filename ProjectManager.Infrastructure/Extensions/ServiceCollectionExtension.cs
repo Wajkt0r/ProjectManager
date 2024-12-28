@@ -28,8 +28,9 @@ namespace ProjectManager.Infrastructure.Extensions
                 .AddEntityFrameworkStores<ProjectManagerDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<UserRolesSeeder>();
-            services.AddScoped<ProjectRolesSeeder>();
+            services.AddScoped<IDataSeeder, UserRolesSeeder>();
+            services.AddScoped<IDataSeeder, AdminSeeder>();
+            services.AddScoped<IDataSeeder, ProjectRolesSeeder>();
 
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
