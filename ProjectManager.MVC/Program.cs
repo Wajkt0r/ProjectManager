@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Extensions;
+using ProjectManager.Domain.Entities;
+using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Seeders;
@@ -14,7 +16,7 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(5000);
     options.ListenAnyIP(5001, listenOptions =>
     {
-        listenOptions.UseHttps("/app/certificates/aspnetapp.pfx", "Pass@ord1");
+        listenOptions.UseHttps("./Certificates/aspnetapp.pfx", "Pass@ord1");
     });
 });
 
@@ -37,10 +39,11 @@ using (var migrateScope = app.Services.CreateScope())
 
 var scope = app.Services.CreateScope();
 
-var userRolesSeeder = scope.ServiceProvider.GetRequiredService<UserRolesSeeder>();
-var projectRolesSeeder = scope.ServiceProvider.GetRequiredService<ProjectRolesSeeder>();
-await userRolesSeeder.Seed(scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>());
-await projectRolesSeeder.Seed();
+var seeders = scope.ServiceProvider.GetServices<IDataSeeder>().OrderBy(s => s.Priority);
+foreach (var seeder in seeders)
+{
+    await seeder.SeedAsync();
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
