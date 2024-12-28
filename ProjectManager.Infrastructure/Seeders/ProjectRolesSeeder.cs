@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 
 namespace ProjectManager.Infrastructure.Seeders
 {
-    public class ProjectRolesSeeder
+    public class ProjectRolesSeeder : IDataSeeder
     {
+        public int Priority => 3;
         private readonly ProjectManagerDbContext _dbContext;
 
         public ProjectRolesSeeder(ProjectManagerDbContext dbContext)
@@ -17,7 +19,7 @@ namespace ProjectManager.Infrastructure.Seeders
             _dbContext = dbContext;
         }
 
-        public async Task Seed()
+        public async Task SeedAsync()
         {
             if (await _dbContext.Database.CanConnectAsync())
             {
