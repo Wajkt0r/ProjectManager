@@ -17,6 +17,6 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore ./ProjectManager.sln
       - name: Build project
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet build ./ProjectManager.sln --no-restore --configuration Release
       - name: Run Tests
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ./ProjectManager.sln --no-build --verbosity normal
