@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [master, features/*]
+  pull_request:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3        
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Restore Dependencies
+        run: dotnet restore ./ProjectManager.sln
+      - name: Build project
+        run: dotnet build ./ProjectManager.sln --no-restore --configuration Release
+      - name: Run Tests
+        run: dotnet test ./ProjectManager.sln --no-build --verbosity normal
