@@ -34,11 +34,18 @@
                     <div class="form-group">
                         <label asp-for="TaskProgressStatus" class="control-label">Status</label>
                         <select asp-for="TaskProgressStatus" class="form-control text-center">
+                            <option value="NotAssigned">Not Assigned</option>
                             <option value="InProgress">In Progress</option>
                             <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
                         </select>
                         <span asp-validation-for="TaskProgressStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AssignedUserEmail" class="control-label">Assign to</label>
+                        <select asp-for="AssignedUserEmail" class="form-control text-center">
+                            <option value="">-- Loading contributors... --</option>
+                        </select>
+                        <span asp-validation-for="AssignedUserEmail" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Deadline" class="control-label"></label>

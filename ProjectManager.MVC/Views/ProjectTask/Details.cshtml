@@ -1,0 +1,45 @@
+﻿@model ProjectManager.Application.ProjectTask.ProjectTaskDto
+
+@{
+    ViewData["Title"] = "Task Details";
+    var projectEncodedName = ViewData["ProjectEncodedName"]?.ToString() ?? string.Empty;
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0 d-flex justify-content-between align-items-center">
+                <span>@Model.Name</span>
+                <span class="badge bg-light text-dark">@Model.TaskProgressStatus</span>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <h5 class="card-title">Assigned User</h5>
+                <p class="card-text">@(!string.IsNullOrEmpty(Model.AssignedUserEmail) ? Model.AssignedUserEmail : "Unassigned")</p>
+            </div>
+            <div class="mb-3">
+                <h5 class="card-title">Description</h5>
+                <p class="card-text">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "No description provided")</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="card-title">Deadline</h5>
+                    <p class="card-text">@Model.Deadline.ToString("dd-MM-yyyy HH:mm")</p>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="card-title">Assignment Time</h5>
+                    <p class="card-text">@Model.AssignmentTime.ToString("dd-MM-yyyy HH:mm")</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a asp-action="Edit" asp-route-taskId="@Model.Id" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a asp-action="Tasks" asp-controller="Project" asp-route-projectEncodedName="@projectEncodedName" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Tasks
+            </a>
+        </div>
+    </div>
+</div>
