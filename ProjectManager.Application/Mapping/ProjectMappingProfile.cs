@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Project;
 using ProjectManager.Application.Project.Commands.EditProject;
@@ -15,7 +16,7 @@ namespace ProjectManager.Application.Mapping
 {
     public class ProjectMappingProfile : Profile
     {
-        public ProjectMappingProfile(IUserContext userContext)
+        public ProjectMappingProfile(IUserContext userContext, UserManager<User> userManager)
         {
             var user = userContext.GetCurrentUser();
 
@@ -26,11 +27,20 @@ namespace ProjectManager.Application.Mapping
             CreateMap<ProjectDto, EditProjectCommand>();
 
             CreateMap<ProjectTaskDto, Domain.Entities.ProjectTask>()
-                .ReverseMap();
+                .ForMember(src => src.AssignedUserId, opt => opt.MapFrom(dto => GetUserIdByEmail(dto.AssignedUserEmail, userManager)));
+
+            CreateMap<Domain.Entities.ProjectTask, ProjectTaskDto>()
+                .ForMember(dto => dto.AssignedUserEmail, opt => opt.MapFrom(src => src.AssignedUser.Email));
 
             CreateMap<UserDto, Domain.Entities.User>()
                 .ReverseMap();
 
+        }
+
+        private static string GetUserIdByEmail(string email, UserManager<User> userManager)
+        {
+            var user = userManager.FindByEmailAsync(email).Result;
+            return user?.Id;
         }
     }
 }

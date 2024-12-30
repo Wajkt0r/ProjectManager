@@ -14,6 +14,8 @@ namespace ProjectManager.Domain.Entities
         public string Name { get; set; } = default!;
         public string Description { get; set; } = default!;
         public TaskProgressStatus TaskProgressStatus { get; set; } = default!;
+        public string? AssignedUserId { get; set; }
+        public User? AssignedUser { get; set; }
         public DateTime AssignmentTime { get; set; } = DateTime.Now;
         public DateTime Deadline { get; set; } = default!;
         public int ProjectId { get; set; } = default!;

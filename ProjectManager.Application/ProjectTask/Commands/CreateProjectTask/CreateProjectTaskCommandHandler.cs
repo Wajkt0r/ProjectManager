@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
+using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,12 +16,14 @@ namespace ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
         private readonly IUserContext _userContext;
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectTaskRepository _projectTaskRepository;
+        private readonly UserManager<User> _userManager;
 
-        public CreateProjectTaskCommandHandler(IUserContext userContext, IProjectRepository projectRepository, IProjectTaskRepository projectTaskRepository)
+        public CreateProjectTaskCommandHandler(IUserContext userContext, IProjectRepository projectRepository, IProjectTaskRepository projectTaskRepository, UserManager<User> userManager)
         {
             _userContext = userContext;
             _projectRepository = projectRepository;
             _projectTaskRepository = projectTaskRepository;
+            _userManager = userManager;
         }
         public async Task<Unit> Handle(CreateProjectTaskCommand request, CancellationToken cancellationToken)
         {
@@ -34,11 +38,19 @@ namespace ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
                 return Unit.Value;
             }
 
+            var assignedUser = request.AssignedUserEmail == null ? null : await _userManager.FindByEmailAsync(request.AssignedUserEmail);
+
+            if (assignedUser != null && request.TaskProgressStatus == Domain.Enums.TaskProgressStatus.NotAssigned)
+            {
+                request.TaskProgressStatus = Domain.Enums.TaskProgressStatus.InProgress;
+            }
+
             var projectTask = new Domain.Entities.ProjectTask()
             {
                 Name = request.Name,
                 Description = request.Description,
                 TaskProgressStatus = request.TaskProgressStatus,
+                AssignedUserId = assignedUser?.Id,
                 Deadline = request.Deadline,
                 ProjectId = project.Id
             };
