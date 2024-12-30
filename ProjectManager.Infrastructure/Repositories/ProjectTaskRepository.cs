@@ -39,10 +39,11 @@ namespace ProjectManager.Infrastructure.Repositories
         {
             return await _dbContext.Tasks
                 .Where(t => t.Project.EncodedName == projectEncodedName)
+                .Include(t => t.AssignedUser)
                 .ToListAsync();
         }
 
         public async Task<ProjectTask> GetById(int id)
-            => await _dbContext.Tasks.FirstAsync(t => t.Id == id);
+            => await _dbContext.Tasks.Include(t => t.AssignedUser).FirstAsync(t => t.Id == id);
     }
 }

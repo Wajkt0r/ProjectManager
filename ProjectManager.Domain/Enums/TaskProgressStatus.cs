@@ -10,7 +10,6 @@ namespace ProjectManager.Domain.Enums
     {
         NotAssigned,
         InProgress,
-        Completed,
-        Cancelled
+        Completed
     }
 }
