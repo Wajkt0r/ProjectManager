@@ -8,6 +8,7 @@ namespace ProjectManager.Domain.Enums
 {
     public enum TaskProgressStatus
     {
+        NotAssigned,
         InProgress,
         Completed,
         Cancelled
