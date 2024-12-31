@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Task Details";
     var projectEncodedName = ViewData["ProjectEncodedName"]?.ToString() ?? string.Empty;
+    bool isEditable = ViewData["IsEditable"] as bool? ?? false;
 }
 
 <div class="container mt-5">
@@ -34,9 +35,12 @@
             </div>
         </div>
         <div class="card-footer d-flex justify-content-between">
-            <a asp-action="Edit" asp-route-taskId="@Model.Id" class="btn btn-primary">
-                <i class="bi bi-pencil"></i> Edit
-            </a>
+            @if (isEditable)
+            {
+                <a asp-action="Edit" asp-route-taskId="@Model.Id" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+            }
             <a asp-action="Tasks" asp-controller="Project" asp-route-projectEncodedName="@projectEncodedName" class="btn btn-secondary">
                 <i class="bi bi-arrow-left"></i> Back to Tasks
             </a>

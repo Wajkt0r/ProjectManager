@@ -67,6 +67,18 @@ namespace ProjectManager.MVC.Controllers
             return RedirectToAction("Tasks", "Project", new { encodedName = projectEncodedName });
         }
 
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks/{taskId}/Details")]
+        public async Task<IActionResult> Details(int taskId, string projectEncodedName, bool isEditable)
+        {
+            var task = await _mediator.Send(new GetProjectTaskByIdQuery(taskId));            
+
+            ViewData["ProjectEncodedName"] = projectEncodedName;
+            ViewData["IsEditable"] = isEditable;
+
+            return View(task);
+        }
+
         [HttpPost]
         [Route("ProjectTask/{id}/Delete")]
         public async Task<IActionResult> DeleteTask([FromRoute]int id)
