@@ -1,4 +1,22 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(function () {  
+
+    $.ajax({
+        url: `/ProjectContributors/${projectEncodedName}/Get`,
+        type: 'GET',
+        success: function (data) {
+            console.log(data);
+            toastr["success"]("Pobrano");
+            const select = $("#AssignedUserEmail");
+            select.empty();
+            select.append('<option value="">-- Select Contributor --</option>');
+            data.forEach(user => {
+                select.append(`<option value="${user.userName}">${user.userName}</option>`);
+            });
+        },
+        error: function () {
+            toastr["error"]("Failed to load contributors");
+        }
+    })
 
     LoadProjectTasks()
 
@@ -25,15 +43,15 @@ const projectTaskContainer = $("#tasks")
 const projectEncodedName = projectTaskContainer.data('encodedName');
 
 const TaskProgressStatus = {
-    0: "InProgress",
-    1: "Completed",
-    2: "Cancelled"
+    0: "Not Assigned",
+    1: "In Progress",
+    2: "Completed",
 };
 
 const colors = {
-    InProgress: 'bg-info',
-    Cancelled: 'bg-danger',
-    Completed: 'bg-success'
+    'Not Assigned': 'bg-light',
+    'In Progress': 'bg-info',
+    'Completed': 'bg-success'
 };
 
 
@@ -41,28 +59,32 @@ const RenderProjectTasks = (tasks, container) => {
     container.empty();
 
     for (const task of tasks) {
+        console.log(task);
         const formattedDeadline = new Date(task.deadline).toLocaleString('pl-PL', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         let dateColor;
         if (new Date(task.deadline) < new Date()) {
-            dateColor = 'bg-danger';
+            dateColor = 'text-danger';
         } else {
-            dateColor = 'bg-primary';
+            dateColor = 'text-primary';
         }
         const statusString = TaskProgressStatus[task.taskProgressStatus];
         const statusColor = colors[statusString] || 'bg-secondary';
-        container.append(
-            `<li class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="task-details">
-                    <h5 class="task-name" style="display: inline-block;">${task.name}</h5>
-                    <span class="task-status badge ${statusColor}">${statusString}</span>
-                    <p class="task-description">${task.description}</p>
+        container.append(`
+            <div class="card mb-3 shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">${task.name}</span>
+                    <span class="badge ${statusColor}">${statusString}</span>
                 </div>
-                <div class="task-actions">
-                    <span class="badge ${dateColor} rounded-pill">${formattedDeadline}</span>
-                    <a class="badge bg-light text-dark m-1 edit-button" style="text-decoration: none;" data-taskId="${task.id}">Edit</a>
-                    <a class="badge bg-danger rounded-pill m-1 delete-button" style="text-decoration: none;" data-taskId="${task.id}">Delete</a>
+                <div class="card-body">
+                    <p class="card-text"><strong>Assigned to:</strong> ${task.assignedUserEmail || 'Unassigned'}</p>
+                    <p class="card-text ${dateColor}"><strong>Deadline:</strong> ${formattedDeadline}</p>
                 </div>
-            </li>`)
+                <div class="card-footer d-flex justify-content-end gap-2">
+                    <button class="btn btn-sm btn-outline-primary details-button" data-taskId="${task.id}">Details</button>
+                    ${isEditable ? `<button class="btn btn-sm btn-outline-danger delete-button" data-taskId="${task.id}">Delete</button>` : ''}
+                </div>
+            </div>
+        `);
     }
 }
 
@@ -83,9 +105,9 @@ const LoadProjectTasks = () => {
     })
 }
 
-projectTaskContainer.on('click', '.edit-button', function () {
+projectTaskContainer.on('click', '.details-button', function () {
     const taskId = $(this).attr('data-taskId');
-    window.location.href = `/ProjectTask/${taskId}/Edit`;
+    window.location.href = `/Project/${projectEncodedName}/Tasks/${taskId}/Details?isEditable=${isEditable}`;
 });
 
 let isDeleting = false;
