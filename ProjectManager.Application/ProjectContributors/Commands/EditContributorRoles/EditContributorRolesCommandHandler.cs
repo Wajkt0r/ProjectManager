@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Common;
+using ProjectManager.Application.Common.Exceptions;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 
@@ -17,20 +19,29 @@ namespace ProjectManager.Application.ProjectContributors.Commands.EditContributo
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IUserContext _userContext;
 
-        public EditContributorRolesCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, UserManager<User> userManager)
+        public EditContributorRolesCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, UserManager<User> userManager, IUserContext userContext)
         {
             _projectRepository = projectRepository;
             _contributorsRepository = contributorsRepository;
             _userManager = userManager;
+            _userContext = userContext;
         }
 
         public async Task<CommandResult> Handle(EditContributorRolesCommand request, CancellationToken cancellationToken)
         {
+            var userId = _userContext.GetCurrentUser()?.Id;
+
+            if (userId == null) throw new ForbiddenAccessException("You are not entitled to this action");
+
+            var userProjects = await _projectRepository.GetAllUserProjects(userId);
+
+            if (!userProjects.Any(p => p.Id == request.ProjectId)) throw new ForbiddenAccessException("You are not entitled to this action");
+
             var userProjectRoles = await _contributorsRepository.GetUserProjectRoles(request.ProjectId, request.UserId);
 
             if (request.SelectedRoles.Except(userProjectRoles).ToList().Count() == 0 && userProjectRoles == request.SelectedRoles) return CommandResult.Success("No new roles selected", 304);
-
 
             List<ProjectRole> projectRoles = await _contributorsRepository.GetAvailableProjectRoles();
             var rolesToDelete = userProjectRoles.Except(request.SelectedRoles).ToList();

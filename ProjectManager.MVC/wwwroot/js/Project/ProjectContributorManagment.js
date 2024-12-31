@@ -47,15 +47,22 @@ const RenderProjectContributors = (contributors, container) => {
             `<span class="badge badge-primary text-dark">${role}</span>`
         ).join(' ');
 
+        let actionBadges = '';
+        if (isEditable) {
+            actionButtons = `
+                <td class="d-flex justify-content-center align-items-center">
+                    <button class="btn btn-sm btn-warning mx-1" onclick="EditRoles('${user.email}')">Edit Roles</button>
+                    <button class="btn btn-sm btn-danger mx-1" onclick="RemoveContributor('${user.email}')">Remove</button>
+                </td>`;
+        }
+        
+
         const contributorRow = `
                     <tr>
                         <td>${user.userName}</td>
                         <td>${user.email}</td>
                         <td>${rolesBadges}</td>
-                        <td class="d-flex justify-content-center align-items-center">
-                            <button class="btn btn-sm btn-warning mx-1" onclick="EditRoles('${user.email}')">Edit Roles</button>
-                            <button class="btn btn-sm btn-danger mx-1" onclick="RemoveContributor('${user.email}')">Remove</button>
-                        </td>
+                ${isEditable ? actionButtons : ''}
                     </tr>
                 `;
 

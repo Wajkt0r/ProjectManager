@@ -32,7 +32,10 @@
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
                 <th scope="col">Project Roles</th>
+                @if (Model.IsEditable)
+                {
                 <th scope="col" class="text-center">Actions</th>
+                }
             </tr>
         </thead>
         <tbody id="contributorsTableBody" data-encoded-name="@Model.EncodedName">
@@ -68,11 +71,15 @@
 
 <div class="d-flex justify-content-center align-items-center text-center">
     <partial name="_AddProjectContributor" model="new AddContributorCommand(){ ProjectEncodedName = Model.EncodedName};" />
-    <a asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
+    <a asp-controller="Project" asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
 </div>
 
 @section Scripts {
     <script src="~/js/Project/ProjectContributorManagment.js"></script>
+
+    <script>
+        const isEditable = @Model.IsEditable.ToString().ToLower();
+    </script>
 }
 
 
