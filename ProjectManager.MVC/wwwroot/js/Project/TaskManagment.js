@@ -1,22 +1,6 @@
 ﻿$(document).ready(function () {  
 
-    $.ajax({
-        url: `/ProjectContributors/${projectEncodedName}/Get`,
-        type: 'GET',
-        success: function (data) {
-            console.log(data);
-            toastr["success"]("Pobrano");
-            const select = $("#AssignedUserEmail");
-            select.empty();
-            select.append('<option value="">-- Select Contributor --</option>');
-            data.forEach(user => {
-                select.append(`<option value="${user.userName}">${user.userName}</option>`);
-            });
-        },
-        error: function () {
-            toastr["error"]("Failed to load contributors");
-        }
-    })
+    LoadProjectContributorsToForm()
 
     LoadProjectTasks()
 
@@ -55,11 +39,24 @@ const colors = {
 };
 
 
-const RenderProjectTasks = (tasks, container) => {
+const RenderProjectTasks = (tasks, container, myTasks) => {
     container.empty();
+    container.append(`
+                <div class="text-center align-items-center justify-content-center mb-3">
+                    <button class="btn btn-sm ${myTasks ? "btn-outline-primary" : "btn-primary"} all-tasks">All Tasks</button>
+                    <button class="btn btn-sm ${myTasks ? "btn-primary" : "btn-outline-primary"} my-tasks">My Tasks</button>
+                </div>
+    `);
+
+    if (tasks.length === 0) {
+        container.append(myTasks
+            ? "There are no tasks in this project for you."
+            : "There are no tasks for this project."
+        );
+        return;
+    }
 
     for (const task of tasks) {
-        console.log(task);
         const formattedDeadline = new Date(task.deadline).toLocaleString('pl-PL', { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         let dateColor;
         if (new Date(task.deadline) < new Date()) {
@@ -93,14 +90,41 @@ const LoadProjectTasks = () => {
         url: `/Project/${projectEncodedName}/GetTasks`,
         type: 'get',
         success: function (data) {
-            if (!data.length) {
-                projectTaskContainer.html("There are no tasks for this project")
-            } else {
-                RenderProjectTasks(data, projectTaskContainer)
-            }
+            RenderProjectTasks(data, projectTaskContainer, false)
         },
         error: function () {
-            toastr["error"]("Something went wrongf")
+            toastr["error"]("Something went wrong")
+        }
+    })
+}
+
+const LoadUserTasks = () => {
+    $.ajax({
+        url: `/Project/${projectEncodedName}/GetTasks/${userEmail}`,
+        type: 'get',
+        success: function (data) {
+            RenderProjectTasks(data, projectTaskContainer, true)
+        },
+        error: function () {
+            toastr["error"]("Something went wrong")
+        }
+    })
+}
+
+const LoadProjectContributorsToForm = () => {
+    $.ajax({
+        url: `/ProjectContributors/${projectEncodedName}/Get`,
+        type: 'GET',
+        success: function (data) {
+            const select = $("#AssignedUserEmail");
+            select.empty();
+            select.append('<option value="">-- Select Contributor --</option>');
+            data.forEach(user => {
+                select.append(`<option value="${user.userName}">${user.userName}</option>`);
+            });
+        },
+        error: function () {
+            toastr["error"]("Failed to load contributors");
         }
     })
 }
@@ -109,6 +133,14 @@ projectTaskContainer.on('click', '.details-button', function () {
     const taskId = $(this).attr('data-taskId');
     window.location.href = `/Project/${projectEncodedName}/Tasks/${taskId}/Details?isEditable=${isEditable}`;
 });
+
+projectTaskContainer.on('click', '.my-tasks', function () {
+    LoadUserTasks();
+})
+
+projectTaskContainer.on('click', '.all-tasks', function () {
+    LoadProjectTasks();
+})
 
 let isDeleting = false;
 projectTaskContainer.on('click', '.delete-button', function () {
@@ -130,8 +162,4 @@ projectTaskContainer.on('click', '.delete-button', function () {
         }
     });
     isDeleting = false;
-});
-
-$(document).ready(function () {
-    LoadProjectTasks();
 });

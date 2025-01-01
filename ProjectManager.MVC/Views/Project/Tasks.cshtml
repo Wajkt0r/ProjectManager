@@ -1,10 +1,16 @@
-﻿@using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
+﻿@using ProjectManager.Domain.Entities
+﻿﻿@using Microsoft.AspNetCore.Identity
+@using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask
 @using ProjectManager.Application.ProjectTask.Commands.EditProjectTask
+@inject UserManager<User> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
 @model ProjectManager.Application.Project.ProjectDto
 
 @{
     var action = ViewContext.RouteData.Values["Action"]?.ToString();
     var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var user = await UserManager.GetUserAsync(HttpContextAccessor.HttpContext.User);
+    var userEmail = user?.Email;
     ViewData["Title"] = "Tasks";
 }
 
@@ -12,7 +18,7 @@
     <h1>@Model.Name</h1>
 </div>
 
-<div class="">
+<div class="mb-4">
     <div class="d-flex justify-content-center align-items-center">
         <div class="p-2">
             <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Details" asp-route-encodedName="@Model.EncodedName">Overview</a>
@@ -31,7 +37,8 @@
 
 
 <div class="d-flex justify-content-center align-items-center text-center">
-    @if (Model.IsEditable) {
+    @if (Model.IsEditable)
+    {
         <partial name="_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
     }
     <a asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
@@ -40,4 +47,8 @@
 
 @section Scripts {
     <script src="~/js/Project/TaskManagment.js"></script>
+    <script>
+        const isEditable = @Model.IsEditable.ToString().ToLower();  
+        const userEmail = "@userEmail";
+    </script>
 }
