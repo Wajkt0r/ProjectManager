@@ -13,6 +13,7 @@ namespace ProjectManager.Domain.Interfaces
         Task Create(ProjectTask projectTask);
         Task DeleteTask(ProjectTask projectTask);
         Task<IEnumerable<ProjectTask>> GetAllByEncodedName(string projectEncodedName);
+        Task<IEnumerable<ProjectTask>> GetUserProjectTasks(string projectEncodedName, string userId);
         Task<ProjectTask> GetById(int id);
     }
 }

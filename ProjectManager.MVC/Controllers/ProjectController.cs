@@ -10,6 +10,7 @@ using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllUserProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
+using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
 using System.Diagnostics;
 using System.Reflection.Metadata.Ecma335;
@@ -108,8 +109,12 @@ namespace ProjectManager.MVC.Controllers
         }
 
         [HttpGet]
-        [Route("Project/{encodedName}/Tasks")]
-        public async Task<IActionResult> Tasks(string encodedName)
+        [Route("Project/{encodedName}/GetTasks/{userEmail}")]
+        public async Task<IActionResult> GetUserProjectTasks(string encodedName, string userEmail)
+        {
+            var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = encodedName, UserEmail = userEmail });
+            return Ok(data);
+        }
         {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
             return View("Tasks", projectDto);

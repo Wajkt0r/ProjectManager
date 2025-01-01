@@ -43,6 +43,13 @@ namespace ProjectManager.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ProjectTask>> GetUserProjectTasks(string projectEncodedName, string userId) 
+            => await _dbContext.Tasks
+                    .Where(t => t.Project.EncodedName == projectEncodedName && t.AssignedUserId == userId)
+                    .Include(t => t.AssignedUser)
+                    .ToListAsync();
+        
+
         public async Task<ProjectTask> GetById(int id)
             => await _dbContext.Tasks.Include(t => t.AssignedUser).FirstAsync(t => t.Id == id);
     }
