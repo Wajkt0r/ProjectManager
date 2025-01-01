@@ -115,8 +115,13 @@ namespace ProjectManager.MVC.Controllers
             var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = encodedName, UserEmail = userEmail });
             return Ok(data);
         }
+
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks")]
+        public async Task<IActionResult> Tasks(string projectEncodedName)
         {
-            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
             return View("Tasks", projectDto);
         }  
     }
