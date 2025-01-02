@@ -9,6 +9,7 @@ using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.EditProjectTask;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTaskById;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
+using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
 
 namespace ProjectManager.MVC.Controllers
@@ -26,7 +27,7 @@ namespace ProjectManager.MVC.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route("Project/Tasks")]
+        [Route("Project/Tasks/Create")]
         public async Task<IActionResult> CreateProjectTask(CreateProjectTaskCommand command)
         {
             if (!ModelState.IsValid)
@@ -92,6 +93,31 @@ namespace ProjectManager.MVC.Controllers
             await _mediator.Send(command);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks/GetTasks")]
+        public async Task<IActionResult> GetProjectTasks(string projectEncodedName)
+        {
+            var data = await _mediator.Send(new GetProjectTasksQuery() { ProjectEncodedName = projectEncodedName });
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks/GetTasks/{userEmail}")]
+        public async Task<IActionResult> GetUserProjectTasks(string projectEncodedName, string userEmail)
+        {
+            var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = projectEncodedName, UserEmail = userEmail });
+            return Ok(data);
+        }
+
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks")]
+        public async Task<IActionResult> Tasks(string projectEncodedName)
+        {
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
+            return View("Tasks", projectDto);
         }
     }
 }

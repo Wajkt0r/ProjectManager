@@ -72,7 +72,7 @@ const RenderProjectContributors = (contributors, container) => {
 
 const LoadProjectContributors = () => {
     $.ajax({
-        url: `/ProjectContributors/${projectEncodedName}/Get`,
+        url: `/Project/${projectEncodedName}/ProjectContributors/Get`,
         type: 'GET',
         success: function (data) {
             if (!data.length) {
@@ -89,7 +89,7 @@ const LoadProjectContributors = () => {
 
 const EditRoles = (userEmail) => {
     $.ajax({
-        url: `/ProjectContributors/${userEmail}/Project/${projectEncodedName}/EditRolesForm`,
+        url: `/Project/${projectEncodedName}/ProjectContributors/${userEmail}/EditRolesForm`,
         type: 'GET',
         success: function (data) {
             $('#editRolesFormContainer').html(data);
@@ -118,7 +118,7 @@ $('#saveRolesButton').click(function () {
     }
 
     $.ajax({
-        url: '/ProjectContributors/UpdateRoles',
+        url: '/Project/ProjectContributors/UpdateRoles',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(requestData),
@@ -146,7 +146,7 @@ $('#saveRolesButton').click(function () {
 
 const RemoveContributor = (userEmail) => {
     $.ajax({
-        url: `/ProjectContributors/${userEmail}/Project/${projectEncodedName}/Remove`,
+        url: `/Project/${projectEncodedName}/ProjectContributors/${userEmail}/Remove`,
         type: 'POST',
         success: function (data) {
             toastr["info"](`Removed Contributor ${userEmail}`);
