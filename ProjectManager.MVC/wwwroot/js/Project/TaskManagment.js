@@ -87,7 +87,7 @@ const RenderProjectTasks = (tasks, container, myTasks) => {
 
 const LoadProjectTasks = () => {
     $.ajax({
-        url: `/Project/${projectEncodedName}/GetTasks`,
+        url: `/Project/${projectEncodedName}/Tasks/GetTasks`,
         type: 'get',
         success: function (data) {
             RenderProjectTasks(data, projectTaskContainer, false)
@@ -100,7 +100,7 @@ const LoadProjectTasks = () => {
 
 const LoadUserTasks = () => {
     $.ajax({
-        url: `/Project/${projectEncodedName}/GetTasks/${userEmail}`,
+        url: `/Project/${projectEncodedName}/Tasks/GetTasks/${userEmail}`,
         type: 'get',
         success: function (data) {
             RenderProjectTasks(data, projectTaskContainer, true)
@@ -113,7 +113,7 @@ const LoadUserTasks = () => {
 
 const LoadProjectContributorsToForm = () => {
     $.ajax({
-        url: `/ProjectContributors/${projectEncodedName}/Get`,
+        url: `/Project/${projectEncodedName}/ProjectContributors/Get`,
         type: 'GET',
         success: function (data) {
             const select = $("#AssignedUserEmail");
