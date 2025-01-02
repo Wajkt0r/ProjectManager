@@ -58,10 +58,11 @@ namespace ProjectManager.MVC.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        [Route("Project/{encodedName}/Edit")]
-        public async Task<IActionResult> Edit(string encodedName)
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Edit")]
+        public async Task<IActionResult> Edit(string projectEncodedName)
         {
-            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
 
             if (!projectDto.IsEditable)
             {
@@ -73,56 +74,32 @@ namespace ProjectManager.MVC.Controllers
         }
 
         [HttpPost]
-        [Route("Project/{encodedName}/Edit")]
-        public async Task<IActionResult> Edit(string encodedName, EditProjectCommand command)
+        [Route("Project/Edit")]
+        public async Task<IActionResult> UpdateProject(EditProjectCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return View(command);
+                return View("Edit", command);
             }
             await _mediator.Send(command);
             return RedirectToAction(nameof(Index));
         }
+
         [HttpGet]
-        [Route("Project/{encodedName}/Details")]
-        public async Task<IActionResult> Details(string encodedName)
+        [Route("Project/{projectEncodedName}/Details")]
+        public async Task<IActionResult> Details(string projectEncodedName)
         {
-            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(encodedName));
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
             return View(projectDto);
         }
 
-        public async Task<IActionResult> Delete(string encodedName)
+        public async Task<IActionResult> Delete(string projectEncodedName)
         {
-            await _mediator.Send(new DeleteProjectCommand(encodedName));
+            await _mediator.Send(new DeleteProjectCommand(projectEncodedName));
 
-            this.SetNotification("error", $"Project {encodedName} has been deleted");
+            this.SetNotification("error", $"Project {projectEncodedName} has been deleted");
 
             return RedirectToAction(nameof(Index));
         }
-
-        [HttpGet]
-        [Route("Project/{encodedName}/GetTasks")] // Trzeba poprawic nie moze byc takiej metody tutaj
-        public async Task<IActionResult> GetProjectTasks(string encodedName)
-        {
-            var data = await _mediator.Send(new GetProjectTasksQuery() { ProjectEncodedName = encodedName });
-            return Ok(data);
-        }
-
-        [HttpGet]
-        [Route("Project/{encodedName}/GetTasks/{userEmail}")]
-        public async Task<IActionResult> GetUserProjectTasks(string encodedName, string userEmail)
-        {
-            var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = encodedName, UserEmail = userEmail });
-            return Ok(data);
-        }
-
-
-        [HttpGet]
-        [Route("Project/{projectEncodedName}/Tasks")]
-        public async Task<IActionResult> Tasks(string projectEncodedName)
-        {
-            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
-            return View("Tasks", projectDto);
-        }  
     }
 }
