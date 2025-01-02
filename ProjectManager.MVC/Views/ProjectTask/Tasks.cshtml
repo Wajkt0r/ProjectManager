@@ -21,18 +21,20 @@
 <div class="mb-4">
     <div class="d-flex justify-content-center align-items-center">
         <div class="p-2">
-            <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Details" asp-route-encodedName="@Model.EncodedName">Overview</a>
+            <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")"
+               asp-controller="Project" asp-action="Details" asp-route-projectEncodedName="@Model.EncodedName">Overview</a>
         </div>
         <div class="p-2">
-            <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="Project" asp-action="Tasks" asp-route-encodedName="@Model.EncodedName">Tasks</a>
+            <a class="btn @(controller == "ProjectTask" && action == "Tasks" ? "btn-primary" : "btn-secondary")"
+               asp-controller="ProjectTask" asp-action="Tasks" asp-route-projectEncodedName="@Model.EncodedName">Tasks</a>
         </div>
         <div class="p-2">
-            <a class="btn @(controller == "ProjectContributors" && action == "Contributors" ? "btn-primary" : "btn-secondary")" style="margin: auto;" asp-area="" asp-controller="ProjectContributors" asp-action="Contributors" asp-route-projectEncodedName="@Model.EncodedName">Contributors</a>
+            <a class="btn @(controller == "ProjectContributors" && action == "Contributors" ? "btn-primary" : "btn-secondary")"
+               asp-controller="ProjectContributors" asp-action="Contributors" asp-route-projectEncodedName="@Model.EncodedName">Contributors</a>
         </div>
     </div>
 </div>
 
-<h3 class="text-center mb-3">Tasks:</h3>
 <div id="tasks" class="row" data-encoded-name="@Model.EncodedName"></div>
 
 
@@ -41,7 +43,7 @@
     {
         <partial name="_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
     }
-    <a asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
+    <a asp-controller="Project" asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
 </div>
 
 

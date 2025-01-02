@@ -46,11 +46,11 @@
                     <span class="@textColorClass">@Html.DisplayFor(modelItem => item.FinishDate)</span>
                 </td>
                 <td style="display: flex; justify-content: flex-end; align-items: center;">
-                    <a class="btn btn-outline-primary m-1" asp-controller="Project" asp-action="Details" asp-route-encodedName="@item.EncodedName">Details</a>
+                    <a class="btn btn-outline-primary m-1" asp-controller="Project" asp-action="Details" asp-route-projectEncodedName="@item.EncodedName">Details</a>
                     @if (item.IsEditable)
                     {
-                        <a class="btn btn-outline-dark m-1" asp-controller="Project" asp-action="Edit" asp-route-encodedName="@item.EncodedName">Edit</a>
-                        <a class="btn btn-danger m-1" asp-controller="Project" asp-action="Delete" asp-route-encodedName="@item.EncodedName">Delete</a>
+                        <a class="btn btn-outline-dark m-1" asp-controller="Project" asp-action="Edit" asp-route-projectEncodedName="@item.EncodedName">Edit</a>
+                        <a class="btn btn-danger m-1" asp-controller="Project" asp-action="Delete" asp-route-projectEncodedName="@item.EncodedName">Delete</a>
                     }
                 </td>
             </tr>
