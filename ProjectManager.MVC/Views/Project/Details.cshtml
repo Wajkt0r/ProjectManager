@@ -14,8 +14,8 @@
     <div class="d-flex justify-content-center">
         <a class="btn @(controller == "Project" && action == "Details" ? "btn-primary" : "btn-secondary")"
            asp-controller="Project" asp-action="Details" asp-route-projectEncodedName="@Model.EncodedName">Overview</a>
-        <a class="btn @(controller == "ProjectTask" && action == "Tasks" ? "btn-primary" : "btn-secondary") mx-2"
-           asp-controller="ProjectTask" asp-action="Tasks" asp-route-projectEncodedName="@Model.EncodedName">Tasks</a>
+        <a class="btn @(controller == "Project" && action == "Tasks" ? "btn-primary" : "btn-secondary") mx-2"
+           asp-controller="Project" asp-action="Tasks" asp-route-projectEncodedName="@Model.EncodedName">Tasks</a>
         <a class="btn @(controller == "ProjectContributors" && action == "Contributors" ? "btn-primary" : "btn-secondary")"
            asp-controller="ProjectContributors" asp-action="Contributors" asp-route-projectEncodedName="@Model.EncodedName">Contributors</a>
     </div>
