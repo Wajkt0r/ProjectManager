@@ -16,7 +16,7 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenAnyIP(5000);
     options.ListenAnyIP(5001, listenOptions =>
     {
-        listenOptions.UseHttps("./Certificates/aspnetapp.pfx", "Pass@ord1");
+        listenOptions.UseHttps("/app/certificates/aspnetapp.pfx", "Pass@ord1");
     });
 });
 
