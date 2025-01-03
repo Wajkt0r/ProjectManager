@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.Project.Queries.GetProjectEncodedNameByTaskId;
+using ProjectManager.Application.ProjectContributors.Queries.GetAllProjectContributors;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.EditProjectTask;
@@ -39,33 +40,38 @@ namespace ProjectManager.MVC.Controllers
             return Ok();
         }
 
-        [Route("ProjectTask/{taskId}/Edit")]
-        public async Task<IActionResult> EditProjectTask(int taskId)
+        [Route("Project/{projectEncodedName}/ProjectTask/{taskId}/Edit")]
+        public async Task<IActionResult> EditProjectTask(string projectEncodedName, int taskId, bool isEditable)
         {
             var task = await _mediator.Send(new GetProjectTaskByIdQuery(taskId));
+            var projectContributors = await _mediator.Send(new GetAllProjectContributorsQuery(projectEncodedName));
             var command = new EditProjectTaskCommand
             {
                 Id = task.Id,
                 Name = task.Name,
                 Description = task.Description,
-                Deadline = task.Deadline
+                TaskProgressStatus = task.TaskProgressStatus,
+                AssignedUserEmail = task.AssignedUserEmail,
+                Deadline = task.Deadline,
+                ProjectContributors = projectContributors,
+                IsEditable = isEditable
             };
             return View("EditProjectTask", command);
             
         }
 
         [HttpPost]
-        [Route("ProjectTask/{taskId}/Edit")]
-        public async Task<IActionResult> EditProjectTask(int taskId, EditProjectTaskCommand command)
+        [Route("ProjectTask/UpdateProjectTask")]
+        public async Task<IActionResult> UpdateProjectTask(EditProjectTaskCommand command)
         {
             if (!ModelState.IsValid)
             {
-                return View(command);
+                return View("EditProjectTask", command);
             }
             await _mediator.Send(command);
             this.SetNotification("success", $"Task edited");
-            var projectEncodedName = await _mediator.Send(new GetProjectEncodedNameByTaskIdQuery(taskId));
-            return RedirectToAction("Tasks", "Project", new { encodedName = projectEncodedName });
+            var projectEncodedName = await _mediator.Send(new GetProjectEncodedNameByTaskIdQuery(command.Id));
+            return RedirectToAction("Details", new { projectEncodedName = projectEncodedName, taskId = command.Id, isEditable = command.IsEditable });
         }
 
         [HttpGet]
@@ -109,15 +115,6 @@ namespace ProjectManager.MVC.Controllers
         {
             var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = projectEncodedName, UserEmail = userEmail });
             return Ok(data);
-        }
-
-
-        [HttpGet]
-        [Route("Project/{projectEncodedName}/Tasks")]
-        public async Task<IActionResult> Tasks(string projectEncodedName)
-        {
-            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
-            return View("Tasks", projectDto);
         }
     }
 }

@@ -101,5 +101,13 @@ namespace ProjectManager.MVC.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/Tasks")]
+        public async Task<IActionResult> Tasks(string projectEncodedName)
+        {
+            var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
+            return View("Tasks", projectDto);
+        }
     }
 }
