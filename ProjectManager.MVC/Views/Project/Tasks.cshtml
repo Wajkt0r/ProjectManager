@@ -41,7 +41,7 @@
 <div class="d-flex justify-content-center align-items-center text-center">
     @if (Model.IsEditable)
     {
-        <partial name="_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
+        <partial name="../ProjectTask/_CreateProjectTask" model="new CreateProjectTaskCommand() { ProjectEncodedName = Model.EncodedName }"/>
     }
     <a asp-controller="Project" asp-action="Index" class="btn btn-secondary m-1">Back to List</a>
 </div>

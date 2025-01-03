@@ -60,10 +60,8 @@ namespace ProjectManager.Infrastructure.Repositories
         }
 
         public async Task<int> GetProjectId(string encodedName)
-        {
-            var project = await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName);
-            return project.Id;
-        }
+            => (await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName)).Id;
+
 
         public async Task<List<Project>> GetAllUserProjects(string userId)
         {

@@ -12,10 +12,13 @@
 <hr />
 <div class="row justify-content-center">
     <div class="col-md-4">
-        <form asp-action="EditProjectTask">
+        <form asp-controller="ProjectTask" asp-action="UpdateProjectTask">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <input asp-for="Id" class="form-control" type="hidden"/>
+            <input asp-for="ProjectContributors" class="form-control" type="hidden"/>
+            <input asp-for="IsEditable" class="form-control" type="hidden" />
+
                 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -24,15 +27,26 @@
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TaskProgressStatus" class="control-label">Status</label>
                 <select asp-for="TaskProgressStatus" class="form-control">
-                    <option value="InProgress">InProgress</option>
+                    <option value="NotAssigned">Not Assigned</option>
+                    <option value="InProgress">In Progress</option>
                     <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <span asp-validation-for="TaskProgressStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssignedUserEmail" class="control-label">Assigned User Email</label>
+                <select asp-for="AssignedUserEmail" class="form-control">
+                    <option value="Unassigned">Unassigned</option>
+                    @foreach(var projectUser in Model.ProjectContributors)
+                    {
+                        <option value="@projectUser.Email">@projectUser.Email</option>
+                    }
                 </select>
                 <span asp-validation-for="TaskProgressStatus" class="text-danger"></span>
             </div>
