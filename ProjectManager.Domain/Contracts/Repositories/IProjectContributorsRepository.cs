@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManager.Domain.Interfaces
+namespace ProjectManager.Domain.Contracts.Repositories
 {
     public interface IProjectContributorsRepository
     {

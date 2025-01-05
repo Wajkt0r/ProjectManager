@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectManager.Domain.Interfaces
+namespace ProjectManager.Domain.Contracts.Repositories
 {
     public interface IProjectRepository
     {
@@ -19,5 +19,6 @@ namespace ProjectManager.Domain.Interfaces
         Task DeleteProject(Project project);
         Task<int> GetProjectId(string encodedName);
         Task<List<Project>> GetAllUserProjects(string userId);
+        Task DeleteAllUserProjects(string userId);
     }
 }
