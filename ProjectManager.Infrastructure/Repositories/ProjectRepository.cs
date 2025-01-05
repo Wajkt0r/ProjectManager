@@ -70,6 +70,9 @@ namespace ProjectManager.Infrastructure.Repositories
 
             return projects;
         }
+
+        public async Task DeleteAllUserProjects(string userId)
+            => await _dbContext.Projects.Where(p => p.CreatedById == userId).ExecuteDeleteAsync();
     }
 }
 
