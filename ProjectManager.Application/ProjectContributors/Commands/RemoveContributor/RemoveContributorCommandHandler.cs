@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 

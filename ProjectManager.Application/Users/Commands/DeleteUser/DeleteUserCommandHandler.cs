@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Common;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Interfaces;
 using System;
