@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
+using ProjectManager.Application.Common.Exceptions;
 using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
 using System;
@@ -30,30 +31,24 @@ namespace ProjectManager.Application.Users.Commands.EditUserRoles
 
             if (user == null)
             {
-                return Unit.Value;
+                throw new NotFoundException("User not found");
             }
 
-            // Pobierz role użytkownika
             var userRoles = await _userManager.GetRolesAsync(user);
 
             foreach (var role in request.Roles)
             {
-                // Sprawdź, czy rola istnieje
                 if (!await _roleManager.RoleExistsAsync(role))
                 {
-                    // Jeśli rola nie istnieje, utwórz ją
-                    await _roleManager.CreateAsync(new IdentityRole(role));
+                    continue;
                 }
 
-                // Sprawdź, czy użytkownik już ma tę rolę
                 if (!userRoles.Contains(role))
                 {
-                    // Dodaj rolę użytkownikowi
                     await _userManager.AddToRoleAsync(user, role);
                 }
             }
 
-            // Usuń użytkownikowi role, których nie ma w liście request.Roles
             foreach (var role in userRoles)
             {
                 if (!request.Roles.Contains(role))
