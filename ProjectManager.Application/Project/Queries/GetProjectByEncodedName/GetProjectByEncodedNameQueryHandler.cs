@@ -2,7 +2,7 @@
 using MediatR;
 using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Common.Exceptions;
-using ProjectManager.Domain.Interfaces;
+using ProjectManager.Domain.Contracts.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

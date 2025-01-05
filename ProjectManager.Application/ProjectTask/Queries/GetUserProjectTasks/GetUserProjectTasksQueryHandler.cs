@@ -8,8 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 
 namespace ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks
 {

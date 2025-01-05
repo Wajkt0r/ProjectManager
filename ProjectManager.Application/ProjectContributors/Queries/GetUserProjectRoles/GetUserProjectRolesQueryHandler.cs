@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 
 namespace ProjectManager.Application.ProjectContributors.Queries.GetUserProjectRoles
 {

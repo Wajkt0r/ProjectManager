@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
@@ -48,9 +48,20 @@ namespace ProjectManager.Infrastructure.Repositories
                     .Where(t => t.Project.EncodedName == projectEncodedName && t.AssignedUserId == userId)
                     .Include(t => t.AssignedUser)
                     .ToListAsync();
-        
 
+        public async Task<IEnumerable<ProjectTask>> GetAllUserTasks(string userId)
+            => await _dbContext.Tasks
+                    .Where(t => t.AssignedUserId == userId)
+                    .Include(t => t.AssignedUser)
+                    .ToListAsync();
+        
         public async Task<ProjectTask> GetById(int id)
             => await _dbContext.Tasks.Include(t => t.AssignedUser).FirstAsync(t => t.Id == id);
+
+        public async Task Update(ProjectTask projectTask)
+        {
+            _dbContext.Tasks.Update(projectTask);
+            await Commit();
+        }
     }
 }

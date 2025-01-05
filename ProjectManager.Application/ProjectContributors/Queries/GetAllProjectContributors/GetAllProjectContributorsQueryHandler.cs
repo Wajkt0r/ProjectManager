@@ -7,8 +7,8 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.Users;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 
 namespace ProjectManager.Application.ProjectContributors.Queries.GetAllProjectContributors
 {

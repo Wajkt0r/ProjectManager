@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
-using ProjectManager.Domain.Interfaces;
+using ProjectManager.Domain.Contracts.Repositories;
 
 namespace ProjectManager.Application.Project.Queries.GetProjectIdByEncodedName
 {

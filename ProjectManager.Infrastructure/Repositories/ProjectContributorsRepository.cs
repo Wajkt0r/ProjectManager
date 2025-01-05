@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;

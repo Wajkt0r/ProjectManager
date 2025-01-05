@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Users;
+using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Persistence;
 using System;
 using System.Collections;
@@ -70,6 +70,9 @@ namespace ProjectManager.Infrastructure.Repositories
 
             return projects;
         }
+
+        public async Task DeleteAllUserProjects(string userId)
+            => await _dbContext.Projects.Where(p => p.CreatedById == userId).ExecuteDeleteAsync();
     }
 }
 

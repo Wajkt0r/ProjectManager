@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ProjectManager.Application.Users.Queries.GetUserByEmail.GetUserByEmail;
-using ProjectManager.Domain.Interfaces;
+using ProjectManager.Domain.Contracts.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
