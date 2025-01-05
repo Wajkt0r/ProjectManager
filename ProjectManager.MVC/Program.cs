@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Domain.Contracts;
 using ProjectManager.Domain.Entities;
-using ProjectManager.Domain.Interfaces;
 using ProjectManager.Infrastructure.Extensions;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Seeders;
