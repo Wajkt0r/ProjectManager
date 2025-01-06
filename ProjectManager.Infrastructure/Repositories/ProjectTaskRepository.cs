@@ -56,12 +56,31 @@ namespace ProjectManager.Infrastructure.Repositories
                     .ToListAsync();
         
         public async Task<ProjectTask> GetById(int id)
-            => await _dbContext.Tasks.Include(t => t.AssignedUser).FirstAsync(t => t.Id == id);
+            => await _dbContext.Tasks
+                    .Include(t => t.AssignedUser)
+                    .Include(t => t.TaskComments)
+                    .ThenInclude(c => c.CreatedBy)
+                    .FirstAsync(t => t.Id == id);
 
         public async Task Update(ProjectTask projectTask)
         {
             _dbContext.Tasks.Update(projectTask);
             await Commit();
         }
+
+        public async Task AddComment(TaskComment taskComment)
+        {
+            _dbContext.TaskComments.Add(taskComment);
+            await Commit();
+        }
+
+        public async Task DeleteComment(TaskComment taskComment)
+        {
+            _dbContext.TaskComments.Remove(taskComment);
+            await Commit();
+        }
+
+        public async Task<TaskComment?> GetCommentById(int id)
+            => await _dbContext.TaskComments.FirstOrDefaultAsync(c => c.Id == id);
     }
 }
