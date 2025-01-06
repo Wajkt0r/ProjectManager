@@ -17,5 +17,6 @@ namespace ProjectManager.Application.ProjectTask
         public string? AssignedUserEmail { get; set; }
         public DateTime AssignmentTime { get; set; } = DateTime.Now;
         public DateTime Deadline { get; set; } = default!;
+        public List<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
     }
 }
