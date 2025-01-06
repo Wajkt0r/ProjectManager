@@ -18,14 +18,16 @@ namespace ProjectManager.Application.Users.Commands.DeleteUser
         private readonly IProjectRepository _projectRepository;
         private readonly IUserRepository _userRepository;
         private readonly ITaskManagmentService _taskManagmentService;
+        private readonly ICommentsService _commentsService;
         private readonly UserManager<User> _userManager;
         private readonly IUserContext _userContext;
 
-        public DeleteUserCommandHandler(IProjectRepository projectRepository, IUserRepository userRepository, ITaskManagmentService taskManagmentService, UserManager<User> userManager, IUserContext userContext)
+        public DeleteUserCommandHandler(IProjectRepository projectRepository, IUserRepository userRepository, ITaskManagmentService taskManagmentService, ICommentsService commentsService, UserManager<User> userManager, IUserContext userContext)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
             _taskManagmentService = taskManagmentService;
+            _commentsService= commentsService;
             _userManager = userManager;
             _userContext = userContext;
         }
@@ -47,6 +49,7 @@ namespace ProjectManager.Application.Users.Commands.DeleteUser
 
             await _projectRepository.DeleteAllUserProjects(userToDelete.Id);
             await _taskManagmentService.UnassignTaskForUser(userToDelete.Id);
+            await _commentsService.DeleteUserComments(null, userToDelete.Id);
 
             await _userManager.DeleteAsync(userToDelete);
 
