@@ -17,13 +17,15 @@ namespace ProjectManager.Application.ProjectContributors.Commands.RemoveContribu
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectContributorsRepository _contributorsRepository;
         private readonly ITaskManagmentService _taskManagmentService;
+        private readonly ICommentsService _commentsService;
         private readonly UserManager<User> _userManager;
 
-        public RemoveContributorCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, ITaskManagmentService taskManagmentService, UserManager<User> userManager)
+        public RemoveContributorCommandHandler(IProjectRepository projectRepository, IProjectContributorsRepository contributorsRepository, ITaskManagmentService taskManagmentService, ICommentsService commentsService, UserManager<User> userManager)
         {
             _projectRepository = projectRepository;
             _contributorsRepository = contributorsRepository;
             _taskManagmentService = taskManagmentService;
+            _commentsService = commentsService;
             _userManager = userManager;
         }
 
@@ -46,6 +48,9 @@ namespace ProjectManager.Application.ProjectContributors.Commands.RemoveContribu
 
             // Remove user's assignment from tasks in the given project and update their status to "Unassigned"
             await _taskManagmentService.UnassignTaskForUserInProject(project.EncodedName, user.Id);
+
+            // Remove user's comments in project
+            await _commentsService.DeleteUserComments(project.EncodedName, user.Id);
 
             await _contributorsRepository.RemoveContributor(projectUser);
 

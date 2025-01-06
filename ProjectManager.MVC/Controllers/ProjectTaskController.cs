@@ -5,13 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
 using ProjectManager.Application.Project.Queries.GetProjectEncodedNameByTaskId;
 using ProjectManager.Application.ProjectContributors.Queries.GetAllProjectContributors;
+using ProjectManager.Application.ProjectTask.Commands.AddComment;
 using ProjectManager.Application.ProjectTask.Commands.CreateProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.DeleteProjectTask;
 using ProjectManager.Application.ProjectTask.Commands.EditProjectTask;
+using ProjectManager.Application.ProjectTask.Commands.DeleteCommand;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTaskById;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
 using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -115,6 +118,30 @@ namespace ProjectManager.MVC.Controllers
         {
             var data = await _mediator.Send(new GetUserProjectTasksQuery() { ProjectEncodedName = projectEncodedName, UserEmail = userEmail });
             return Ok(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment([FromBody]AddCommentCommand command)
+        {
+            var result = await _mediator.Send(command);
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteComment(int commentId)
+        {
+            var result = await _mediator.Send(new DeleteComentCommand() { CommentId = commentId });
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

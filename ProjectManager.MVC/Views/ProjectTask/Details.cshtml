@@ -1,9 +1,14 @@
 ﻿@model ProjectManager.Application.ProjectTask.ProjectTaskDto
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ProjectManager.Domain.Entities.User> UserManager
 
 @{
     ViewData["Title"] = "Task Details";
     var projectEncodedName = ViewData["ProjectEncodedName"]?.ToString() ?? string.Empty;
     bool isEditable = ViewData["IsEditable"] as bool? ?? false;
+    var user = await UserManager.GetUserAsync(User);
+    bool isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+    var userEmail = user?.Email;
 }
 
 <div class="container mt-5">
@@ -46,4 +51,47 @@
             </a>
         </div>
     </div>
+
+    <div class="card mt-4">
+        <div id="comments" class="card-body">
+            <h5 class="mb-3">Comments</h5>
+            <ul class="list-group">
+                @foreach (var comment in Model.TaskComments.OrderByDescending(c => c.CommentTime))
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                        <div>
+                            <strong>@comment.CreatedBy.Email</strong>
+                            <span class="text-muted">(@comment.CommentTime.ToString("dd-MM-yyyy HH:mm"))</span>
+                            <p class="mb-0">@comment.Comment</p>
+                        </div>
+                        @if (comment.CreatedBy.Email == userEmail || isAdmin)
+                        {
+                            <button class="btn btn-outline-danger btn-sm ms-3 delete-comment-button" data-commentId="@comment.Id">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        }
+                    </li>
+                }
+            </ul>
+
+            <form id="addCommentForm" class="mt-3">
+                    <div id="newComment" class="form-group">
+                        <label for="newComment">Add a Comment</label>
+                        <textarea id="newComment" name="Comment" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <input type="hidden" name="TaskId" value="@Model.Id" />
+                    <input type="hidden" name="UserId" value="@user?.Id" />
+                    <input type="submit" class="btn btn-primary mt-2 submit-new-comment" value="Submit">
+            </form>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/Project/CommentManagment.js"></script>
+    <script>
+        const projectEncodedName = "@projectEncodedName";
+        const taskId = @Model.Id;
+        const isEditable = "@isEditable";
+    </script>
+}

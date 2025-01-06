@@ -56,11 +56,47 @@ namespace ProjectManager.Infrastructure.Repositories
                     .ToListAsync();
         
         public async Task<ProjectTask> GetById(int id)
-            => await _dbContext.Tasks.Include(t => t.AssignedUser).FirstAsync(t => t.Id == id);
+            => await _dbContext.Tasks
+                    .Include(t => t.AssignedUser)
+                    .Include(t => t.TaskComments)
+                    .ThenInclude(c => c.CreatedBy)
+                    .FirstAsync(t => t.Id == id);
 
         public async Task Update(ProjectTask projectTask)
         {
             _dbContext.Tasks.Update(projectTask);
+            await Commit();
+        }
+
+        public async Task AddComment(TaskComment taskComment)
+        {
+            _dbContext.TaskComments.Add(taskComment);
+            await Commit();
+        }
+
+        public async Task DeleteComment(TaskComment taskComment)
+        {
+            _dbContext.TaskComments.Remove(taskComment);
+            await Commit();
+        }
+
+        public async Task<TaskComment?> GetCommentById(int id)
+            => await _dbContext.TaskComments.FirstOrDefaultAsync(c => c.Id == id);
+
+        public async Task<IEnumerable<TaskComment>> GetUserComments(IEnumerable<int?> projectTaskIds, string userId)
+        {
+            var query = _dbContext.TaskComments.Where(t => t.CreatedById == userId);
+
+            if (projectTaskIds.Any())
+            {
+                query = query.Where(t => projectTaskIds.ToList().Contains((int)t.ProjectTaskId!));
+            }
+
+            return await query.ToListAsync();
+        }
+        public async Task DeleteComments(IEnumerable<TaskComment> userComments)
+        {
+            _dbContext.TaskComments.RemoveRange(userComments);
             await Commit();
         }
     }
