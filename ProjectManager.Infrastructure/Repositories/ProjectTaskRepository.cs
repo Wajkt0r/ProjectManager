@@ -82,5 +82,22 @@ namespace ProjectManager.Infrastructure.Repositories
 
         public async Task<TaskComment?> GetCommentById(int id)
             => await _dbContext.TaskComments.FirstOrDefaultAsync(c => c.Id == id);
+
+        public async Task<IEnumerable<TaskComment>> GetUserComments(IEnumerable<int?> projectTaskIds, string userId)
+        {
+            var query = _dbContext.TaskComments.Where(t => t.CreatedById == userId);
+
+            if (projectTaskIds.Any())
+            {
+                query = query.Where(t => projectTaskIds.ToList().Contains((int)t.ProjectTaskId!));
+            }
+
+            return await query.ToListAsync();
+        }
+        public async Task DeleteComments(IEnumerable<TaskComment> userComments)
+        {
+            _dbContext.TaskComments.RemoveRange(userComments);
+            await Commit();
+        }
     }
 }
