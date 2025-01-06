@@ -20,6 +20,7 @@ namespace ProjectManager.Domain.Entities
         public DateTime Deadline { get; set; } = default!;
         public int ProjectId { get; set; } = default!;
         public Project Project { get; set; } = default!;
+        public List<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
 
     }
 }

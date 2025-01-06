@@ -11,5 +11,7 @@ namespace ProjectManager.Domain.Entities
     {
         public List<ProjectUser> ProjectUsers { get; set; } = new();
         public List<ProjectUserRole> UserProjectsRoles { get; set; } = new();
+        public List<TaskComment> UserComments { get; set; } = new();
+
     }
 }
