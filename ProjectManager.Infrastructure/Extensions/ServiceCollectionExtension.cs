@@ -6,6 +6,7 @@ using ProjectManager.Domain.Contracts;
 using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Contracts.Services;
 using ProjectManager.Domain.Entities;
+using ProjectManager.Infrastructure.Identity;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Repositories;
 using ProjectManager.Infrastructure.Seeders;
@@ -28,6 +29,7 @@ namespace ProjectManager.Infrastructure.Extensions
 
             services.AddDefaultIdentity<User>()
                 .AddRoles<IdentityRole>()
+                .AddSignInManager<CustomSignInManager>()
                 .AddEntityFrameworkStores<ProjectManagerDbContext>()
                 .AddDefaultTokenProviders();
 
