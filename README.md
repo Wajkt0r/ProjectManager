@@ -2,7 +2,7 @@
 <p align="center"><img src="https://img.shields.io/badge/.NET-7.0-8A2BE2" alt="shields"></p>
 
 
-<p id="description"><b>Project Manager</b> is an application designed to efficiently manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
+<p id="description"><b>Project Manager</b> is an application designed to efficiently manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Users can assign tasks to specific team members and provide real-time feedback through the built-in comments section. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
 
 ## Contents
 - [Technologies Used](#technologies-used)
@@ -32,6 +32,15 @@ Users can create both individual and group projects, with the ability to add con
 ### Task Management:
 Tasks can be created, edited, and deleted within projects. Users can assign deadlines, and overdue tasks are highlighted in red.
 
+### Task Assignment to Users:
+Tasks can be assigned to specific users within the project. This ensures accountability and clear ownership of tasks, facilitating better collaboration and progress tracking.
+
+### Commenting System:
+Users can add comments to tasks, enabling real-time communication and updates directly within the task details. This feature improves teamwork and helps keep all discussions in one place.
+
+### Continuous Integration:
+The project includes Continuous Integration (CI) using GitHub Actions. CI ensures that code changes are automatically tested and verified before being merged, improving code quality and reducing errors.
+
 ### User Roles:
 Admin users have the ability to manage and remove users from the platform, as well as view all projects and users.
 
@@ -47,7 +56,7 @@ Admins can manage all projects and users, including assigning or removing users 
 ## Upcoming Features
 
 *   Application tests
-*   Tasks assigned to project roles
+*   Tasks progress
 *   Flexible Project Roles for Various Industries (Right now there're only IT Project Roles)
 
 
@@ -85,7 +94,7 @@ Password: Admin@1
 ## Screenshots
 
 ### Project Overview
-![ProjectsOverview](https://github.com/user-attachments/assets/6f2dcf1f-7311-434f-9104-3c05237cc825)
+![ProjectsList](https://github.com/user-attachments/assets/497f086d-45aa-4935-ad72-94a33a2f90fc)
 
 This screenshot shows the list of projects available in the application. Each project displays its name, description, and deadline. As the deadline nears, the date turns orange, and once the deadline is passed, it becomes red and bolded.
 
@@ -103,9 +112,22 @@ In this screenshot, the project is being edited. Users can update the descriptio
 
 ---
 ### Task Overview
-![TasksOverview](https://github.com/user-attachments/assets/f7290438-3b55-413b-8176-cc33cec3e63c)
+![ProjectTasksList](https://github.com/user-attachments/assets/c876656d-59cf-41ff-8047-1d4cd03c7b0b)
 
 This screenshot displays the list of tasks within a project. Each task shows the task name and its respective deadline. If the task is overdue, the deadline turns red. Users can mark tasks as completed or adjust their deadlines.
+
+---
+### Add Task View
+![AddTaskView](https://github.com/user-attachments/assets/a6afeae2-9791-4f06-82b2-945c7e2cbeec)
+
+This screenshot displays the interface for creating a new task within a project.
+
+---
+### Task Details With Comments
+![TaskDetailsWithComments](https://github.com/user-attachments/assets/bf10289f-d04d-4e20-b64a-48cbd0c1b4d7)
+
+This view shows detailed information about a specific task, including the assigned user, description, status, and deadline. The comments section allows team members to leave feedback, ask questions, or provide updates related to the task.
+
 
 ---
 ### Project Contributors Overview
@@ -128,7 +150,7 @@ Toastr notifications appear in the top-right corner after actions like creation,
 
 ---
 ### User Management Panel
-![UserManagment](https://github.com/user-attachments/assets/d32eae5c-1155-4fcd-a953-e230f9948295)
+![AdminPanel](https://github.com/user-attachments/assets/fffb37e5-ae34-4944-826e-ccc36469d01e)
 
 The admin user can manage users in the system. This panel allows admins to view, edit app roles or delete users.
 
@@ -140,7 +162,7 @@ When an admin attempts to delete a user, a confirmation prompt is displayed to c
 
 ---
 ### User Registration Form
-![IdentityRegisterForm](https://github.com/user-attachments/assets/5737f087-7b09-4af0-804b-456862a594c5)
+![UserRegisterForm](https://github.com/user-attachments/assets/fa8006a7-6f45-490c-8be9-09ca023fb65a)
 
 This screenshot illustrates Identity registration form.
 
