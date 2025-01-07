@@ -25,7 +25,7 @@ namespace ProjectManager.Infrastructure.Seeders
             {
                 var adminUser = new User
                 {
-                    UserName = "admin@admin.com",
+                    UserName = "AdminAccount",
                     Email = "admin@admin.com",
                     EmailConfirmed = true
                 };

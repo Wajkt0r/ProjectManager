@@ -31,13 +31,13 @@ namespace ProjectManager.Application.ProjectContributors.Commands.EditContributo
 
         public async Task<CommandResult> Handle(EditContributorRolesCommand request, CancellationToken cancellationToken)
         {
-            var userId = _userContext.GetCurrentUser()?.Id;
+            var user = _userContext.GetCurrentUser();
 
-            if (userId == null) throw new ForbiddenAccessException("You are not entitled to this action");
+            if (user.Id == null) throw new ForbiddenAccessException("You are not entitled to this action");
 
-            var userProjects = await _projectRepository.GetAllUserProjects(userId);
+            var userProjects = await _projectRepository.GetAllUserProjects(user.Id);
 
-            if (!userProjects.Any(p => p.Id == request.ProjectId)) throw new ForbiddenAccessException("You are not entitled to this action");
+            if (!userProjects.Any(p => p.Id == request.ProjectId) && !user.IsInRole("Admin")) throw new ForbiddenAccessException("You are not entitled to this action");
 
             var userProjectRoles = await _contributorsRepository.GetUserProjectRoles(request.ProjectId, request.UserId);
 

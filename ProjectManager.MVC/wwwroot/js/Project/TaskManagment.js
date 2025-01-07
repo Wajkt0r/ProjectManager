@@ -120,7 +120,7 @@ const LoadProjectContributorsToForm = () => {
             select.empty();
             select.append('<option value="">-- Select Contributor --</option>');
             data.forEach(user => {
-                select.append(`<option value="${user.userName}">${user.userName}</option>`);
+                select.append(`<option value="${user.email}">${user.userName}</option>`);
             });
         },
         error: function () {
