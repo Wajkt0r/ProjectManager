@@ -52,7 +52,7 @@ namespace ProjectManager.Application.ProjectContributors.Commands.RemoveContribu
             return Unit.Value;
         }
 
-        private List<ProjectUserRole> PrepareRolesList(List<ProjectRole> projectRoles, List<string> userProjectRoles, int projectId, string userId)
+        private List<ProjectUserRole> PrepareRolesList(List<Domain.Entities.ProjectRole> projectRoles, List<string> userProjectRoles, int projectId, string userId)
         {
             var preparedRoles = new List<ProjectUserRole>();
             foreach (var role in userProjectRoles)
