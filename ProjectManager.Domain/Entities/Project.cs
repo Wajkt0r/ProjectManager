@@ -19,6 +19,7 @@ namespace ProjectManager.Domain.Entities
         public string? EncodedName { get; set; }
         public List<ProjectTask> ProjectTasks { get; set; } = new();
         public List<ProjectUser> ProjectContributors { get; set; } = new();
+        public List<ProjectRole> ProjectRoles { get; set; } = new();
 
 
         public void EncodeName() => EncodedName = Name.ToLower().Replace(" ", "-");

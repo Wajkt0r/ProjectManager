@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using ProjectManager.Application.ApplicationUser;
 using ProjectManager.Application.Project;
 using ProjectManager.Application.Project.Commands.EditProject;
+using ProjectManager.Application.ProjectRole;
 using ProjectManager.Application.ProjectTask;
 using ProjectManager.Application.Users;
 using ProjectManager.Domain.Entities;
@@ -33,6 +34,9 @@ namespace ProjectManager.Application.Mapping
                 .ForMember(dto => dto.AssignedUserEmail, opt => opt.MapFrom(src => src.AssignedUser.Email));
 
             CreateMap<UserDto, Domain.Entities.User>()
+                .ReverseMap();
+
+            CreateMap<ProjectRoleDto, Domain.Entities.ProjectRole>()
                 .ReverseMap();
 
         }

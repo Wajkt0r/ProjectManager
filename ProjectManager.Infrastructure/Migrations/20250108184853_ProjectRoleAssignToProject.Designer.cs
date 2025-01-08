@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectManager.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using ProjectManager.Infrastructure.Persistence;
 namespace ProjectManager.Infrastructure.Migrations
 {
     [DbContext(typeof(ProjectManagerDbContext))]
-    partial class ProjectManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250108184853_ProjectRoleAssignToProject")]
+    partial class ProjectRoleAssignToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,6 +293,36 @@ namespace ProjectManager.Infrastructure.Migrations
                     b.ToTable("ProjectUserRoles");
                 });
 
+            modelBuilder.Entity("ProjectManager.Domain.Entities.TaskComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommentTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("ProjectTaskId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ProjectTaskId");
+
+                    b.ToTable("TaskComments");
+                });
+
             modelBuilder.Entity("ProjectManager.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -489,6 +522,21 @@ namespace ProjectManager.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ProjectManager.Domain.Entities.TaskComment", b =>
+                {
+                    b.HasOne("ProjectManager.Domain.Entities.User", "CreatedBy")
+                        .WithMany("UserComments")
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ProjectManager.Domain.Entities.ProjectTask", "Task")
+                        .WithMany("TaskComments")
+                        .HasForeignKey("ProjectTaskId");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Task");
+                });
+
             modelBuilder.Entity("ProjectManager.Domain.Entities.Project", b =>
                 {
                     b.Navigation("ProjectContributors");
@@ -498,9 +546,16 @@ namespace ProjectManager.Infrastructure.Migrations
                     b.Navigation("ProjectTasks");
                 });
 
+            modelBuilder.Entity("ProjectManager.Domain.Entities.ProjectTask", b =>
+                {
+                    b.Navigation("TaskComments");
+                });
+
             modelBuilder.Entity("ProjectManager.Domain.Entities.User", b =>
                 {
                     b.Navigation("ProjectUsers");
+
+                    b.Navigation("UserComments");
 
                     b.Navigation("UserProjectsRoles");
                 });
