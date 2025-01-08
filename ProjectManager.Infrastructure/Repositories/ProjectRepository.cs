@@ -2,6 +2,7 @@
 using ProjectManager.Application.Users;
 using ProjectManager.Domain.Contracts.Repositories;
 using ProjectManager.Domain.Entities;
+using ProjectManager.Infrastructure.Migrations;
 using ProjectManager.Infrastructure.Persistence;
 using System;
 using System.Collections;
@@ -29,7 +30,7 @@ namespace ProjectManager.Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Project>> GetAll() 
+        public async Task<IEnumerable<Project>> GetAll()
             => await _dbContext.Projects.ToListAsync();
 
         public async Task<string?> GetProjectEncodedNameByTaskId(int taskId)
@@ -48,7 +49,7 @@ namespace ProjectManager.Infrastructure.Repositories
         }
 
         public async Task<Project> GetByEncodedName(string encodedName)
-            => await _dbContext.Projects.FirstOrDefaultAsync(p => p.EncodedName == encodedName);
+            => await _dbContext.Projects.Include(p => p.ProjectTasks).Include(p => p.ProjectContributors).FirstOrDefaultAsync(p => p.EncodedName == encodedName);
 
         public async Task<Project?> GetByName(string name)
             => await _dbContext.Projects.FirstOrDefaultAsync(p => p.Name.ToLower() == name.ToLower());
@@ -73,6 +74,25 @@ namespace ProjectManager.Infrastructure.Repositories
 
         public async Task DeleteAllUserProjects(string userId)
             => await _dbContext.Projects.Where(p => p.CreatedById == userId).ExecuteDeleteAsync();
+
+        public async Task<ProjectRole> GetProjectRole(int projectId, string roleName)
+            => await _dbContext.ProjectRoles.FirstOrDefaultAsync(pr => pr.ProjectId == projectId && pr.Name == roleName);
+
+        public async Task<List<ProjectRole>> GetProjectRoles(int projectId)
+            => await _dbContext.ProjectRoles.Where(pr => pr.ProjectId == projectId).ToListAsync();
+
+        public async Task CreateProjectRole(ProjectRole projectRole)
+        {
+            _dbContext.ProjectRoles.Add(projectRole);
+            await Commit();
+        }
+
+        public async Task RemoveProjectRole(ProjectRole projectRole)
+        {
+            _dbContext.ProjectRoles.Remove(projectRole);
+            await Commit();
+        }
+
     }
 }
 

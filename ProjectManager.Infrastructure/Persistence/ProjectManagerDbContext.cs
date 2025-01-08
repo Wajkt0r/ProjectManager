@@ -43,6 +43,12 @@ namespace ProjectManager.Infrastructure.Persistence
 
             modelBuilder.Entity<ProjectUserRole>()
                 .HasKey(pur => new { pur.UserId, pur.ProjectId, pur.ProjectRoleId});
+
+            modelBuilder.Entity<ProjectRole>()
+                .HasOne(pr => pr.Project)
+                .WithMany(p => p.ProjectRoles)
+                .HasForeignKey(pr => pr.ProjectId)
+                .OnDelete(DeleteBehavior.ClientCascade);
            
 
             base.OnModelCreating(modelBuilder);

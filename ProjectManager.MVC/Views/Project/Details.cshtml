@@ -4,6 +4,14 @@
     var action = ViewContext.RouteData.Values["Action"]?.ToString();
     var controller = ViewContext.RouteData.Values["Controller"]?.ToString();
     ViewData["Title"] = "Details";
+    var tasksCount = Model.ProjectTasks.Count();
+    var tasksInProgress = Model.ProjectTasks.Count(t => t.TaskProgressStatus == ProjectManager.Domain.Enums.TaskProgressStatus.InProgress);
+    var tasksNotAssigned = Model.ProjectTasks.Count(t => t.TaskProgressStatus == ProjectManager.Domain.Enums.TaskProgressStatus.NotAssigned);
+    var tasksCompleted = Model.ProjectTasks.Count(t => t.TaskProgressStatus == ProjectManager.Domain.Enums.TaskProgressStatus.Completed);
+
+    var tasksNotAssignedPercentage = tasksCount > 0 ? Math.Round((double)tasksNotAssigned / tasksCount * 100, 0) : 0;
+    var tasksInProgressPercentage = tasksCount > 0 ? Math.Round((double)tasksInProgress / tasksCount * 100, 0) : 0;
+    var tasksCompletedPercentage = tasksCount > 0 ? Math.Round((double)tasksCompleted / tasksCount * 100, 0) : 0;
 }
 
 <div class="text-center mb-4">
@@ -21,29 +29,120 @@
     </div>
 </div>
 
-<div class="card shadow-sm mb-4">
+<div class="card shadow-lg mb-4">
     <div class="card-body">
-        <h5 class="card-title">Project Details</h5>
-        <hr />
-        <div class="mb-3">
-            <strong>Name:</strong>
-            <p>@Model.Name</p>
+        <div class="mb-4">
+            <h5 class="mb-3"><i class="bi bi-info-circle"></i> Project Details</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Finish Date:</strong>
+                    <p>@(Model.FinishDate.ToString("dd-MM-yyyy") ?? "No deadline set")</p>
+                </div>
+                <div class="col-md-6">
+                    <strong>Description:</strong>
+                    <p style="white-space: pre-wrap;" class="card-text">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "No description provided")</p>
+                </div>
+            </div>
         </div>
-        <div class="mb-3">
-            <strong>Description:</strong>
-            <p style="white-space: pre-wrap;" class="card-text">@(!string.IsNullOrWhiteSpace(Model.Description) ? Model.Description : "No description provided")</p>
-        </div>
-        <div class="mb-3">
-            <strong>Finish Date:</strong>
-            <p>@(Model.FinishDate.ToString("dd-MM-yyyy") ?? "No deadline set")</p>
-        </div>
-    </div>
 
-    <div class="text-center mb-4">
-        @if (Model.IsEditable)
-        {
-            <a class="btn btn-primary" asp-controller="Project" asp-action="Edit" asp-route-projectEncodedName="@Model.EncodedName">Edit Project</a>
-        }
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <hr />
+
+        <div class="mb-4">
+            <h5 class="mb-3"><i class="bi bi-list-task"></i> Tasks Overview</h5>
+            <div class="mb-3">
+                <ul class="list-unstyled">
+                    <li><strong>Total Tasks:</strong> @tasksCount</li>
+                    <li><strong>Not Assigned:</strong> @tasksNotAssigned (@tasksNotAssignedPercentage%)</li>
+                    <li><strong>In Progress:</strong> @tasksInProgress (@tasksInProgressPercentage%)</li>
+                    <li><strong>Completed:</strong> @tasksCompleted (@tasksCompletedPercentage%)</li>
+                </ul>
+            </div>
+
+            @if (tasksCount > 0)
+            {
+                var notAssignedStyle = $"width: {tasksNotAssignedPercentage}%";
+                var inProgressStyle = $"width: {tasksInProgressPercentage}%";
+                var completedStyle = $"width: {tasksCompletedPercentage}%";
+
+                <div class="progress" style="height: 30px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="@notAssignedStyle"
+                         aria-valuenow="@tasksNotAssignedPercentage" aria-valuemin="0" aria-valuemax="100">
+                        Not Assigned (@tasksNotAssignedPercentage%)
+                    </div>
+                    <div class="progress-bar bg-info" role="progressbar" style="@inProgressStyle"
+                         aria-valuenow="@tasksInProgressPercentage" aria-valuemin="0" aria-valuemax="100">
+                        In Progress (@tasksInProgressPercentage%)
+                    </div>
+                    <div class="progress-bar bg-success" role="progressbar" style="@completedStyle"
+                         aria-valuenow="@tasksCompletedPercentage" aria-valuemin="0" aria-valuemax="100">
+                        Completed (@tasksCompletedPercentage%)
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No tasks available.</p>
+            }
+        </div>
+
+        <hr />
+
+        <div class="mb-4">
+            <h5 class="mb-3"><i class="bi bi-people"></i> Contributors</h5>
+            <p><strong>Number of Contributors:</strong> @Model.ProjectContributors.Count()</p>
+        </div>
+
+        <hr />
+
+        <div class="mb-4">
+            <h5 class="mb-3"><i class="bi bi-people"></i> Project Roles [Click on role to delete it]</h5>
+            <div id="project-roles" class="d-flex flex-wrap gap-2">
+            </div>
+            <div class="mt-3">
+                <input id="new-role-name" type="text" class="form-control mb-2" placeholder="Enter new role name (max 10 chars)">
+                <button class="btn btn-primary" id="add-project-role">Add new role</button>
+            </div>
+        </div>
+
+        <div class="text-center">
+            @if (Model.IsEditable)
+            {
+                <a class="btn btn-primary mx-2" asp-controller="Project" asp-action="Edit" asp-route-projectEncodedName="@Model.EncodedName">
+                    <i class="bi bi-pencil"></i> Edit Project
+                </a>
+            }
+            <a asp-action="Index" class="btn btn-secondary mx-2">
+                <i class="bi bi-arrow-left"></i> Back to List
+            </a>
+        </div>
     </div>
 </div>
+
+<div id="confirm-delete-modal" class="modal" tabindex="-1" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" id="close-modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Warning:</strong> Are you sure you want to remove this role?</p>
+                <p>This action will also remove the role from all contributors who are currently assigned to it.</p>
+                <p><strong id="role-to-delete"></strong></p>
+                <p><span class="text-danger">This action cannot be undone.</span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-delete">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/Project/ProjectRoleManagment.js"></script>
+    <script>
+        const projectEncodedName = "@Model.EncodedName?.ToString()";
+    </script>
+}
+

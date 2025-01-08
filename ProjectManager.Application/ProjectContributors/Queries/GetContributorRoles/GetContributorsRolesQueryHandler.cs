@@ -29,7 +29,7 @@ namespace ProjectManager.Application.ProjectContributors.Queries.GetContributorR
             if (user == null) return null;
 
             var contributorRoles = await _contributorsRepository.GetUserProjectRoles(projectId, user.Id);
-            List<ProjectRole> availableProjectRoles = await _contributorsRepository.GetAvailableProjectRoles();
+            List<Domain.Entities.ProjectRole> availableProjectRoles = await _contributorsRepository.GetAvailableProjectRoles();
 
             return new ContributorRolesDto
             {

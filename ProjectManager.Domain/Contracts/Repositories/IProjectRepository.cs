@@ -20,5 +20,9 @@ namespace ProjectManager.Domain.Contracts.Repositories
         Task<int> GetProjectId(string encodedName);
         Task<List<Project>> GetAllUserProjects(string userId);
         Task DeleteAllUserProjects(string userId);
+        Task<ProjectRole> GetProjectRole(int projectId, string roleName);
+        Task<List<ProjectRole>> GetProjectRoles(int projectId);
+        Task CreateProjectRole(ProjectRole projectRole);
+        Task RemoveProjectRole(ProjectRole projectRole);
     }
 }

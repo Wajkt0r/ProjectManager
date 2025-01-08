@@ -43,7 +43,7 @@ namespace ProjectManager.Application.ProjectContributors.Commands.EditContributo
 
             if (request.SelectedRoles.Except(userProjectRoles).ToList().Count() == 0 && userProjectRoles == request.SelectedRoles) return CommandResult.Success("No new roles selected", 304);
 
-            List<ProjectRole> projectRoles = await _contributorsRepository.GetAvailableProjectRoles();
+            List<Domain.Entities.ProjectRole> projectRoles = await _contributorsRepository.GetAvailableProjectRoles();
             var rolesToDelete = userProjectRoles.Except(request.SelectedRoles).ToList();
             var rolesToAdd = request.SelectedRoles.Except(userProjectRoles).ToList();
 
@@ -59,7 +59,7 @@ namespace ProjectManager.Application.ProjectContributors.Commands.EditContributo
             return CommandResult.Success("User roles updated succesfully");
         }
 
-        private List<ProjectUserRole> PrepareRolesList(List<ProjectRole> projectRoles, List<string> rolesToPrepare, int projectId, string userId)
+        private List<ProjectUserRole> PrepareRolesList(List<Domain.Entities.ProjectRole> projectRoles, List<string> rolesToPrepare, int projectId, string userId)
         {
             var preparedRoles = new List<ProjectUserRole>();
             foreach (var role in rolesToPrepare)

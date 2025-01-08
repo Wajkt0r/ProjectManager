@@ -9,6 +9,9 @@ using ProjectManager.Application.Project.Commands.DeleteProject;
 using ProjectManager.Application.Project.Commands.EditProject;
 using ProjectManager.Application.Project.Queries.GetAllUserProjects;
 using ProjectManager.Application.Project.Queries.GetProjectByEncodedName;
+using ProjectManager.Application.ProjectRole.Commands.CreateProjectRole;
+using ProjectManager.Application.ProjectRole.Commands.RemoveProjectRole;
+using ProjectManager.Application.ProjectRole.Queries.GetProjectRoles;
 using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
 using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
@@ -108,6 +111,42 @@ namespace ProjectManager.MVC.Controllers
         {
             var projectDto = await _mediator.Send(new GetProjectByEncodedNameQuery(projectEncodedName));
             return View("Tasks", projectDto);
+        }
+
+        [HttpGet]
+        [Route("Project/{projectEncodedName}/ProjectRoles")]
+        public async Task<IActionResult> ProjectRoles(string projectEncodedName)
+        {
+            var projectRoles = await _mediator.Send(new GetProjectRolesQuery() { ProjectEncodedName = projectEncodedName});
+            return Ok(projectRoles);
+        }
+
+        [HttpPost]
+        [Route("Project/AddProjectRole")]
+        public async Task<IActionResult> AddProjectRole([FromBody] CreateProjectRoleCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        [Route("Project/RemoveProjectRole")]
+        public async Task<IActionResult> RemoveProjectRole([FromBody] RemoveProjectRoleCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

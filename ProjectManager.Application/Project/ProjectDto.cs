@@ -11,6 +11,8 @@ namespace ProjectManager.Application.Project
         public string Name { get; set; } = default!;
         public string? Description { get; set; }
         public string? EncodedName { get; set; }
+        public List<Domain.Entities.ProjectTask> ProjectTasks { get; set; } = new();
+        public List<Domain.Entities.ProjectUser> ProjectContributors { get; set; } = new();
         public DateTime FinishDate { get; set; } = default!;
         public bool IsEditable { get; set; }
     }
