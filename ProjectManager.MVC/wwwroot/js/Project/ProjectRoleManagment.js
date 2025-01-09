@@ -57,7 +57,6 @@ $(document).on("click", "#add-project-role", function() {
             } else {
                 toastr["error"]("Unexpected error occurred");
             }
-            console.log("Error: ", xhr);
         }
     })
 })
@@ -85,8 +84,13 @@ $("#confirm-delete").on("click", function () {
             toastr["info"](response.message);
             LoadProjectRoles();
         },
-        error: function () {
-            toastr["error"]("Unexpected error occurred");
+        error: function (xhr) {
+            const response = xhr.responseJSON;
+            if (response && response.message) {
+                toastr["error"](response.message);
+            } else {
+                toastr["error"]("Unexpected error occurred");
+            }
         }
     });
     $("#confirm-delete-modal").fadeOut();

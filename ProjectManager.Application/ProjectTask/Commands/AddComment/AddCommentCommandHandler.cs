@@ -20,6 +20,8 @@ namespace ProjectManager.Application.ProjectTask.Commands.AddComment
         }
         public async Task<CommandResult> Handle(AddCommentCommand request, CancellationToken cancellationToken)
         {
+            if (request.Comment.Length == 0) return CommandResult.Failure("Comment cannot be empty");
+
             TaskComment taskComment = new TaskComment()
             {
                 Comment = request.Comment,

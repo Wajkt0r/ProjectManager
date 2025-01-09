@@ -41,8 +41,6 @@ namespace ProjectManager.Application.Project.Commands.CreateProject
             await _projectRepository.Create(project);
 
             await _contributorsRepository.AddContributorToProject(new Domain.Entities.ProjectUser() { ProjectId = project.Id, UserId = currentUser.Id });
-            var projectUserRole = new ProjectUserRole() { ProjectId = project.Id, ProjectRoleId = 1, UserId = currentUser.Id };
-            await _contributorsRepository.AddUserProjectRoles(new List<ProjectUserRole>() { projectUserRole });
             return Unit.Value;
         }
     }

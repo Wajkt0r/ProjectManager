@@ -43,8 +43,13 @@ newCommentContainer.on('click', '.submit-new-comment', function (e) {
         success: function (response) {
             ReloadTaskDetails("success", response.message);    
         },
-        error: function (response) {
-            ReloadTaskDetails("error", response.message);    
+        error: function (xhr) {
+            const response = xhr.responseJSON;
+            if (response && response.message) {
+                ReloadTaskDetails("error", response.message); 
+            } else {
+                ReloadTaskDetails("error", "Unexpected error occurred");
+            }
         }
     })
 })

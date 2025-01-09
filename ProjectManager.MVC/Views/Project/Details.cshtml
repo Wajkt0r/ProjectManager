@@ -95,13 +95,21 @@
         <hr />
 
         <div class="mb-4">
-            <h5 class="mb-3"><i class="bi bi-people"></i> Project Roles [Click on role to delete it]</h5>
+            <h5 class="mb-3"><i class="bi bi-people"></i> Project Roles
+                @if (Model.IsEditable)
+                {
+                    <span class="text-muted">[Click on role to delete it]</span>
+                }
+            </h5>
             <div id="project-roles" class="d-flex flex-wrap gap-2">
             </div>
-            <div class="mt-3">
-                <input id="new-role-name" type="text" class="form-control mb-2" placeholder="Enter new role name (max 10 chars)">
-                <button class="btn btn-primary" id="add-project-role">Add new role</button>
-            </div>
+            @if (Model.IsEditable)
+            {
+                <div class="mt-3">
+                    <input id="new-role-name" type="text" class="form-control mb-2" placeholder="Enter new role name (max 20 chars)">
+                    <button class="btn btn-primary" id="add-project-role">Add new role</button>
+                </div>
+            }
         </div>
 
         <div class="text-center">
