@@ -25,6 +25,33 @@ namespace ProjectManager.Application.ProjectTask.Queries.GetProjectTaskById
              
             var projectTaskDto = _mapper.Map<ProjectTaskDto>(projectTask);
 
+            var taskComments = await _projectTaskRepository.GetTasksComments(request.Id);
+            var taskTimeLogs = await _projectTaskRepository.GetTasksTimeLogs(request.Id);
+
+            var commentsDto = taskComments.Select(comment => new CommentDto
+            {
+                Id = comment.Id,
+                Message = comment.Comment,
+                CreatedAt = comment.CommentTime,
+                CreatedByEmail = comment.CreatedBy.Email,
+                IsLogTime = false,
+                TimeSpent = null
+            });
+
+            var timeLogsDto = taskTimeLogs.Select(timeLog => new CommentDto
+            {
+                Id = timeLog.Id,
+                Message = timeLog.CommitMessage,
+                CreatedAt = timeLog.LoggedAt,
+                CreatedByEmail = timeLog.LoggedBy.Email,
+                IsLogTime = true,
+                TimeSpent = timeLog.TimeSpent
+            });
+
+            projectTaskDto.TaskComments = commentsDto.Concat(timeLogsDto)
+                                                .OrderByDescending(c => c.CreatedAt)
+                                                .ToList();
+
             return projectTaskDto;
         }
     }

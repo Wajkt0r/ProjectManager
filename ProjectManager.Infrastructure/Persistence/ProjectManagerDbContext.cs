@@ -18,6 +18,7 @@ namespace ProjectManager.Infrastructure.Persistence
         public DbSet<ProjectRole> ProjectRoles { get; set; }
         public DbSet<ProjectUserRole> ProjectUserRoles { get; set; }
         public DbSet<TaskComment> TaskComments { get; set; }
+        public DbSet<TimeLog> TimeLogs { get; set; }
 
         public ProjectManagerDbContext(DbContextOptions<ProjectManagerDbContext> options) : base(options) { }
 
