@@ -15,6 +15,7 @@ using ProjectManager.Application.ProjectTask.Queries.GetProjectTasks;
 using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using ProjectManager.Application.ProjectTask.Commands.LogTime;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -136,6 +137,18 @@ namespace ProjectManager.MVC.Controllers
         public async Task<IActionResult> DeleteComment(int commentId)
         {
             var result = await _mediator.Send(new DeleteComentCommand() { CommentId = commentId });
+            if (result.IsSuccess)
+            {
+                return Ok(result);
+            }
+
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogTime([FromBody]LogTimeCommand command)
+        {
+            var result = await _mediator.Send(command);
             if (result.IsSuccess)
             {
                 return Ok(result);

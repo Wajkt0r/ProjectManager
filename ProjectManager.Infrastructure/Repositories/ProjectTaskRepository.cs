@@ -99,5 +99,14 @@ namespace ProjectManager.Infrastructure.Repositories
             _dbContext.TaskComments.RemoveRange(userComments);
             await Commit();
         }
+
+        public async Task LogTime(TimeLog timeLog)
+        {
+            _dbContext.TimeLogs.Add(timeLog);
+            await Commit();
+        }
+
+        public async Task<IEnumerable<TimeLog>> GetTasksTimeLogs(int taskId)
+            => await _dbContext.TimeLogs.Include(tl => tl.LoggedBy).Where(tl => tl.LoggedInTaskId == taskId).ToListAsync();
     }
 }
