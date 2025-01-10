@@ -58,8 +58,6 @@ namespace ProjectManager.Infrastructure.Repositories
         public async Task<ProjectTask> GetById(int id)
             => await _dbContext.Tasks
                     .Include(t => t.AssignedUser)
-                    .Include(t => t.TaskComments)
-                    .ThenInclude(c => c.CreatedBy)
                     .FirstAsync(t => t.Id == id);
 
         public async Task Update(ProjectTask projectTask)
@@ -79,6 +77,9 @@ namespace ProjectManager.Infrastructure.Repositories
             _dbContext.TaskComments.Remove(taskComment);
             await Commit();
         }
+
+        public async Task<IEnumerable<TaskComment>> GetTasksComments(int taskId)
+            => await _dbContext.TaskComments.Include(tc => tc.CreatedBy).Where(tc => tc.ProjectTaskId == taskId).ToListAsync();
 
         public async Task<TaskComment?> GetCommentById(int id)
             => await _dbContext.TaskComments.FirstOrDefaultAsync(c => c.Id == id);

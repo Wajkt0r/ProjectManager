@@ -19,6 +19,7 @@ namespace ProjectManager.Domain.Contracts.Repositories
         Task Update(ProjectTask projectTask);
         Task AddComment(TaskComment taskComment);
         Task DeleteComment(TaskComment taskComment);
+        Task<IEnumerable<TaskComment>> GetTasksComments(int taskId);
         Task<TaskComment?> GetCommentById(int id);
         Task<IEnumerable<TaskComment>> GetUserComments(IEnumerable<int?> projectTaskIds, string userId);
         Task DeleteComments(IEnumerable<TaskComment> userComments);
