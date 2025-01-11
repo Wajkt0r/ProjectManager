@@ -27,7 +27,7 @@ namespace ProjectManager.Application.ProjectRole.Commands.CreateProjectRole
         {
             var user = _userContext.GetCurrentUser();
             var project = await _projectRepository.GetByEncodedName(request.ProjectEncodedName);
-            if (project.CreatedById != user.Id) return CommandResult.Failure("You are not entitled to this action");
+            if (project.CreatedById != user.Id && !user.IsInRole("Admin")) return CommandResult.Failure("You are not entitled to this action");
 
             if (request.ProjectRoleName.Length == 0 | request.ProjectRoleName.Length > 20) return CommandResult.Failure("The role name must be between 1 and 20 characters. Please provide a valid role name.", 422);
 

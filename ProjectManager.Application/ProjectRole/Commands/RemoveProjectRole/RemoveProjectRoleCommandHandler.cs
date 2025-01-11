@@ -25,7 +25,7 @@ namespace ProjectManager.Application.ProjectRole.Commands.RemoveProjectRole
         {
             var user = _userContext.GetCurrentUser();
             var project = await _projectRepository.GetByEncodedName(request.ProjectEncodedName);
-            if (project.CreatedById != user.Id) return CommandResult.Failure("You are not entitled to this action");
+            if (project.CreatedById != user.Id && !user.IsInRole("Admin")) return CommandResult.Failure("You are not entitled to this action");
 
             var projectRole = await _projectRepository.GetProjectRole(project.Id, request.ProjectRoleName);
 

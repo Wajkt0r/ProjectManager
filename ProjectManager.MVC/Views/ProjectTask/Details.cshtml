@@ -38,7 +38,7 @@
                     <p class="card-text">@Model.AssignmentTime.ToString("dd-MM-yyyy HH:mm")</p>
                 </div>
                 <div class="col-md-4">
-                    <h5 class="card-title">Tasks time</h5>
+                    <h5 class="card-title">Time Spent</h5>
                     <p class="card-text">@Model.TaskComments.Where(tc => tc.IsLogTime == true).Sum(tc => tc.TimeSpent.Value.TotalHours) hours</p>
                 </div>
             </div>
