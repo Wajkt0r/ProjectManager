@@ -1,8 +1,7 @@
 <h1 align="center" id="title">Project Manager</h1>
 <p align="center"><img src="https://img.shields.io/badge/.NET-7.0-8A2BE2" alt="shields"></p>
 
-
-<p id="description"><b>Project Manager</b> is an application designed to efficiently manage projects. With Project Manager, users can create, plan, and track progress in various projects, including group projects where users can collaborate by adding team members. The application allows detailed task management (create, edit, delete tasks) within projects. Users can assign tasks to specific team members and provide real-time feedback through the built-in comments section. Currently, it supports both individual and group task management functionalities, with additional features under development. The project is tailored for IT projects, with specific roles such as Backend, Frontend, and Tester for task allocation and management. In the future, the roles will be adapted to fit various types of projects beyond IT.</p>
+<p id="description"><b>Project Manager</b> is an application designed to efficiently manage projects across various industries. It enables users to create, plan, and track progress in different types of projects, including group projects that emphasize team collaboration. The application offers comprehensive task management functionality, allowing users to create, edit, and delete tasks, assign them to specific team members, and log time spent on each task. Additionally, users can enhance communication by providing real-time feedback through the built-in comments section. The app supports the creation of custom project roles, while features such as time logging ensure efficient progress tracking.</p>
 
 ## Contents
 - [Technologies Used](#technologies-used)
@@ -27,7 +26,7 @@
 ## Features
 
 ### Project Creation & Management:
-Users can create both individual and group projects, with the ability to add contributors, assign tasks, and track progress. Project Leaders can assign specific roles such as "Backend", "Frontend", or "Tester" to users, ensuring each team member has designated responsibilities. This structure aids in better task allocation and will support task management based on these roles in future updates.
+Users can create both individual and group projects, with the ability to add contributors, assign tasks, and track progress. Project Leaders can create custom roles for each project, allowing flexibility in defining responsibilities tailored to the specific needs of the project. Whether it's traditional IT roles like "Backend" or "Tester" or non-IT roles like "Designer" or "Marketing Lead", custom roles ensure that each team member has a clear set of responsibilities. This flexible structure aids in better task allocation and supports task management based on these roles. Additionally, contributors can be added or removed as needed, making collaboration seamless and adaptable.
 
 ### Task Management:
 Tasks can be created, edited, and deleted within projects. Users can assign deadlines, and overdue tasks are highlighted in red.
@@ -37,6 +36,9 @@ Tasks can be assigned to specific users within the project. This ensures account
 
 ### Commenting System:
 Users can add comments to tasks, enabling real-time communication and updates directly within the task details. This feature improves teamwork and helps keep all discussions in one place.
+
+### Time Logging:
+Users can log time spent on specific tasks, helping to monitor progress and manage workload effectively. Logged time provides insights into the overall effort required to complete tasks and can be used to improve future project planning.
 
 ### Continuous Integration:
 The project includes Continuous Integration (CI) using GitHub Actions. CI ensures that code changes are automatically tested and verified before being merged, improving code quality and reducing errors.
@@ -56,9 +58,6 @@ Admins can manage all projects and users, including assigning or removing users 
 ## Upcoming Features
 
 *   Application tests
-*   Tasks progress
-*   Flexible Project Roles for Various Industries (Right now there're only IT Project Roles)
-
 
 ## How to setup
 
@@ -105,6 +104,13 @@ This screenshot shows the list of projects available in the application. Each pr
 This view demonstrates the process of creating a new project. Users can fill out project details such as name, description, and set the project deadline.
 
 ---
+### Project Overview
+![image](https://github.com/user-attachments/assets/246b0623-3696-4223-ac31-1dd41aee7c48)
+
+This view provides an overview of the project, displaying key information at a glance. In the Project Details section, you can see a summary of task distribution by percentage, including tasks that are not assigned, in progress, and completed. Additionally, the number of contributors involved in the project is listed under Contributors. The Project Roles section allows users to manage roles by adding new ones or deleting existing roles by clicking on them. This ensures clarity in team responsibilities and role assignments.
+
+
+---
 ### Project Edit View
 ![ProjectEditView](https://github.com/user-attachments/assets/1dc666ab-5cab-4e8c-b8cf-10c4f25f8f41)
 
@@ -124,9 +130,9 @@ This screenshot displays the interface for creating a new task within a project.
 
 ---
 ### Task Details With Comments
-![TaskDetailsWithComments](https://github.com/user-attachments/assets/bf10289f-d04d-4e20-b64a-48cbd0c1b4d7)
+![TaskDetailsWithCommentSection](https://github.com/user-attachments/assets/4da24b25-b9eb-475b-ba62-5bf17bf3edfd)
 
-This view shows detailed information about a specific task, including the assigned user, description, status, and deadline. The comments section allows team members to leave feedback, ask questions, or provide updates related to the task.
+This view displays detailed information about a specific task, including the assigned user, description, status, and deadline. The comments section allows team members to leave feedback, ask questions, or provide updates related to the task. Additionally, team members can log time spent on the task, helping to track progress and manage workload effectively.
 
 
 ---
