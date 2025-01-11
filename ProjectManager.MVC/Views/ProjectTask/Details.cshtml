@@ -106,7 +106,7 @@
 
                         @if (comment.CreatedByEmail == userEmail || isAdmin)
                         {
-                            <button class="btn btn-outline-danger btn-sm ms-3 delete-comment-button" data-commentId="@comment.Id">
+                            <button class="btn btn-outline-danger btn-sm ms-3 delete-comment-button" type="@(@comment.IsLogTime ? "logTime" : "comment")" data-commentId="@comment.Id">
                                 <i class="bi bi-trash"></i> Delete
                             </button>
                         }

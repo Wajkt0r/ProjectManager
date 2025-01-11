@@ -109,5 +109,14 @@ namespace ProjectManager.Infrastructure.Repositories
 
         public async Task<IEnumerable<TimeLog>> GetTasksTimeLogs(int taskId)
             => await _dbContext.TimeLogs.Include(tl => tl.LoggedBy).Where(tl => tl.LoggedInTaskId == taskId).ToListAsync();
+
+        public async Task<TimeLog> GetTimeLogById(int timeLogId)
+            => await _dbContext.TimeLogs.FirstOrDefaultAsync(tl => tl.Id == timeLogId);
+
+        public async Task DeleteTimeLog(TimeLog timelog)
+        {
+            _dbContext.TimeLogs.Remove(timelog);
+            await Commit();
+        }
     }
 }

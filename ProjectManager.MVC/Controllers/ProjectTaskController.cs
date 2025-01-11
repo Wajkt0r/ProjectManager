@@ -16,6 +16,7 @@ using ProjectManager.Application.ProjectTask.Queries.GetUserProjectTasks;
 using ProjectManager.MVC.Extensions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using ProjectManager.Application.ProjectTask.Commands.LogTime;
+using ProjectManager.Application.ProjectTask.Commands.DeleteLogTime;
 
 namespace ProjectManager.MVC.Controllers
 {
@@ -134,15 +135,20 @@ namespace ProjectManager.MVC.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteComment(int commentId)
+        public async Task<IActionResult> DeleteEntity(int entityId, string entityType)
         {
-            var result = await _mediator.Send(new DeleteComentCommand() { CommentId = commentId });
-            if (result.IsSuccess)
+            Application.Common.CommandResult result;
+            if (entityType == "comment")
             {
-                return Ok(result);
+                result = await _mediator.Send(new DeleteComentCommand() { CommentId = entityId });
+            } else if (entityType == "logtime")
+            {
+                result = await _mediator.Send(new DeleteLogTimeCommand() { LogTimeId = entityId });
+            } else
+            {
+                return BadRequest("Invalid entity type");
             }
-
-            return StatusCode(result.StatusCode, result);
+            return result.IsSuccess ? Ok(result) : StatusCode(result.StatusCode, result);
         }
 
         [HttpPost]

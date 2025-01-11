@@ -14,15 +14,17 @@ $(document).ready(function () {
 });
 
 commentContainer.on('click', '.delete-comment-button', function () {
-    const commentId = $(this).attr('data-commentId');
+    const entityId = $(this).attr('data-commentId');
+    const isComment = ($(this)).attr('type') === 'comment';
+
     $.ajax({
-        url: `/ProjectTask/DeleteComment?commentId=${commentId}`,
+        url: `/ProjectTask/DeleteEntity?entityId=${entityId}&entityType=${isComment ? `comment` : `logtime`}`,
         type: 'DELETE',
         success: function (response) {
-            ReloadTaskDetails("info", response.message);    
+            ReloadTaskDetails("info", response.message);
         },
         error: function (response) {
-            ReloadTaskDetails("error", response.message);    
+            ReloadTaskDetails("error", response.message);
         }
     })
 });
@@ -32,7 +34,7 @@ newCommentContainer.on('click', '.submit-new-comment', function (e) {
     const requestData = {
         Comment: $('textarea[name="Comment"]').val(),
         ProjectTaskId: parseInt($('input[name="TaskId"]').val()),
-        CreatedById: $('input[name="UserId"').val()
+        CreatedById: $('input[name="UserId"]').val()
     }
 
     $.ajax({
@@ -60,4 +62,3 @@ const ReloadTaskDetails = (actionResult, message) => {
 
     window.location.href = `/Project/${projectEncodedName}/Tasks/${taskId}/Details?isEditable=${isEditable}`;
 }
-

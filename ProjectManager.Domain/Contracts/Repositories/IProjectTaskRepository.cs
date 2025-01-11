@@ -25,5 +25,7 @@ namespace ProjectManager.Domain.Contracts.Repositories
         Task DeleteComments(IEnumerable<TaskComment> userComments);
         Task LogTime(TimeLog timeLog);
         Task<IEnumerable<TimeLog>> GetTasksTimeLogs(int taskId);
+        Task<TimeLog> GetTimeLogById(int timeLogId);
+        Task DeleteTimeLog(TimeLog timelog);
     }
 }
